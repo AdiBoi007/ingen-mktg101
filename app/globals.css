@@ -1,0 +1,122 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-display: "Inter", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Inter", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "JetBrains Mono", "IBM Plex Mono", "Menlo", monospace;
+}
+
+html,
+body {
+  background: #f8f6f8;
+  color: #1d161d;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.03em;
+  font-weight: 500;
+}
+
+.label-mono {
+  font-family: var(--font-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.btn-dark {
+  background: #1d161d;
+  color: #fff;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 12px 18px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 200ms ease;
+  white-space: nowrap;
+}
+.btn-dark:hover { background: #2a232a; }
+
+.btn-outline {
+  background: transparent;
+  color: #1d161d;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 12px 18px;
+  border: 1px solid rgba(29,22,29,0.2);
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 200ms ease;
+  white-space: nowrap;
+}
+.btn-outline:hover { border-color: #1d161d; }
+
+.btn-outline-light {
+  background: transparent;
+  color: #fff;
+  border-color: rgba(255,255,255,0.3);
+}
+.btn-outline-light:hover { border-color: #fff; }
+
+.halftone-top {
+  background-image: radial-gradient(circle at 2px 2px, rgba(176,84,231,0.6) 1.2px, transparent 1.4px);
+  background-size: 14px 14px;
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
+}
+
+.halftone-bottom {
+  background-image: radial-gradient(circle at 2px 2px, rgba(176,84,231,0.55) 1.2px, transparent 1.4px);
+  background-size: 14px 14px;
+  mask-image: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+  -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+}
+
+.halftone-light-top {
+  background-image: radial-gradient(circle at 2px 2px, rgba(107,47,142,0.22) 1.2px, transparent 1.4px);
+  background-size: 14px 14px;
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
+}
+
+.diag-pattern {
+  background-image: repeating-linear-gradient(135deg, rgba(0,0,0,0.05) 0 1px, transparent 1px 9px);
+}
+
+.dotted-divider {
+  background-image: linear-gradient(to right, rgba(0,0,0,0.18) 50%, transparent 50%);
+  background-size: 6px 1px;
+  background-repeat: repeat-x;
+}
+
+.vertical-rule {
+  background-image: linear-gradient(to bottom, rgba(0,0,0,0.12) 50%, transparent 50%);
+  background-size: 1px 6px;
+  background-repeat: repeat-y;
+}
+
+@keyframes wordReveal {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.word-reveal > span {
+  display: inline-block;
+  animation: wordReveal 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
