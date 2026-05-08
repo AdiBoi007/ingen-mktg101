@@ -5,6 +5,7 @@ import LogoMarquee from "@/components/LogoMarquee";
 import SectionShift from "@/components/SectionShift";
 import FeaturesTabs from "@/components/FeaturesTabs";
 import AIAgents from "@/components/AIAgents";
+import RecruiterBento from "@/components/RecruiterBento";
 import Integrations from "@/components/Integrations";
 import CustomerStories from "@/components/CustomerStories";
 import LatestUpdates from "@/components/LatestUpdates";
@@ -23,6 +24,7 @@ export default function HomePage() {
       <SectionShift />
       <FeaturesTabs />
       <AIAgents />
+      <RecruiterBento />
       <Integrations />
       <CustomerStories />
       <LatestUpdates />

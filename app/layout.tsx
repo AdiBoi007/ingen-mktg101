@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { AudienceProvider } from "@/components/AudienceContext";
 
 export const metadata: Metadata = {
-  title: "Juicebox — Win the talent war",
+  title: "Ingen — Talent, reimagined",
   description:
-    "AI Recruiting Platform that understands who you're looking for. Level up your team with Search, CRM, and Agents.",
+    "Ingen connects recruiters with the right talent and students with the right opportunities.",
 };
 
 export default function RootLayout({
@@ -22,7 +23,9 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body>{children}</body>
+      <body>
+        <AudienceProvider>{children}</AudienceProvider>
+      </body>
     </html>
   );
 }
