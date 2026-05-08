@@ -2,7 +2,6 @@ import AnnouncementBar from "@/components/AnnouncementBar";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import LogoMarquee from "@/components/LogoMarquee";
-import SectionShift from "@/components/SectionShift";
 import FeaturesTabs from "@/components/FeaturesTabs";
 import AIAgents from "@/components/AIAgents";
 import RecruiterBento from "@/components/RecruiterBento";
@@ -21,7 +20,6 @@ export default function HomePage() {
       <Navbar />
       <Hero />
       <LogoMarquee />
-      <SectionShift />
       <FeaturesTabs />
       <AIAgents />
       <RecruiterBento />
