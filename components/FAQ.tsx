@@ -123,49 +123,24 @@ function RecruiterFAQ() {
 
 function StudentFAQ() {
   return (
-    <section className="relative bg-forge-cream overflow-hidden">
-      <div className="absolute inset-0 dotted-grid-dim opacity-60 pointer-events-none" />
-      <div className="relative mx-auto max-w-[1320px] px-6 py-24 grid lg:grid-cols-2 gap-16">
+    <section className="bg-brand-bg">
+      <div className="mx-auto max-w-[1320px] px-6 py-24 grid lg:grid-cols-2 gap-16">
         <div>
-          <span className="label-mono-warm">[06] FAQ</span>
-          <h2 className="mt-3 font-forge text-[44px] md:text-[58px] leading-[1.02] text-forge-ink">
-            Your questions, <br />
-            <span className="text-forge-amber">forged.</span>
+          <div className="label-mono text-brand-mute mb-3">[06] FAQ</div>
+          <h2 className="font-display text-[44px] md:text-[58px] leading-[1.05] tracking-tightest text-brand-ink">
+            Your questions, answered
           </h2>
-          <p className="mt-5 text-[15px] text-forge-ink/70 max-w-md leading-relaxed">
+          <p className="mt-5 text-[15px] text-brand-muted max-w-md leading-relaxed">
             Everything we wished someone had told us when we were graduating. Still
             stuck? Aristotle is one prompt away.
           </p>
-          <div className="mt-7 flex flex-wrap gap-3">
-            <a href="#" className="btn-amber">Start free</a>
-            <a href="#" className="btn-ink-pill">
-              <svg width="10" height="10" viewBox="0 0 12 12" fill="none">
-                <path d="M3 2L9 6L3 10V2Z" fill="white" />
-              </svg>
-              Watch demo
-            </a>
-          </div>
-
-          <div className="mt-10 rounded-2xl border border-forge-line bg-white p-5 max-w-md">
-            <div className="flex items-center gap-2">
-              <span className="w-8 h-8 rounded-full bg-forge-indigo flex items-center justify-center">
-                <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-                  <path d="M8 2L9.5 6L13.5 7.5L9.5 9L8 13L6.5 9L2.5 7.5L6.5 6L8 2Z" fill="white" />
-                </svg>
-              </span>
-              <span className="label-mono-warm">Aristotle</span>
-              <span className="ml-auto pulse-dot" />
-            </div>
-            <p className="mt-3 text-[13px] text-forge-ink/80 leading-relaxed">
-              &ldquo;Tell me your target role and weekly hours — I&apos;ll have a 52-topic
-              roadmap and a recruiter-ready profile draft before you finish reading
-              this card.&rdquo;
-            </p>
-          </div>
+          <a href="#" className="btn-dark mt-7">Start free</a>
         </div>
 
         <div className="relative">
-          <FAQList items={studentFaqs} accent="amber" />
+          <div className="absolute -top-6 right-0 w-1/2 h-6 diag-pattern" />
+          <div className="absolute -bottom-6 right-0 w-1/2 h-6 diag-pattern" />
+          <FAQList items={studentFaqs} accent="purple" />
         </div>
       </div>
     </section>

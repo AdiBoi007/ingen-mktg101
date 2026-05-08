@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { useAudience } from "./AudienceContext";
 
@@ -300,184 +300,377 @@ const studentTabs: {
 const STUDENT_PANELS: Record<
   StudentTab,
   {
-    eyebrow: string;
+    pill: string;
     title: string;
-    copy: string;
-    cta: string;
-    bullets: string[];
+    copy: React.ReactNode;
+    primaryCta: string;
+    secondaryCta: string;
     image: string;
     imageAlt: string;
+    /** later: video URL to swap in on scroll */
+    video?: string;
+    /** stage gradient — left → right */
+    stageFrom: string;
+    stageTo: string;
+    /** accent for pill label */
+    pillBg: string;
+    pillFg: string;
   }
 > = {
   roadmap: {
-    eyebrow: "Roadmap · Aristotle",
-    title: "A guided learning roadmap calibrated to you",
-    copy:
-      "Aristotle generates a visual mind-map of every topic between you and your target role — calibrated to your current expertise, your goal, and your weekly study time. Mark topics complete, switch between mind-map and linear pathway, and watch the readiness gauge tick up.",
-    cta: "Generate my roadmap",
-    bullets: [
-      "Quick suggestions: Data Analyst (360h), AI Engineer (520h), Frontend (420h)",
-      "Customize by expertise level, goal, and weekly hours",
-      "Granular topic completion: 0 of 52 topics, 420h / 12 months",
-    ],
+    pill: "ROADMAP & READINESS",
+    title: "A learning roadmap calibrated to your hours, expertise, and goal.",
+    copy: (
+      <>
+        Aristotle reads your background, target role and weekly hours — then ships a{" "}
+        <strong className="text-brand-ink">52-topic Frontend Engineer plan</strong> tied to a{" "}
+        <strong className="text-brand-ink">420-hour, 12-month budget</strong>. Switch between mind-map canvas and linear pathway, mark topics complete, and watch the readiness gauge climb in real time.
+      </>
+    ),
+    primaryCta: "Try Aristotle",
+    secondaryCta: "Watch the demo",
     image: "/student/roadmap-frontend.png",
     imageAlt: "Aristotle generates a Frontend Engineer roadmap as a horizontal mind-map of topics",
+    stageFrom: "#5B2A86",
+    stageTo: "#7C3AED",
+    pillBg: "#EDE9FE",
+    pillFg: "#5B21B6",
   },
   jobs: {
-    eyebrow: "Jobs · Columbus",
-    title: "An AI scout that ranks roles, not a job board you scroll",
-    copy:
-      "Columbus stages role dossiers from RemoteOK, HN Who's Hiring, GitHub Jobs, Adzuna, and company career pages — then ranks each one against your profile with a % match, salary band, tag chips, and a one-line relevance summary you can act on.",
-    cta: "Send Columbus scouting",
-    bullets: [
-      "Filter pills: Remote, Internship, Startups, MNC, 90%+ Match",
-      "Live shortlist with match % and ranked relevance summary",
-      "Sources transparent — every dossier shows where it came from",
-    ],
+    pill: "COLUMBUS · JOB SCOUT",
+    title: "Ranked role dossiers, not a job board you scroll.",
+    copy: (
+      <>
+        Columbus scouts <strong className="text-brand-ink">RemoteOK, HN Who&apos;s Hiring, GitHub Jobs, Adzuna</strong> and company pages — then ranks every opening with a{" "}
+        <strong className="text-brand-ink">% match, salary band, fit reasons</strong> and a one-click prep flow into your profile. Filter pills surface what matters: 90%+ match, remote, internship, startup.
+      </>
+    ),
+    primaryCta: "Send Columbus scouting",
+    secondaryCta: "Watch the demo",
     image: "/student/jobs-columbus.png",
     imageAlt: "Columbus shortlist of five backend engineer roles ranked by match percentage",
+    stageFrom: "#B45309",
+    stageTo: "#F59E0B",
+    pillBg: "#FEF3C7",
+    pillFg: "#92400E",
   },
   profile: {
-    eyebrow: "Manage Profile · Aristotle",
-    title: "Turn scattered evidence into a recruiter-grade dossier",
-    copy:
-      "Verified projects with proof scores, skill chips with confidence percentages, role-fit summaries written for each target, plus a readiness meter per track. Connect LinkedIn or GitHub and Aristotle does the rest.",
-    cta: "Build my profile",
-    bullets: [
-      "Skill confidence: React 93% · TypeScript 91% · Python 88%",
-      "Project evidence stack with proof scores (96, 91, …)",
-      "Per-track readiness meter — 92% Frontend, 70% Backend, 84% AI",
-    ],
+    pill: "PROFILE & PROOF",
+    title: "Turn scattered evidence into a recruiter-grade dossier.",
+    copy: (
+      <>
+        Skill confidence per role — <strong className="text-brand-ink">React 93%, TypeScript 91%, Python 88%</strong>. Verified projects scored to{" "}
+        <strong className="text-brand-ink">proof 96</strong>. Role-fit summaries auto-generated for IBM SDE, Backend, Frontend tracks. Connect GitHub or LinkedIn — Aristotle wires the rest.
+      </>
+    ),
+    primaryCta: "Build my profile",
+    secondaryCta: "Watch the demo",
     image: "/student/profile-readiness.png",
     imageAlt: "Recruiter-ready profile with verified projects, skill chips, and readiness meter",
+    stageFrom: "#1E3A8A",
+    stageTo: "#3B5BDB",
+    pillBg: "#DBEAFE",
+    pillFg: "#1E40AF",
   },
   collections: {
-    eyebrow: "Collections",
-    title: "One workspace for every saved profile, role, and roadmap",
-    copy:
-      "Save tailored profile variants per target — IBM SDE, Backend Engineer, Frontend role — alongside ranked job dossiers and roadmaps. Keep an apply pipeline that mirrors how you actually job-hunt: many roles, many versions, one source of truth.",
-    cta: "Open Collections",
-    bullets: [
-      "11 saved items: 4 Profiles · 4 Job shortlist · 3 Roadmaps",
-      "High-signal saves automatically tagged by Aristotle",
-      "Profile versioning per target role — never edit your master",
-    ],
+    pill: "COLLECTIONS · WORKSPACE",
+    title: "Every saved profile, role, and roadmap — one workspace.",
+    copy: (
+      <>
+        <strong className="text-brand-ink">4 profile variants</strong> per target — IBM SDE, Backend Engineer, Frontend, PM track —{" "}
+        <strong className="text-brand-ink">11 saves total</strong>, high-signal items auto-tagged by Aristotle. Profile versioning per role means you never edit your master to apply.
+      </>
+    ),
+    primaryCta: "Open Collections",
+    secondaryCta: "Watch the demo",
     image: "/student/collections-saved.png",
     imageAlt: "Saved Collection workspace with profile versions, jobs, and roadmaps",
+    stageFrom: "#155E63",
+    stageTo: "#0E9F8E",
+    pillBg: "#CCFBF1",
+    pillFg: "#0F766E",
   },
 };
 
+const STUDENT_TAB_ORDER: StudentTab[] = ["roadmap", "jobs", "profile", "collections"];
+
+function HatchPattern() {
+  return (
+    <svg width="0" height="0" className="absolute" aria-hidden="true">
+      <defs>
+        <pattern id="hatch-stripes" patternUnits="userSpaceOnUse" width="8" height="8" patternTransform="rotate(45)">
+          <line x1="0" y1="0" x2="0" y2="8" stroke="#D4D4D4" strokeWidth="1" />
+        </pattern>
+        <pattern id="iso-grid" patternUnits="userSpaceOnUse" width="40" height="40" patternTransform="rotate(0)">
+          <path d="M0 20 L40 0 M0 40 L40 20 M-20 20 L20 0 M0 0 L40 40 M-20 20 L20 40 M0 0 L40 40" stroke="rgba(255,255,255,0.08)" strokeWidth="1" fill="none" />
+        </pattern>
+      </defs>
+    </svg>
+  );
+}
+
+function HatchBand({ className = "" }: { className?: string }) {
+  return (
+    <div className={`relative w-full h-12 ${className}`} aria-hidden="true">
+      <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none">
+        <rect width="100%" height="100%" fill="url(#hatch-stripes)" />
+      </svg>
+    </div>
+  );
+}
+
+const SEGMENT_VH = 90; // each tab occupies 90vh of scroll
+const TOTAL_VH = SEGMENT_VH * STUDENT_TAB_ORDER.length;
+
 function StudentFeatures() {
   const [active, setActive] = useState<StudentTab>("roadmap");
+  const [progress, setProgress] = useState(0);
+  const [reduceMotion, setReduceMotion] = useState(false);
+  const pinRef = useRef<HTMLDivElement | null>(null);
   const data = STUDENT_PANELS[active];
 
-  return (
-    <section className="relative bg-forge-cream">
-      <div className="absolute inset-0 dotted-grid opacity-50 pointer-events-none" />
-      <div className="relative mx-auto max-w-[1320px] px-6 py-24">
-        <div className="flex items-center gap-3 mb-3">
-          <span className="label-mono-warm">[01] The four modules</span>
-          <span className="h-px flex-1 bg-forge-line" />
-        </div>
-        <div className="flex items-end justify-between flex-wrap gap-6">
-          <h2 className="font-forge text-[44px] md:text-[58px] leading-[1.0] text-forge-ink max-w-3xl">
-            One product. <br />
-            <span className="text-forge-amber">Four ways to forge proof.</span>
-          </h2>
-          <p className="text-[15px] text-forge-mute max-w-sm leading-relaxed">
-            Roadmap, Jobs, Profile, Collections — every module is anchored by Aristotle
-            (or its scouting twin, Columbus). Same workspace. Same dotted-grid canvas.
-          </p>
-        </div>
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReduceMotion(mql.matches);
+    const onChange = () => setReduceMotion(mql.matches);
+    mql.addEventListener?.("change", onChange);
+    return () => mql.removeEventListener?.("change", onChange);
+  }, []);
 
-        <div className="mt-12 grid lg:grid-cols-12 gap-px bg-forge-line border border-forge-line rounded-2xl overflow-hidden">
-          <div className="lg:col-span-3 bg-forge-paper">
-            <div role="tablist" aria-label="FORGE modules">
-              {studentTabs.map((t) => {
-                const isActive = active === t.key;
-                return (
-                  <button
-                    key={t.key}
-                    role="tab"
-                    aria-selected={isActive}
-                    onClick={() => setActive(t.key)}
-                    className={`relative w-full text-left flex items-start gap-3 px-6 py-5 border-b border-forge-line transition-colors ${
-                      isActive ? "bg-white" : "hover:bg-white/60"
-                    }`}
-                  >
-                    <span
-                      className={`mt-0.5 w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${
-                        isActive ? "bg-forge-amber text-forge-ink" : "bg-white border border-forge-line text-forge-mute"
-                      }`}
-                    >
-                      {t.icon}
-                    </span>
-                    <span className="flex-1">
-                      <span className="block text-[15px] font-medium text-forge-ink">{t.label}</span>
-                      <span className="block label-mono-warm mt-0.5">{t.agent}</span>
-                    </span>
-                    {isActive && (
-                      <span className="absolute inset-y-0 right-0 w-1 bg-forge-amber" />
-                    )}
-                  </button>
-                );
-              })}
+  useEffect(() => {
+    if (typeof window === "undefined" || reduceMotion) return;
+    let rafId: number | null = null;
+    const update = () => {
+      const el = pinRef.current;
+      if (!el) {
+        rafId = null;
+        return;
+      }
+      const rect = el.getBoundingClientRect();
+      const scrolled = -rect.top;
+      const total = rect.height - window.innerHeight;
+      if (total <= 0) {
+        rafId = null;
+        return;
+      }
+      const p = Math.max(0, Math.min(1, scrolled / total));
+      setProgress(p);
+      const idx = Math.min(
+        STUDENT_TAB_ORDER.length - 1,
+        Math.floor(p * STUDENT_TAB_ORDER.length)
+      );
+      setActive(STUDENT_TAB_ORDER[idx]);
+      rafId = null;
+    };
+    const onScroll = () => {
+      if (rafId !== null) return;
+      rafId = requestAnimationFrame(update);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    update();
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (rafId !== null) cancelAnimationFrame(rafId);
+    };
+  }, [reduceMotion]);
+
+  const scrollToTab = (index: number) => {
+    if (reduceMotion) {
+      setActive(STUDENT_TAB_ORDER[index]);
+      return;
+    }
+    const el = pinRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const containerTop = window.scrollY + rect.top;
+    const scrollable = rect.height - window.innerHeight;
+    const target =
+      containerTop + (scrollable * (index / STUDENT_TAB_ORDER.length)) + 24;
+    window.scrollTo({ top: target, behavior: "smooth" });
+  };
+
+  return (
+    <section className="bg-[#FAFAFA] relative">
+      <HatchPattern />
+
+      {/* Heading region — scrolls normally above the pin */}
+      <div className="mx-auto max-w-[1440px] px-6 lg:px-12 pt-32 pb-20">
+        <div className="font-mono text-[12px] tracking-[0.2em] uppercase text-[#8A8A8A] mb-8">
+          [01] How iNGEN works
+        </div>
+        <h2 className="font-display text-[48px] md:text-[88px] lg:text-[112px] leading-[0.96] tracking-[-0.04em] text-[#0E0E0E] max-w-6xl font-medium">
+          How it works:<br />
+          Students + Agents.
+        </h2>
+        <p className="mt-8 text-[18px] md:text-[20px] leading-relaxed text-[#6B6B6B] max-w-2xl">
+          Four modules. Two agents. One workspace where roadmap, jobs, profile and
+          collections live side by side — scroll to step through each one.
+        </p>
+      </div>
+
+      {/* Pinned region — sticky inside a tall container drives tab progression */}
+      <div
+        ref={pinRef}
+        className="relative"
+        style={{ height: reduceMotion ? "auto" : `${TOTAL_VH}vh` }}
+      >
+        <div
+          className={
+            reduceMotion
+              ? "relative bg-[#FAFAFA] flex flex-col"
+              : "sticky top-0 h-screen min-h-[680px] overflow-hidden bg-[#FAFAFA] flex flex-col"
+          }
+        >
+          {/* Tab bar */}
+          <div
+            role="tablist"
+            aria-label="iNGEN modules"
+            className="border-y border-[#E5E5E5] flex relative flex-shrink-0"
+          >
+            {studentTabs.map((t, i) => {
+              const isActive = active === t.key;
+              return (
+                <button
+                  key={t.key}
+                  role="tab"
+                  aria-selected={isActive}
+                  aria-controls={`panel-${t.key}`}
+                  id={`tab-${t.key}`}
+                  onClick={() => scrollToTab(i)}
+                  onKeyDown={(e) => {
+                    if (e.key === "ArrowRight")
+                      scrollToTab((i + 1) % STUDENT_TAB_ORDER.length);
+                    if (e.key === "ArrowLeft")
+                      scrollToTab(
+                        (i - 1 + STUDENT_TAB_ORDER.length) % STUDENT_TAB_ORDER.length
+                      );
+                  }}
+                  className={`relative flex items-center justify-center gap-2.5 flex-1 max-w-[320px] px-7 py-5 font-mono text-[13px] uppercase tracking-[0.08em] border-r border-[#E5E5E5] transition-colors ${
+                    isActive
+                      ? "text-[#5B21B6] font-semibold bg-white"
+                      : "text-[#8A8A8A] hover:text-[#0E0E0E] bg-[#FAFAFA]"
+                  }`}
+                >
+                  <span>{t.icon}</span>
+                  <span>{t.label}</span>
+                </button>
+              );
+            })}
+            <div className="flex-1 relative">
+              <svg
+                className="absolute inset-0 w-full h-full"
+                preserveAspectRatio="none"
+                aria-hidden="true"
+              >
+                <rect width="100%" height="100%" fill="url(#hatch-stripes)" />
+              </svg>
             </div>
           </div>
 
-          <div className="lg:col-span-9 bg-white">
-            <div className="grid lg:grid-cols-2 gap-0 h-full">
-              <div className="p-8 lg:p-10 flex flex-col justify-center">
-                <div className="label-mono-warm">{data.eyebrow}</div>
-                <h3 className="font-forge mt-3 text-[28px] md:text-[36px] leading-[1.05] text-forge-ink">
-                  {data.title}
-                </h3>
-                <p className="mt-4 text-forge-ink/75 text-[15px] leading-relaxed">
-                  {data.copy}
-                </p>
+          {/* Progress indicator — drives smoothly with scroll */}
+          <div className="h-[3px] w-full bg-[#E5E5E5] relative overflow-hidden flex-shrink-0">
+            <div
+              className="absolute top-0 left-0 h-full bg-[#5B21B6]"
+              style={{
+                width: `${progress * 100}%`,
+                transition: reduceMotion ? "width 300ms ease" : "none",
+              }}
+            />
+          </div>
 
-                <ul className="mt-5 space-y-2.5">
-                  {data.bullets.map((b) => (
-                    <li key={b} className="flex items-start gap-2 text-[14px] text-forge-ink/80">
-                      <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-forge-amber shrink-0" />
-                      <span>{b}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <div className="mt-7 flex items-center gap-3">
-                  <a href="#" className="btn-amber">{data.cta}</a>
-                  <a href="#" className="btn-ink-pill">
-                    <svg width="10" height="10" viewBox="0 0 12 12" fill="none">
-                      <path d="M3 2L9 6L3 10V2Z" fill="white" />
-                    </svg>
-                    See it live
-                  </a>
-                </div>
-              </div>
-
-              <div className="relative bg-forge-paper border-l border-forge-line p-6 lg:p-8 min-h-[380px]">
-                <div className="absolute inset-0 dotted-grid opacity-50 pointer-events-none" />
-                <div className="relative h-full">
-                  <div className="relative w-full h-full rounded-xl overflow-hidden border border-forge-line shadow-xl bg-white">
+          {/* Panel — fills remaining viewport height */}
+          <div
+            role="tabpanel"
+            id={`panel-${active}`}
+            aria-labelledby={`tab-${active}`}
+            className="grid lg:grid-cols-[45%_55%] flex-1 overflow-hidden bg-white min-h-0"
+          >
+            {/* LEFT — stage */}
+            <div
+              key={`stage-${active}`}
+              className="relative overflow-hidden animate-[fadeUp_500ms_ease-out]"
+              style={{
+                background: `linear-gradient(135deg, ${data.stageFrom} 0%, ${data.stageTo} 100%)`,
+              }}
+            >
+              <svg
+                className="absolute inset-0 w-full h-full"
+                preserveAspectRatio="none"
+                aria-hidden="true"
+              >
+                <rect width="100%" height="100%" fill="url(#iso-grid)" />
+              </svg>
+              <div className="absolute inset-0 bg-gradient-to-tr from-black/20 via-transparent to-white/5 pointer-events-none" />
+              <div className="relative h-full flex items-center justify-center p-8 lg:p-16">
+                <div className="relative w-full aspect-video rounded-lg overflow-hidden shadow-2xl ring-1 ring-black/10 bg-white">
+                  {data.video ? (
+                    <video
+                      key={data.video}
+                      src={data.video}
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      className="absolute inset-0 w-full h-full object-cover"
+                    />
+                  ) : (
                     <Image
+                      key={data.image}
                       src={data.image}
                       alt={data.imageAlt}
                       fill
-                      sizes="(max-width: 1024px) 100vw, 50vw"
-                      className="object-cover object-left-top"
+                      sizes="(max-width: 1024px) 100vw, 45vw"
+                      className="object-cover object-top"
                       priority={active === "roadmap"}
                     />
-                  </div>
-                  <div className="absolute -top-3 -left-3 bg-forge-ink text-forge-amber text-[10px] font-mono uppercase tracking-wider px-2.5 py-1 rounded-full shadow-lg">
-                    Live preview
-                  </div>
+                  )}
                 </div>
+              </div>
+            </div>
+
+            {/* RIGHT — copy */}
+            <div
+              key={`copy-${active}`}
+              className="p-10 lg:p-20 flex flex-col justify-center bg-white animate-[fadeUp_500ms_ease-out]"
+            >
+              <div>
+                <span
+                  className="inline-block font-mono text-[12px] tracking-[0.1em] uppercase px-3 py-1.5 rounded-sm"
+                  style={{ background: data.pillBg, color: data.pillFg }}
+                >
+                  {data.pill}
+                </span>
+              </div>
+              <h3 className="font-display mt-7 text-[36px] md:text-[56px] lg:text-[64px] leading-[1.0] tracking-[-0.025em] text-[#0E0E0E] font-medium max-w-2xl">
+                {data.title}
+              </h3>
+              <p className="mt-7 text-[17px] md:text-[18px] leading-relaxed text-[#6B6B6B] max-w-lg">
+                {data.copy}
+              </p>
+              <div className="mt-10 flex flex-wrap items-center gap-3">
+                <a
+                  href="#"
+                  className="font-mono uppercase tracking-[0.05em] text-[13px] bg-[#0E0E0E] text-white px-7 py-4 border border-[#0E0E0E] hover:bg-white hover:text-[#0E0E0E] transition-colors"
+                >
+                  {data.primaryCta}
+                </a>
+                <a
+                  href="#"
+                  className="font-mono uppercase tracking-[0.05em] text-[13px] bg-white text-[#0E0E0E] border border-[#0E0E0E] px-7 py-4 hover:bg-[#0E0E0E] hover:text-white transition-colors"
+                >
+                  {data.secondaryCta}
+                </a>
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Bottom hatch divider */}
+      <HatchBand />
     </section>
   );
 }

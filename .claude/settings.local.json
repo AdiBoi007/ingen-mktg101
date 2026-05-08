@@ -18,7 +18,10 @@
       "Bash(python \"C:\\\\Users\\\\H5CD3\\\\AppData\\\\Roaming\\\\Claude\\\\local-agent-mode-sessions\\\\skills-plugin\\\\593e580d-0c22-4269-b0de-6decb790bf2f\\\\12f1c5d4-da1b-4be2-9eeb-7e54e394d3fa\\\\skills\\\\docx\\\\scripts\\\\office\\\\unpack.py\" \"C:\\\\Users\\\\H5CD3\\\\Downloads\\\\RECRUTER PRODUCT CONTEXT.docx\" \"C:\\\\Users\\\\H5CD3\\\\Downloads\\\\finallanding-page\\\\.recruiter-unpacked\")",
       "Bash(python -c ' *)",
       "Bash(npx --no-install tsc --noEmit -p .)",
-      "Bash(npx tsc *)"
+      "Bash(npx tsc *)",
+      "mcp__Claude_Preview__preview_start",
+      "mcp__Claude_in_Chrome__tabs_context_mcp",
+      "Read(//c/Users/H5CD3/Downloads/**)"
     ]
   }
 }
