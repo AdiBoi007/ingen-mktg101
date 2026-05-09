@@ -8,6 +8,9 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        ink: "#1D161D",
+        inkSoft: "rgba(29,22,29,0.6)",
+        hairline: "rgba(29,22,29,0.15)",
         brand: {
           purple: "#6B2F8E",
           deep: "#2A232A",

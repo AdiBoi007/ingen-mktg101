@@ -21,7 +21,9 @@
       "Bash(npx tsc *)",
       "mcp__Claude_Preview__preview_start",
       "mcp__Claude_in_Chrome__tabs_context_mcp",
-      "Read(//c/Users/H5CD3/Downloads/**)"
+      "Read(//c/Users/H5CD3/Downloads/**)",
+      "Read(//c/Users/H5CD3/AppData/Local/Temp/claude/C--Users-H5CD3-Downloads-finallanding-page/5aecdd0e-9dcb-46f6-b4b9-6e0e5c4a9b41/tasks/**)",
+      "Read(//c/Users/H5CD3/AppData/Local/Temp/claude/C--Users-H5CD3-Downloads-finallanding-page/5aecdd0e-9dcb-46f6-b4b9-6e0e5c4a9b41/tasks//**)"
     ]
   }
 }

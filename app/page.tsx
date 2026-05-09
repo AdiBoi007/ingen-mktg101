@@ -1,17 +1,11 @@
 import AnnouncementBar from "@/components/AnnouncementBar";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
-import LogoMarquee from "@/components/LogoMarquee";
-import FeaturesTabs from "@/components/FeaturesTabs";
-import AIAgents from "@/components/AIAgents";
-import RecruiterBento from "@/components/RecruiterBento";
-import Integrations from "@/components/Integrations";
-import CustomerStories from "@/components/CustomerStories";
-import LatestUpdates from "@/components/LatestUpdates";
+import HowItWorks from "@/components/sections/HowItWorks";
+import LiveDemo from "@/components/sections/LiveDemo";
+import GlobeWaitlist from "@/components/GlobeWaitlist";
 import FAQ from "@/components/FAQ";
-import ClosingCTA from "@/components/ClosingCTA";
 import Footer from "@/components/Footer";
-import WatchDemoFloat from "@/components/WatchDemoFloat";
 
 export default function HomePage() {
   return (
@@ -19,17 +13,11 @@ export default function HomePage() {
       <AnnouncementBar />
       <Navbar />
       <Hero />
-      <LogoMarquee />
-      <FeaturesTabs />
-      <AIAgents />
-      <RecruiterBento />
-      <Integrations />
-      <CustomerStories />
-      <LatestUpdates />
+      <HowItWorks />
+      <LiveDemo />
+      <GlobeWaitlist />
       <FAQ />
-      <ClosingCTA />
       <Footer />
-      <WatchDemoFloat />
     </main>
   );
 }
