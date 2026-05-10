@@ -12,7 +12,7 @@ export default function Logo({ light = false }: { light?: boolean }) {
         className="text-[20px] font-medium tracking-tight"
         style={{ color, letterSpacing: "-0.02em" }}
       >
-        Ingen
+        iNGEN
       </span>
     </div>
   );
