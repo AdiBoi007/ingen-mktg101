@@ -1,82 +1,146 @@
 "use client";
 
 import Link from "next/link";
+import dynamic from "next/dynamic";
+import { useMemo } from "react";
 import Logo from "@/components/Logo";
 
 type Mode = "signup" | "login";
 
+const World = dynamic(() => import("@/components/ui/globe").then((m) => m.World), {
+  ssr: false,
+});
+
 const chips: { label: string; cls: string; top: string; left: string }[] = [
-  { label: "12+ years in industry",       cls: "chip-amber",    top: "12%",  left: "4%"  },
-  { label: "Changed location",            cls: "chip-mint",     top: "4%",   left: "62%" },
-  { label: "Left Apple in or after 2022", cls: "chip-indigo",   top: "26%",  left: "30%" },
-  { label: "Cybersecurity certified (CISSP)", cls: "chip-lavender", top: "44%", left: "6%" },
-  { label: "Less than 1yr at Co",         cls: "chip-peach",    top: "44%",  left: "62%" },
-  { label: "IPO experience",              cls: "chip-yellow",   top: "62%",  left: "46%" },
-  { label: "Expert in HR tech",           cls: "chip-salmon",   top: "82%",  left: "10%" },
+  { label: "12+ years experience",         cls: "chip-amber",    top: "6%",  left: "4%"  },
+  { label: "Stanford CS",                  cls: "chip-mint",     top: "2%",  left: "60%" },
+  { label: "Ex-Apple",                     cls: "chip-indigo",   top: "26%", left: "70%" },
+  { label: "CISSP certified",              cls: "chip-lavender", top: "72%", left: "4%"  },
+  { label: "IPO experience",               cls: "chip-yellow",   top: "82%", left: "58%" },
 ];
 
-const trustLogos = [
-  "CURSOR",
-  "Anyscale",
-  "incident.io",
-  "PATREON",
+const integrations = [
+  "LinkedIn",
+  "GitHub",
+  "Glassdoor",
+  "Indeed",
+  "Wellfound",
+  "Lever",
+  "Greenhouse",
+  "Slack",
+  "Notion",
+  "Workday",
+  "Calendly",
+  "Coursera",
 ];
 
-function GlobeIllustration() {
+function buildArcs() {
+  const colors = ["#B054E7", "#DA60D4", "#9B51E0"];
+  const pick = () => colors[Math.floor(Math.random() * colors.length)];
+  return [
+    { order: 1, startLat: 28.6139, startLng: 77.209,  endLat: 51.5072, endLng: -0.1276,    arcAlt: 0.3, color: pick() },
+    { order: 1, startLat: 40.7128, startLng: -74.006, endLat: 35.6762, endLng: 139.6503,   arcAlt: 0.4, color: pick() },
+    { order: 2, startLat: 37.7749, startLng: -122.4194, endLat: 22.3193, endLng: 114.1694, arcAlt: 0.5, color: pick() },
+    { order: 2, startLat: -33.8688, startLng: 151.2093, endLat: 34.0522, endLng: -118.2437, arcAlt: 0.4, color: pick() },
+    { order: 3, startLat: 52.52,   startLng: 13.405,  endLat: 1.3521,  endLng: 103.8198,   arcAlt: 0.3, color: pick() },
+    { order: 3, startLat: 19.0760, startLng: 72.8777, endLat: 48.8566, endLng: 2.3522,     arcAlt: 0.4, color: pick() },
+    { order: 4, startLat: -22.9068, startLng: -43.1729, endLat: 40.7128, endLng: -74.006,  arcAlt: 0.5, color: pick() },
+    { order: 4, startLat: 55.7558, startLng: 37.6173, endLat: 1.3521,  endLng: 103.8198,   arcAlt: 0.4, color: pick() },
+  ];
+}
+
+function AuthGlobe() {
+  const { globeConfig, sampleArcs } = useMemo(
+    () => ({
+      globeConfig: {
+        pointSize: 3,
+        globeColor: "#2A232A",
+        showAtmosphere: true,
+        atmosphereColor: "#B054E7",
+        atmosphereAltitude: 0.14,
+        emissive: "#1D161D",
+        emissiveIntensity: 0.2,
+        shininess: 0.9,
+        polygonColor: "rgba(238,232,253,0.65)",
+        ambientLight: "#B054E7",
+        directionalLeftLight: "#ffffff",
+        directionalTopLight: "#ffffff",
+        pointLight: "#EEE8FD",
+        arcTime: 1600,
+        arcLength: 0.9,
+        rings: 1,
+        maxRings: 3,
+        initialPosition: { lat: 22.3193, lng: 114.1694 },
+        autoRotate: true,
+        autoRotateSpeed: 0.7,
+      },
+      sampleArcs: buildArcs(),
+    }),
+    []
+  );
+
   return (
-    <div className="relative w-full aspect-[5/4] max-w-[460px] mx-auto">
-      {/* Globe wireframe */}
-      <svg
-        viewBox="0 0 400 320"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        className="absolute inset-0 w-full h-full"
-        aria-hidden
-      >
-        <g stroke="rgba(29,22,29,0.22)" strokeWidth="1">
-          <ellipse cx="200" cy="160" rx="120" ry="120" />
-          <ellipse cx="200" cy="160" rx="120" ry="40" />
-          <ellipse cx="200" cy="160" rx="120" ry="80" />
-          <ellipse cx="200" cy="160" rx="80"  ry="120" />
-          <ellipse cx="200" cy="160" rx="40"  ry="120" />
-          <line x1="80"  y1="160" x2="320" y2="160" />
-          <line x1="200" y1="40"  x2="200" y2="280" />
-        </g>
-      </svg>
+    <div className="relative mx-auto w-[320px] h-[320px] sm:w-[360px] sm:h-[360px]">
+      <div className="absolute inset-0 rounded-full bg-gradient-to-br from-brand-tint/40 via-transparent to-brand-purple/15 blur-2xl" />
+      <div className="absolute inset-0 [&>div]:!w-full [&>div]:!h-full [&_canvas]:!w-full [&_canvas]:!h-full">
+        <World data={sampleArcs} globeConfig={globeConfig} />
+      </div>
 
-      {/* Tiny avatar dots */}
-      {[
-        { top: "18%", left: "16%", size: 28 },
-        { top: "10%", left: "44%", size: 22 },
-        { top: "28%", left: "78%", size: 24 },
-        { top: "56%", left: "82%", size: 28 },
-        { top: "78%", left: "70%", size: 26 },
-        { top: "82%", left: "30%", size: 24 },
-        { top: "60%", left: "12%", size: 22 },
-      ].map((a, i) => (
-        <div
-          key={i}
-          className="absolute rounded-full bg-gradient-to-br from-brand-purple/70 to-brand-ink/80 ring-2 ring-white shadow-md"
-          style={{
-            top: a.top,
-            left: a.left,
-            width: a.size,
-            height: a.size,
-          }}
-        />
-      ))}
-
-      {/* Floating chips */}
       {chips.map((c) => (
         <div
           key={c.label}
-          className={`chip ${c.cls} absolute whitespace-nowrap shadow-sm`}
+          className={`chip ${c.cls} absolute whitespace-nowrap shadow-sm z-10`}
           style={{ top: c.top, left: c.left }}
         >
           <span>{c.label}</span>
           <span className="opacity-50">×</span>
         </div>
       ))}
+    </div>
+  );
+}
+
+function IntegrationLogo({ name }: { name: string }) {
+  return (
+    <div className="flex items-center gap-2 px-5 shrink-0">
+      <span className="w-7 h-7 rounded-md bg-brand-ink/5 border border-black/5 flex items-center justify-center text-[12px] font-semibold text-brand-ink/70">
+        {name[0]}
+      </span>
+      <span className="text-[14px] font-medium text-brand-ink/75 whitespace-nowrap">
+        {name}
+      </span>
+    </div>
+  );
+}
+
+function IntegrationsMarquee() {
+  const loop = [...integrations, ...integrations];
+  return (
+    <div className="rounded-xl border border-black/10 bg-white px-4 py-4 overflow-hidden">
+      <div className="text-center label-mono text-brand-ink/80 mb-3">
+        Seamlessly integrates with the tools you already use
+      </div>
+      <div className="relative">
+        <div
+          className="pointer-events-none absolute inset-y-0 left-0 w-12 z-10"
+          style={{
+            background:
+              "linear-gradient(to right, #ffffff 0%, rgba(255,255,255,0) 100%)",
+          }}
+        />
+        <div
+          className="pointer-events-none absolute inset-y-0 right-0 w-12 z-10"
+          style={{
+            background:
+              "linear-gradient(to left, #ffffff 0%, rgba(255,255,255,0) 100%)",
+          }}
+        />
+        <div className="flex w-max animate-marquee">
+          {loop.map((name, i) => (
+            <IntegrationLogo key={`${name}-${i}`} name={name} />
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
@@ -91,7 +155,7 @@ function ProviderButton({
   return (
     <button
       type="button"
-      className="w-full flex items-center justify-center gap-3 h-12 rounded-md border border-black/10 bg-white text-[15px] font-medium text-brand-ink hover:border-brand-ink/40 hover:bg-black/[0.02] transition-colors"
+      className="w-full flex items-center justify-center gap-3 h-11 rounded-md border border-black/10 bg-white text-[14px] font-medium text-brand-ink hover:border-brand-ink/40 hover:bg-black/[0.02] transition-colors"
     >
       {icon}
       <span>{children}</span>
@@ -103,44 +167,30 @@ export default function AuthShell({ mode }: { mode: Mode }) {
   const isSignup = mode === "signup";
 
   return (
-    <main className="min-h-screen w-full bg-brand-bg flex items-center justify-center px-4 py-10">
-      <div className="w-full max-w-[1180px] grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
+    <main className="min-h-screen w-full bg-brand-bg flex items-center justify-center px-4 py-8">
+      <div className="w-full max-w-[1080px] grid grid-cols-1 lg:grid-cols-2 gap-5 items-stretch">
         {/* LEFT: Welcome card */}
-        <div className="rounded-2xl border border-black/5 bg-[#f1eef1] px-8 py-10 lg:px-12 lg:py-14 flex flex-col">
+        <div className="rounded-2xl border border-black/5 bg-[#f1eef1] px-6 py-8 lg:px-10 lg:py-10 flex flex-col">
           <div className="text-center">
-            <h1 className="font-display text-[34px] md:text-[38px] leading-tight text-brand-ink">
+            <h1 className="font-display text-[28px] md:text-[32px] leading-tight text-brand-ink">
               {isSignup ? "Welcome to iNGen" : "Welcome back to iNGen"}
             </h1>
-            <p className="mt-3 text-[15px] text-brand-ink/70">
+            <p className="mt-2 text-[14px] text-brand-ink/70">
               {isSignup
                 ? "Rethink the way you source, engage, and hire talent"
                 : "Sign in to continue running proof-first hiring"}
             </p>
           </div>
 
-          <div className="flex-1 flex items-center justify-center my-8">
-            <GlobeIllustration />
+          <div className="flex-1 flex items-center justify-center my-4">
+            <AuthGlobe />
           </div>
 
-          <div className="rounded-xl border border-black/10 bg-white px-6 py-5">
-            <div className="text-center label-mono text-brand-ink mb-3">
-              Trusted by 25,000+ recruiters and hiring managers
-            </div>
-            <div className="flex items-center justify-center gap-6 md:gap-9 flex-wrap">
-              {trustLogos.map((name) => (
-                <span
-                  key={name}
-                  className="text-[14px] font-semibold text-brand-ink/70 tracking-tight"
-                >
-                  {name}
-                </span>
-              ))}
-            </div>
-          </div>
+          <IntegrationsMarquee />
         </div>
 
         {/* RIGHT: Auth panel */}
-        <div className="rounded-2xl border border-black/5 bg-white px-8 py-12 lg:px-14 lg:py-16 flex flex-col">
+        <div className="rounded-2xl border border-black/5 bg-white px-6 py-8 lg:px-12 lg:py-10 flex flex-col">
           <div className="flex justify-center">
             <Link href="/" aria-label="iNGen home" className="inline-flex">
               <Logo />
@@ -148,11 +198,11 @@ export default function AuthShell({ mode }: { mode: Mode }) {
           </div>
 
           <div className="flex-1 flex flex-col justify-center">
-            <h2 className="text-center font-display text-[28px] md:text-[30px] leading-tight text-brand-ink mt-6 mb-8">
+            <h2 className="text-center font-display text-[24px] md:text-[26px] leading-tight text-brand-ink mt-4 mb-6">
               {isSignup ? "Get started for free" : "Sign in to your account"}
             </h2>
 
-            <div className="mx-auto w-full max-w-[400px] flex flex-col gap-3">
+            <div className="mx-auto w-full max-w-[380px] flex flex-col gap-2.5">
               <ProviderButton
                 icon={
                   <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden>
@@ -200,14 +250,14 @@ export default function AuthShell({ mode }: { mode: Mode }) {
                 Continue with SSO / SAML
               </ProviderButton>
 
-              <p className="text-center text-[13px] text-brand-ink/60 mt-4">
+              <p className="text-center text-[12px] text-brand-ink/60 mt-3">
                 By proceeding, you agree to our{" "}
                 <a href="#" className="underline hover:text-brand-ink">
                   Terms of Service
                 </a>
               </p>
 
-              <div className="mt-6 text-center text-[14px] text-brand-ink/70">
+              <div className="mt-4 text-center text-[13px] text-brand-ink/70">
                 {isSignup ? (
                   <>
                     Already have an account?{" "}
