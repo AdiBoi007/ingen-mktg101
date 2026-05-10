@@ -49,7 +49,7 @@ function RecruiterHero() {
           </p>
 
           <div className="mt-9 flex items-center justify-center gap-3">
-            <a href="#" className="btn-dark bg-white !text-brand-ink hover:!bg-white/90">
+            <a href="#" className="btn-dark !bg-white !text-brand-ink hover:!bg-white/90">
               Try for Free
             </a>
             <a href="#" className="btn-outline btn-outline-light">
