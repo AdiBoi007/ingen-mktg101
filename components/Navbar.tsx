@@ -1,13 +1,14 @@
 "use client";
 
+import Link from "next/link";
 import Logo from "./Logo";
 import { useAudience, Audience } from "./AudienceContext";
 
 const navItems = [
-  { label: "Features", hasMenu: true },
-  { label: "Pricing", hasMenu: false },
-  { label: "Resources", hasMenu: true },
-  { label: "Customers", hasMenu: false },
+  { label: "Features", hasMenu: true, href: "/#features" },
+  { label: "Pricing", hasMenu: false, href: "/pricing" },
+  { label: "Resources", hasMenu: true, href: "/#resources" },
+  { label: "Customers", hasMenu: false, href: "/#customers" },
 ];
 
 function AudienceSwitch() {
@@ -63,15 +64,15 @@ export default function Navbar() {
       }`}
     >
       <div className="mx-auto max-w-[1320px] px-6 h-[68px] flex items-center justify-between gap-6">
-        <a href="#" className="flex items-center shrink-0">
+        <Link href="/" className="flex items-center shrink-0">
           <Logo />
-        </a>
+        </Link>
 
         <nav className="hidden lg:flex items-center gap-7">
           {navItems.map((item) => (
-            <a
+            <Link
               key={item.label}
-              href="#"
+              href={item.href}
               className={`label-mono flex items-center gap-1.5 ${
                 isStudent
                   ? "text-forge-ink/80 hover:text-forge-ink"
@@ -90,7 +91,7 @@ export default function Navbar() {
                   />
                 </svg>
               )}
-            </a>
+            </Link>
           ))}
         </nav>
 
