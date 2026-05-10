@@ -19,23 +19,23 @@ const chips: { label: string; cls: string; top: string; left: string }[] = [
   { label: "IPO experience",               cls: "chip-yellow",   top: "82%", left: "58%" },
 ];
 
-const integrations = [
-  "LinkedIn",
-  "GitHub",
-  "Glassdoor",
-  "Indeed",
-  "Wellfound",
-  "Lever",
-  "Greenhouse",
-  "Slack",
-  "Notion",
-  "Workday",
-  "Calendly",
-  "Coursera",
+const integrations: { name: string; domain: string }[] = [
+  { name: "LinkedIn",   domain: "linkedin.com" },
+  { name: "GitHub",     domain: "github.com" },
+  { name: "Glassdoor",  domain: "glassdoor.com" },
+  { name: "Indeed",     domain: "indeed.com" },
+  { name: "Wellfound",  domain: "wellfound.com" },
+  { name: "Lever",      domain: "lever.co" },
+  { name: "Greenhouse", domain: "greenhouse.io" },
+  { name: "Slack",      domain: "slack.com" },
+  { name: "Notion",     domain: "notion.so" },
+  { name: "Workday",    domain: "workday.com" },
+  { name: "Calendly",   domain: "calendly.com" },
+  { name: "Coursera",   domain: "coursera.org" },
 ];
 
 function buildArcs() {
-  const colors = ["#B054E7", "#DA60D4", "#9B51E0"];
+  const colors = ["#ffffff", "#cfcfcf", "#9aa0a6"];
   const pick = () => colors[Math.floor(Math.random() * colors.length)];
   return [
     { order: 1, startLat: 28.6139, startLng: 77.209,  endLat: 51.5072, endLng: -0.1276,    arcAlt: 0.3, color: pick() },
@@ -54,18 +54,21 @@ function AuthGlobe() {
     () => ({
       globeConfig: {
         pointSize: 3,
-        globeColor: "#2A232A",
+        // light-black ocean sphere
+        globeColor: "#2A2A2E",
         showAtmosphere: true,
-        atmosphereColor: "#B054E7",
+        // soft white atmospheric glow
+        atmosphereColor: "#ffffff",
         atmosphereAltitude: 0.14,
-        emissive: "#1D161D",
-        emissiveIntensity: 0.2,
+        emissive: "#1A1A1F",
+        emissiveIntensity: 0.18,
         shininess: 0.9,
-        polygonColor: "rgba(238,232,253,0.65)",
-        ambientLight: "#B054E7",
+        // continents in pure white
+        polygonColor: "rgba(255,255,255,1)",
+        ambientLight: "#ffffff",
         directionalLeftLight: "#ffffff",
         directionalTopLight: "#ffffff",
-        pointLight: "#EEE8FD",
+        pointLight: "#ffffff",
         arcTime: 1600,
         arcLength: 0.9,
         rings: 1,
@@ -81,7 +84,7 @@ function AuthGlobe() {
 
   return (
     <div className="relative mx-auto w-[320px] h-[320px] sm:w-[360px] sm:h-[360px]">
-      <div className="absolute inset-0 rounded-full bg-gradient-to-br from-brand-tint/40 via-transparent to-brand-purple/15 blur-2xl" />
+      <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/70 via-transparent to-black/10 blur-2xl" />
       <div className="absolute inset-0 [&>div]:!w-full [&>div]:!h-full [&_canvas]:!w-full [&_canvas]:!h-full">
         <World data={sampleArcs} globeConfig={globeConfig} />
       </div>
@@ -100,13 +103,22 @@ function AuthGlobe() {
   );
 }
 
-function IntegrationLogo({ name }: { name: string }) {
+function IntegrationLogo({ name, domain }: { name: string; domain: string }) {
   return (
-    <div className="flex items-center gap-2 px-5 shrink-0">
-      <span className="w-7 h-7 rounded-md bg-brand-ink/5 border border-black/5 flex items-center justify-center text-[12px] font-semibold text-brand-ink/70">
-        {name[0]}
-      </span>
-      <span className="text-[14px] font-medium text-brand-ink/75 whitespace-nowrap">
+    <div className="flex items-center gap-2.5 px-6 shrink-0">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={`https://www.google.com/s2/favicons?domain=${domain}&sz=64`}
+        alt={name}
+        width={22}
+        height={22}
+        loading="lazy"
+        className="w-[22px] h-[22px] object-contain rounded-sm"
+        onError={(e) => {
+          (e.currentTarget as HTMLImageElement).style.visibility = "hidden";
+        }}
+      />
+      <span className="text-[14px] font-medium text-brand-ink/80 whitespace-nowrap">
         {name}
       </span>
     </div>
@@ -136,8 +148,8 @@ function IntegrationsMarquee() {
           }}
         />
         <div className="flex w-max animate-marquee">
-          {loop.map((name, i) => (
-            <IntegrationLogo key={`${name}-${i}`} name={name} />
+          {loop.map((it, i) => (
+            <IntegrationLogo key={`${it.domain}-${i}`} name={it.name} domain={it.domain} />
           ))}
         </div>
       </div>
