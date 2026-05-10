@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useAudience } from "./AudienceContext";
 
 const recruiterPlaceholders = [
@@ -20,8 +21,14 @@ const studentPlaceholders = [
 ];
 
 function RecruiterHero() {
+  const router = useRouter();
   const [value, setValue] = useState("");
   const [phIndex, setPhIndex] = useState(0);
+
+  const goAuth = () => {
+    const q = value.trim() ? `?q=${encodeURIComponent(value.trim())}` : "";
+    router.push(`/signup${q}`);
+  };
 
   return (
     <section className="relative overflow-hidden bg-brand-deep text-white">
@@ -82,11 +89,22 @@ function RecruiterHero() {
               <input
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    goAuth();
+                  }
+                }}
                 onFocus={() => setPhIndex((i) => (i + 1) % recruiterPlaceholders.length)}
                 placeholder={recruiterPlaceholders[phIndex]}
                 className="flex-1 outline-none text-[15px] text-brand-ink placeholder:text-brand-mute py-1"
               />
-              <button aria-label="Search" className="w-9 h-9 rounded-md bg-brand-purple text-white flex items-center justify-center hover:bg-brand-purple/90 transition-colors">
+              <button
+                type="button"
+                onClick={goAuth}
+                aria-label="Search"
+                className="w-9 h-9 rounded-md bg-brand-purple text-white flex items-center justify-center hover:bg-brand-purple/90 transition-colors"
+              >
                 <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
                   <path d="M2 8H13M13 8L8 3M13 8L8 13" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
@@ -100,8 +118,14 @@ function RecruiterHero() {
 }
 
 function StudentHero() {
+  const router = useRouter();
   const [value, setValue] = useState("");
   const [phIndex, setPhIndex] = useState(0);
+
+  const goAuth = () => {
+    const q = value.trim() ? `?q=${encodeURIComponent(value.trim())}` : "";
+    router.push(`/signup${q}`);
+  };
 
   return (
     <section className="relative overflow-hidden bg-brand-deep text-white">
@@ -162,11 +186,22 @@ function StudentHero() {
               <input
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    goAuth();
+                  }
+                }}
                 onFocus={() => setPhIndex((i) => (i + 1) % studentPlaceholders.length)}
                 placeholder={studentPlaceholders[phIndex]}
                 className="flex-1 outline-none text-[15px] text-brand-ink placeholder:text-brand-mute py-1"
               />
-              <button aria-label="Search" className="w-9 h-9 rounded-md bg-brand-purple text-white flex items-center justify-center hover:bg-brand-purple/90 transition-colors">
+              <button
+                type="button"
+                onClick={goAuth}
+                aria-label="Search"
+                className="w-9 h-9 rounded-md bg-brand-purple text-white flex items-center justify-center hover:bg-brand-purple/90 transition-colors"
+              >
                 <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
                   <path d="M2 8H13M13 8L8 3M13 8L8 13" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>

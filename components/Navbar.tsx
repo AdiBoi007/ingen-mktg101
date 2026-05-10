@@ -98,8 +98,8 @@ export default function Navbar() {
         </div>
 
         <div className="flex items-center gap-2">
-          <a
-            href="#"
+          <Link
+            href="/login"
             className={`hidden sm:inline-block label-mono px-3 py-2 ${
               isStudent
                 ? "text-forge-ink/80 hover:text-forge-ink"
@@ -107,24 +107,24 @@ export default function Navbar() {
             }`}
           >
             Login
-          </a>
+          </Link>
           {isStudent ? (
             <>
-              <a
-                href="#"
+              <Link
+                href="/signup"
                 className="hidden md:inline-flex items-center gap-2 rounded-full border border-forge-line bg-white px-4 py-2 label-mono text-forge-ink hover:border-forge-ink transition-colors"
               >
                 Sign Up
-              </a>
+              </Link>
               <a href="#" className="btn-amber">
                 View Demo
               </a>
             </>
           ) : (
             <>
-              <a href="#" className="btn-outline hidden md:inline-flex">
+              <Link href="/signup" className="btn-outline hidden md:inline-flex">
                 Sign Up
-              </a>
+              </Link>
               <a href="#" className="btn-dark bg-brand-purple hover:bg-brand-purple/90">
                 View Demo
               </a>
