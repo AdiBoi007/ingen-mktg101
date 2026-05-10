@@ -106,9 +106,13 @@ export default function Navbar() {
           </Link>
           <a
             href="#"
-            className="hidden md:inline-flex items-center label-mono px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/25 text-white hover:bg-white/20 transition-colors"
+            className="group relative hidden md:inline-flex items-center label-mono px-4 py-2 rounded-full bg-black/70 backdrop-blur-md border border-white/15 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.15)] hover:border-white/30 hover:bg-black/80 transition-all overflow-hidden"
           >
-            View Demo
+            <span className="relative z-10">View Demo</span>
+            <span
+              aria-hidden
+              className="pointer-events-none absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out bg-gradient-to-r from-transparent via-white/25 to-transparent"
+            />
           </a>
         </div>
       </div>
