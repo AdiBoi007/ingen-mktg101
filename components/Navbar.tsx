@@ -5,10 +5,8 @@ import Logo from "./Logo";
 import { useAudience, Audience } from "./AudienceContext";
 
 const navItems = [
-  { label: "Features", hasMenu: true, href: "/#features" },
+  { label: "Features", hasMenu: false, href: "/#features" },
   { label: "Pricing", hasMenu: false, href: "/pricing" },
-  { label: "Resources", hasMenu: true, href: "/#resources" },
-  { label: "Customers", hasMenu: false, href: "/#customers" },
 ];
 
 function AudienceSwitch() {
