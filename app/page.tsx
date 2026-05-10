@@ -1,4 +1,3 @@
-import AnnouncementBar from "@/components/AnnouncementBar";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import HowItWorks from "@/components/sections/HowItWorks";
@@ -10,7 +9,6 @@ import Footer from "@/components/Footer";
 export default function HomePage() {
   return (
     <main>
-      <AnnouncementBar />
       <Navbar />
       <Hero />
       <HowItWorks />
