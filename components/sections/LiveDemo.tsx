@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { ExternalLink, RefreshCw, Lock, Sparkles } from "lucide-react";
 import { useAudience } from "../AudienceContext";
@@ -60,6 +60,87 @@ const STUDENT: Variant = {
   pillBg: "rgba(245,166,35,0.15)",
   pillFg: "#7a5310",
 };
+
+// The hosted demo app is designed for a ~1440px desktop layout.
+// We render the iframe at that fixed size, then CSS-scale it down to
+// whatever width the container has — so the full app always fits, no
+// horizontal scrollbars, regardless of viewport.
+const DESIGN_WIDTH = 1440;
+const DESIGN_HEIGHT = 900;
+
+function ScaledIframe({
+  url,
+  iframeKey,
+  onLoad,
+  loaded,
+  accent,
+  agentTag,
+}: {
+  url: string;
+  iframeKey: number;
+  onLoad: () => void;
+  loaded: boolean;
+  accent: string;
+  agentTag: string;
+}) {
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(1);
+
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+    const update = () => {
+      const w = el.clientWidth;
+      if (w > 0) setScale(w / DESIGN_WIDTH);
+    };
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  const scaledHeight = DESIGN_HEIGHT * scale;
+
+  return (
+    <div
+      ref={wrapRef}
+      className="relative w-full overflow-hidden bg-[#FBFAF8]"
+      style={{ height: scaledHeight }}
+    >
+      {!loaded && (
+        <div className="absolute inset-0 flex items-center justify-center text-[12px] font-mono uppercase tracking-[0.18em] text-ink/40 z-10">
+          <span className="inline-flex items-center gap-2">
+            <span
+              className="inline-block w-2 h-2 rounded-full animate-pulse"
+              style={{ background: accent }}
+            />
+            Loading {agentTag}…
+          </span>
+        </div>
+      )}
+      <div
+        style={{
+          width: DESIGN_WIDTH,
+          height: DESIGN_HEIGHT,
+          transform: `scale(${scale})`,
+          transformOrigin: "top left",
+        }}
+      >
+        <iframe
+          key={iframeKey}
+          src={url}
+          title={`${agentTag} live preview`}
+          onLoad={onLoad}
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          allow="clipboard-read; clipboard-write"
+          style={{ width: DESIGN_WIDTH, height: DESIGN_HEIGHT }}
+          className="bg-white border-0 block"
+        />
+      </div>
+    </div>
+  );
+}
 
 function BrowserChrome({
   url,
@@ -125,7 +206,7 @@ export default function LiveDemo() {
         aria-hidden
       />
 
-      <div className="mx-auto max-w-[1280px] px-6 lg:px-12 pt-20 pb-24 relative">
+      <div className="mx-auto max-w-[1480px] px-6 lg:px-12 pt-20 pb-24 relative">
         <div className="grid lg:grid-cols-[1fr_1.4fr] gap-10 lg:gap-16 items-start mb-10">
           <div>
             <div className="text-[12px] font-mono uppercase tracking-[0.18em] text-ink/55 mb-3">
@@ -206,29 +287,14 @@ export default function LiveDemo() {
           >
             <BrowserChrome url={v.url} iframeKey={iframeKey} onReload={reload} />
 
-            <div className="relative w-full aspect-[16/10] bg-[#FBFAF8]">
-              {!loaded && (
-                <div className="absolute inset-0 flex items-center justify-center text-[12px] font-mono uppercase tracking-[0.18em] text-ink/40">
-                  <span className="inline-flex items-center gap-2">
-                    <span
-                      className="inline-block w-2 h-2 rounded-full animate-pulse"
-                      style={{ background: v.accent }}
-                    />
-                    Loading {v.agentTag}…
-                  </span>
-                </div>
-              )}
-              <iframe
-                key={iframeKey}
-                src={v.url}
-                title={`${v.agentTag} live preview`}
-                onLoad={() => setLoaded(true)}
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                allow="clipboard-read; clipboard-write"
-                className="absolute inset-0 w-full h-full bg-white"
-              />
-            </div>
+            <ScaledIframe
+              url={v.url}
+              iframeKey={iframeKey}
+              onLoad={() => setLoaded(true)}
+              loaded={loaded}
+              accent={v.accent}
+              agentTag={v.agentTag}
+            />
           </div>
 
           <div className="mt-3 flex items-center justify-between text-[11px] font-mono uppercase tracking-[0.14em] text-ink/45">
