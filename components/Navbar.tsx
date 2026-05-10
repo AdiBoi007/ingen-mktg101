@@ -99,37 +99,17 @@ export default function Navbar() {
 
         <div className="flex items-center gap-2">
           <Link
-            href="/login"
-            className={`hidden sm:inline-block label-mono px-3 py-2 ${
-              isStudent
-                ? "text-forge-ink/80 hover:text-forge-ink"
-                : "text-brand-ink/85 hover:text-brand-ink"
-            }`}
+            href="/signup"
+            className="label-mono px-4 py-2 rounded-full bg-brand-purple text-white hover:bg-brand-purple/90 transition-colors shadow-sm"
           >
-            Login
+            Join Waitlist
           </Link>
-          {isStudent ? (
-            <>
-              <Link
-                href="/signup"
-                className="hidden md:inline-flex items-center gap-2 rounded-full border border-forge-line bg-white px-4 py-2 label-mono text-forge-ink hover:border-forge-ink transition-colors"
-              >
-                Sign Up
-              </Link>
-              <a href="#" className="btn-amber">
-                View Demo
-              </a>
-            </>
-          ) : (
-            <>
-              <Link href="/signup" className="btn-outline hidden md:inline-flex">
-                Sign Up
-              </Link>
-              <a href="#" className="btn-dark bg-brand-purple hover:bg-brand-purple/90">
-                View Demo
-              </a>
-            </>
-          )}
+          <a
+            href="#"
+            className="hidden md:inline-flex items-center label-mono px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/25 text-white hover:bg-white/20 transition-colors"
+          >
+            View Demo
+          </a>
         </div>
       </div>
 
