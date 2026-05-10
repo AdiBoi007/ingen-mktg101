@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, Component, ReactNode } from "react";
 import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
 import { useAudience } from "./AudienceContext";
@@ -10,7 +10,38 @@ const World = dynamic(
   { ssr: false }
 );
 
+function GlobeFallback({ tone }: { tone: "dark" | "light" }) {
+  const bg =
+    tone === "dark"
+      ? "radial-gradient(circle at 50% 50%, #B054E7 0%, #5B2A8A 35%, #2A232A 70%, #1A1620 100%)"
+      : "radial-gradient(circle at 50% 50%, #F5A623 0%, #D88010 35%, #1A1A1F 75%, #0E0E10 100%)";
+  return (
+    <div className="relative w-full aspect-square max-w-[520px] mx-auto">
+      <div
+        className="absolute inset-0 rounded-full opacity-90"
+        style={{ background: bg }}
+      />
+    </div>
+  );
+}
+
+class GlobeErrorBoundary extends Component<
+  { children: ReactNode; fallback: ReactNode },
+  { hasError: boolean }
+> {
+  state = { hasError: false };
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+  componentDidCatch() {}
+  render() {
+    if (this.state.hasError) return this.props.fallback;
+    return this.props.children;
+  }
+}
+
 function ThemedGlobe({ tone }: { tone: "dark" | "light" }) {
+
   const { globeConfig, sampleArcs } = useMemo(() => {
     if (tone === "dark") {
       // Recruiter / dark — brand purple palette
@@ -71,11 +102,13 @@ function ThemedGlobe({ tone }: { tone: "dark" | "light" }) {
   }, [tone]);
 
   return (
-    <div className="relative w-full aspect-square max-w-[520px] mx-auto">
-      <div className="absolute inset-0">
-        <World data={sampleArcs} globeConfig={globeConfig} />
+    <GlobeErrorBoundary fallback={<GlobeFallback tone={tone} />}>
+      <div className="relative w-full aspect-square max-w-[520px] mx-auto">
+        <div className="absolute inset-0">
+          <World data={sampleArcs} globeConfig={globeConfig} />
+        </div>
       </div>
-    </div>
+    </GlobeErrorBoundary>
   );
 }
 
