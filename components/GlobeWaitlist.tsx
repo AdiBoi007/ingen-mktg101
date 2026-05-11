@@ -170,13 +170,13 @@ function WaitlistForm({ audience }: { audience: "recruiter" | "student" }) {
     setSubmitted(true);
   };
 
-  const eyebrow = isStudent ? "Early access" : "Private beta · 3 spots left";
+  const eyebrow = isStudent ? "Early access" : "Private beta";
   const heading = isStudent
     ? "Join the iNGEN waitlist"
-    : "Become a design partner";
+    : "Join the FORGE waitlist";
   const subhead = isStudent
     ? "Be first in line when Aristotle and Columbus open to your university."
-    : "We're onboarding 5 scale-up talent teams before YC S26. Free for 90 days. We hand-deliver your first shortlist within a week. Reply with one open role you're hiring for.";
+    : "Get early access to the proof-first hiring stack — Aristotle, Sherlock, and the FORGE workflow.";
 
   if (submitted) {
     return (
@@ -255,7 +255,7 @@ function WaitlistForm({ audience }: { audience: "recruiter" | "student" }) {
           type="submit"
           className={isStudent ? "btn-amber" : "btn-dark !bg-white !text-brand-ink hover:!bg-white/90"}
         >
-          {isStudent ? "Join waitlist" : "Apply as a design partner"}
+          Join waitlist
         </button>
       </form>
 

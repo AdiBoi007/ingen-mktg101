@@ -4,7 +4,7 @@ import Logo from "./Logo";
 import { useAudience } from "./AudienceContext";
 
 const recruiterCols = [
-  { title: "Product", links: ["Dashboard", "Intake & shortlist · Aristotle", "Proof analysis · Sherlock", "Hiring manager review", "Settings"] },
+  { title: "Product", links: ["Dashboard", "Job Brief · Aristotle", "Candidate Intake · Aristotle", "Analyse Profile · Sherlock", "Interviews · Sherlock", "Settings"] },
   { title: "Agents", links: ["Aristotle (workflow AI)", "Sherlock (proof AI)", "Strictness modes", "GitHub Pull", "Auto-briefs"] },
   { title: "Resources", links: ["Docs", "Pricing", "Hiring playbook", "Proof scoring guide", "Partners", "Help Center"] },
   { title: "Security", links: ["Trust Center", "AI Audit Center", "Privacy Choices", "Data handling"] },

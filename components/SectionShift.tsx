@@ -14,7 +14,7 @@ function RecruiterShift() {
           Start hiring <span className="text-brand-lavender">proof.</span>
         </h2>
         <p className="mt-6 text-[20px] md:text-[26px] text-white/85 max-w-3xl mx-auto leading-snug">
-          iNGEN replaces resume-claim hiring with a triangulated confidence score — work,
+          FORGE replaces resume-claim hiring with a triangulated confidence score — work,
           university, club affiliation, and open-source evidence — so every candidate
           you screen is investigated, not skimmed.
         </p>

@@ -25,8 +25,8 @@ const RECRUITER: Variant = {
   eyebrow: "[02] LIVE — SHERLOCK",
   agentTag: "Sherlock",
   agentLabel: "Proof analyzer",
-  heading: "Drop in a profile. Watch Sherlock pull the receipts.",
-  body: "Paste a GitHub, LinkedIn, or portfolio URL. Sherlock reads what they've actually built, maps it to the role, and writes a proof report your hiring manager will read end to end. No keyword theatre. No vibes-based ranking.",
+  heading: "Drop in a profile. Watch Sherlock triangulate the proof.",
+  body: "Sherlock is the proof engine behind FORGE. Paste a candidate URL — GitHub, LinkedIn, portfolio — and it pulls the receipts that actually map to the role: depth of commits, team impact, real artefacts. No keyword theatre.",
   bullets: [
     { label: "Triangulates", text: "GitHub · work history · clubs · projects" },
     { label: "Surfaces", text: "the few candidates whose claims hold up" },
@@ -198,7 +198,6 @@ export default function LiveDemo() {
 
   return (
     <section
-      id="live-demo"
       className="relative bg-brand-bg overflow-hidden"
       aria-label="Live product demo"
     >

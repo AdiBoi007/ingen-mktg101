@@ -185,7 +185,7 @@ export default function AuthShell({ mode }: { mode: Mode }) {
         <div className="rounded-2xl border border-black/5 bg-[#f1eef1] px-6 py-8 lg:px-10 lg:py-10 flex flex-col">
           <div className="text-center">
             <h1 className="font-display text-[28px] md:text-[32px] leading-tight text-brand-ink">
-              {isSignup ? "Welcome to iNGEN" : "Welcome back to iNGEN"}
+              {isSignup ? "Welcome to iNGen" : "Welcome back to iNGen"}
             </h1>
             <p className="mt-2 text-[14px] text-brand-ink/70">
               {isSignup
@@ -204,7 +204,7 @@ export default function AuthShell({ mode }: { mode: Mode }) {
         {/* RIGHT: Auth panel */}
         <div className="rounded-2xl border border-black/5 bg-white px-6 py-8 lg:px-12 lg:py-10 flex flex-col">
           <div className="flex justify-center">
-            <Link href="/" aria-label="iNGEN home" className="inline-flex">
+            <Link href="/" aria-label="iNGen home" className="inline-flex">
               <Logo />
             </Link>
           </div>
@@ -282,7 +282,7 @@ export default function AuthShell({ mode }: { mode: Mode }) {
                   </>
                 ) : (
                   <>
-                    New to iNGEN?{" "}
+                    New to iNGen?{" "}
                     <Link
                       href="/signup"
                       className="font-medium text-brand-purple hover:underline"

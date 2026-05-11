@@ -107,7 +107,7 @@ const studentPosts = [
 
 const featuredPost = {
   tag: "Launch",
-  title: "iNGEN goes proof-first",
+  title: "FORGE goes proof-first",
   date: "May 7, 2026",
   read: "6 MIN",
   body:
