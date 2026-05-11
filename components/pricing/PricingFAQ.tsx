@@ -26,7 +26,7 @@ const FAQS = [
   },
   {
     q: "Do students get free access?",
-    a: "Yes. iNGEN for students (Aristotle roadmaps + Columbus jobs) is free with a verified .edu email. The recruiter pricing on this page applies only to FORGE — the proof-first hiring stack used by hiring teams.",
+    a: "Yes. iNGEN for students (Aristotle roadmaps + Columbus jobs) is free with a verified .edu email. The recruiter pricing on this page applies only to the iNGEN proof-first hiring stack used by hiring teams.",
   },
 ];
 

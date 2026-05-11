@@ -3,9 +3,9 @@ import "./globals.css";
 import { AudienceProvider } from "@/components/AudienceContext";
 
 export const metadata: Metadata = {
-  title: "Ingen — Talent, reimagined",
+  title: "iNGEN — Talent, reimagined",
   description:
-    "Ingen connects recruiters with the right talent and students with the right opportunities.",
+    "iNGEN connects recruiters with the right talent and students with the right opportunities.",
 };
 
 export default function RootLayout({

@@ -99,10 +99,20 @@ export default function Navbar() {
 
         <div className="flex items-center gap-2">
           <Link
+            href="/login"
+            className={`hidden sm:inline-flex label-mono px-3 py-2 transition-colors ${
+              isStudent
+                ? "text-forge-ink/80 hover:text-forge-ink"
+                : "text-brand-ink/85 hover:text-brand-ink"
+            }`}
+          >
+            Login
+          </Link>
+          <Link
             href="/signup"
             className="label-mono px-4 py-2 rounded-full bg-brand-purple text-white hover:bg-brand-purple/90 transition-colors shadow-sm"
           >
-            Join Waitlist
+            Sign Up
           </Link>
           <a
             href="#"

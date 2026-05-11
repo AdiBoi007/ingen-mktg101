@@ -196,7 +196,7 @@ function RecruiterFeatures() {
   return (
     <section className="bg-brand-bg relative">
       <div className="mx-auto max-w-[1320px] px-6 py-24">
-        <div className="label-mono text-brand-mute mb-3">[01] How FORGE works</div>
+        <div className="label-mono text-brand-mute mb-3">[01] How iNGEN works</div>
         <h2 className="font-display text-[44px] md:text-[58px] leading-[1.05] tracking-tightest text-brand-ink max-w-3xl">
           Brief, intake, interview — one command center.
         </h2>

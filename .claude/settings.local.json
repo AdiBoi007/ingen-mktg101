@@ -26,7 +26,19 @@
       "Read(//c/Users/H5CD3/AppData/Local/Temp/claude/C--Users-H5CD3-Downloads-finallanding-page/5aecdd0e-9dcb-46f6-b4b9-6e0e5c4a9b41/tasks//**)",
       "Bash(npm install *)",
       "Bash(curl -sL -o data/globe.json https://raw.githubusercontent.com/aceternity/ui/main/public/globe.json)",
-      "Bash(curl -sL -o data/globe.json https://ui.aceternity.com/globe.json)"
+      "Bash(curl -sL -o data/globe.json https://ui.aceternity.com/globe.json)",
+      "Bash(curl -sf -o /dev/null --max-time 5 http://localhost:53919/)",
+      "Bash(curl -sf -o /dev/null -w \"HTTP %{http_code}\\\\n\" --max-time 10 http://localhost:53919/)",
+      "Bash(netstat -ano)",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code} in %{time_total}s\\\\n\" --max-time 240 http://localhost:53919/)",
+      "Bash(ls -la C:/Users/H5CD3/AppData/Local/Temp/claude/ 2>&1 | head; find C:/Users/H5CD3/AppData/Local/Temp -name \"*53919*\" 2>/dev/null | head)",
+      "Bash(xargs ls -lt)",
+      "Bash(tasklist //FI \"PID eq 23576\")",
+      "Bash(tasklist //FI \"IMAGENAME eq node.exe\")",
+      "Bash(taskkill //PID 17752 //F)",
+      "Bash(taskkill //PID 24352 //F)",
+      "Bash(findstr \":3000\\\\|:3001\\\\|:5173\\\\|:8080\")",
+      "Bash(findstr LISTENING)"
     ]
   }
 }

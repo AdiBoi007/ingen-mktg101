@@ -6,50 +6,50 @@ import { useAudience } from "./AudienceContext";
 
 const recruiterFaqs = [
   {
-    q: "Who can use iNGen?",
-    a: "iNGen is built for recruiters, founders, and hiring leads at startups between Idea and Series A. If you are searching for hard-to-find engineering talent on a constrained budget, iNGen is a fit for you. We work with companies ranging from Y Combinator early-stage to Series A — and hopefully, you too.",
+    q: "Who can use iNGEN?",
+    a: "iNGEN is built for talent teams at scale-up companies (roughly 80 to 300 people) running grad and junior engineering pipelines. If you're getting hundreds of applications per role, your ATS is rejecting the wrong people, and you can't afford to spend a weekend on every trial task, this is for you.",
   },
   {
-    q: "Can I try iNGen for free?",
-    a: "Yes. iNGen offers a free pilot for one active role so you can run Aristotle's intake, Sherlock's proof investigation, and the dashboard end-to-end before committing. No card required to start.",
+    q: "Can I try iNGEN for free?",
+    a: "Yes, during private beta. Design partners get 90 days free in exchange for weekly feedback sessions. After that, pricing starts at AUD $2,500/month per active role, billed quarterly.",
   },
   {
-    q: "Can I use iNGen with my team?",
-    a: "Absolutely. iNGen workspaces support multiple seats, shared candidate pools, role-based permissions, and a unified spend dashboard so your hiring manager, recruiter, and engineering lead all stay in sync.",
+    q: "Can I use iNGEN with my team?",
+    a: "Yes. Every plan includes unlimited recruiter and hiring manager seats. Aristotle shortlists are shareable by link, no login required for hiring managers.",
   },
   {
-    q: "How long does it take to set up and start using iNGen?",
-    a: "Under five minutes. Connect GitHub, LinkedIn, Google Calendar, and Gmail, drop in a draft JD, and Aristotle generates your brief, LinkedIn post, and Boolean search in a single two-minute conversation.",
+    q: "How long does it take to set up and start using iNGEN?",
+    a: "The intake call with Aristotle is 30 minutes. Your first shortlist arrives within 5 business days. No engineering setup, no ATS integration required to start.",
   },
   {
-    q: "Does iNGen have global candidate data?",
-    a: "Yes. Sherlock triangulates GitHub, university records, club affiliations, and verified work history across global sources, with default currency support for AUD, USD, GBP, and EUR on the spend dashboard.",
+    q: "Does iNGEN have global candidate data?",
+    a: "Today we focus on Australia (Sydney, Melbourne, Brisbane) with deep coverage of USYD, UNSW, UTS, UoM, and Monash. Global sourcing is on the roadmap for Q3 2026.",
   },
   {
     q: "Will it integrate with my ATS or CRM?",
-    a: "GitHub, LinkedIn, Google Calendar, Gmail, Notion, and Slack are first-class integrations today. ATS connectors for Greenhouse, Lever, and Ashby are on the rolling roadmap — talk to us about your stack.",
+    a: "Aristotle exports shortlists as CSV or direct push to Greenhouse, Lever, and Ashby. Native integrations land in Q2 2026. Until then, the workflow runs alongside your ATS without disruption.",
   },
 ];
 
 const studentFaqs = [
   {
-    q: "Who can use iNGen?",
-    a: "iNGen is built for students, early-career engineers, and graduating candidates preparing for technical roles. If you have scattered projects, internships, and certifications and want a single, recruiter-grade dossier — iNGen is a fit for you.",
+    q: "Who can use iNGEN?",
+    a: "iNGEN is built for students, early-career engineers, and graduating candidates preparing for technical roles. If you have scattered projects, internships, and certifications and want a single, recruiter-grade dossier — iNGEN is a fit for you.",
   },
   {
-    q: "Can I try iNGen for free?",
-    a: "Yes. iNGen has a generous free tier with full Aristotle and Columbus access for one active target role. You can build your verified profile, run a roadmap, and stage job dossiers without paying a cent.",
+    q: "Can I try iNGEN for free?",
+    a: "Yes. iNGEN has a generous free tier with full Aristotle and Columbus access for one active target role. You can build your verified profile, run a roadmap, and stage job dossiers without paying a cent.",
   },
   {
-    q: "Can I use iNGen with my study group?",
+    q: "Can I use iNGEN with my study group?",
     a: "Yes. Share Collections with peers, swap roadmap milestones, and compare proof scores. Your projects stay private by default — you control what is visible to the group.",
   },
   {
-    q: "How long does it take to set up and start using iNGen?",
+    q: "How long does it take to set up and start using iNGEN?",
     a: "Under three minutes. Connect LinkedIn or GitHub, drop in one project, and Aristotle does the first pass. Most students go from 0% readiness to a recruiter-shareable profile in a single sitting.",
   },
   {
-    q: "Does iNGen have jobs from outside the US?",
+    q: "Does iNGEN have jobs from outside the US?",
     a: "Yes. Columbus stages dossiers from RemoteOK, HN Who's Hiring, GitHub Jobs Archive, Adzuna, and global company career pages — ranked against your profile with a percentage match and salary band.",
   },
   {
@@ -189,7 +189,7 @@ export default function FAQ() {
     return (
       <FAQSection
         items={studentFaqs}
-        intro="We're here to help. Reach out to the iNGen team for guidance on getting your profile, roadmap, and Columbus job dossiers set up in minutes."
+        intro="We're here to help. Reach out to the iNGEN team for guidance on getting your profile, roadmap, and Columbus job dossiers set up in minutes."
         ctaLabel="Start free"
       />
     );
@@ -197,7 +197,7 @@ export default function FAQ() {
   return (
     <FAQSection
       items={recruiterFaqs}
-      intro="We're here to help. Reach out to our team for guidance on how to integrate iNGen — Aristotle for workflow, Sherlock for proof — into your hiring stack."
+      intro="Reach out for a walkthrough of how Aristotle and Sherlock plug into your existing hiring stack. Works alongside Greenhouse, Lever, Ashby, and LinkedIn Recruiter."
       ctaLabel="Book a Demo"
     />
   );

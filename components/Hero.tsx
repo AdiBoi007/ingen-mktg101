@@ -38,29 +38,35 @@ function RecruiterHero() {
       <div className="mx-auto max-w-[1320px] px-6 pt-20 pb-12 relative">
         <div className="text-center">
           <span className="inline-flex items-center gap-2 rounded-full bg-white/10 backdrop-blur px-3 py-1.5 label-mono text-white">
-            <span className="text-brand-lavender">New</span>
-            <span className="opacity-50">|</span>
-            <span>Aristotle + Sherlock are live</span>
+            <span className="text-brand-lavender">Private beta</span>
+            <span className="opacity-50">·</span>
+            <span>Onboarding 5 design partners before YC S26</span>
           </span>
 
           <h1 className="font-display mt-7 text-[64px] md:text-[88px] leading-[0.95] tracking-tightest text-white">
-            Proof-first hiring.
+            You get 2,000 applications. You shortlist 8. Half are wrong.
           </h1>
 
           <p className="mt-6 max-w-2xl mx-auto text-[17px] leading-relaxed text-white/85">
-            FORGE is the{" "}
-            <span className="text-white">AI recruiter command center</span> built
-            for startup hiring teams (Idea → Series A). Two agents — Aristotle
-            runs the workflow, Sherlock triangulates the proof — across GitHub,
-            work history, university, and club signals.
+            iNGEN is the{" "}
+            <span className="text-white">proof-first hiring stack</span> for
+            scale-up talent teams. Aristotle runs intake and ranks the pile by
+            what candidates have actually built. Sherlock pulls the receipts
+            from GitHub, work history, and university signals. Your shortlist
+            arrives defensible, not lucky.
           </p>
 
           <div className="mt-9 flex items-center justify-center gap-3">
-            <a href="#" className="btn-dark !bg-white !text-brand-ink hover:!bg-white/90">
-              Try for Free
+            <a
+              href="https://calendly.com/adidogra07/20min"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-dark !bg-white !text-brand-ink hover:!bg-white/90"
+            >
+              Book a 20-min walkthrough
             </a>
-            <a href="#" className="btn-outline btn-outline-light">
-              Book a Demo
+            <a href="#live-demo" className="btn-outline btn-outline-light">
+              See Sherlock live
             </a>
           </div>
         </div>

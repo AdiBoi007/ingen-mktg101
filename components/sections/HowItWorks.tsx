@@ -280,8 +280,8 @@ function recruiterSteps(): Step[] {
       bgColor: "#5B2B8C",
       accentColor: "#C9B6E4",
       pillLabel: "INTAKE & SEARCH",
-      heading: "Brief, search and shortlist in one workflow",
-      body: "Aristotle runs the intake conversation, drafts the role brief, and turns it into a structured search across GitHub, work history, and university signals. Shortlists arrive ranked by proof, not keywords.",
+      heading: "From open role to ranked shortlist in 48 hours",
+      body: "Aristotle takes the intake call, writes the role brief in your language, and runs a structured search across GitHub, work history, and university signals. Your shortlist arrives ranked by what candidates have built, with the reasoning in plain English so you can defend it to your hiring manager.",
       primaryCta: { label: "TRY ARISTOTLE", href: "#" },
       secondaryCta: { label: "BOOK A DEMO", href: "#" },
       visual: (
@@ -437,7 +437,7 @@ type Props = {
 
 export default function HowItWorks({
   sectionNumber = "01",
-  eyebrow = "FEATURES",
+  eyebrow = "HOW IT WORKS",
   title,
 }: Props) {
   const { audience } = useAudience();
@@ -449,8 +449,8 @@ export default function HowItWorks({
   );
   const heading =
     title ?? (audience === "student"
-      ? "How it works: Roadmap + Agents"
-      : "How it works: Humans + Agents");
+      ? "Two agents. One defensible roadmap."
+      : "Two agents. One defensible shortlist.");
 
   const containerRef = useRef<HTMLDivElement>(null);
   const stickyRef = useRef<HTMLDivElement>(null);
