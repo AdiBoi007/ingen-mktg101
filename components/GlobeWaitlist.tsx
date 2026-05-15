@@ -103,7 +103,7 @@ function ThemedGlobe({ tone }: { tone: "dark" | "light" }) {
 
   return (
     <GlobeErrorBoundary fallback={<GlobeFallback tone={tone} />}>
-      <div className="relative w-full aspect-square max-w-[520px] mx-auto">
+      <div className="relative w-full aspect-square max-w-[420px] md:max-w-[520px] mx-auto">
         <div className="absolute inset-0">
           <World data={sampleArcs} globeConfig={globeConfig} />
         </div>
@@ -244,7 +244,7 @@ function WaitlistForm({ audience }: { audience: "recruiter" | "student" }) {
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="you@company.com"
+          placeholder={isStudent ? "you@university.edu" : "you@company.com"}
           className={`flex-1 bg-transparent outline-none px-3 py-2 text-[15px] ${
             isStudent
               ? "text-forge-ink placeholder:text-forge-mute"
@@ -283,7 +283,7 @@ export default function GlobeWaitlist() {
   return (
     <section
       className={`relative overflow-hidden ${
-        isStudent ? "bg-forge-cream text-forge-ink" : "bg-brand-deep text-white"
+        isStudent ? "bg-[#F5EDE0] text-forge-ink dotted-grid-dim" : "bg-brand-deep text-white"
       }`}
     >
       <div
@@ -293,20 +293,20 @@ export default function GlobeWaitlist() {
       />
       <div
         className={`absolute inset-x-0 bottom-0 h-32 pointer-events-none ${
-          isStudent ? "halftone-light-top" : "halftone-bottom opacity-80"
+          isStudent ? "halftone-light-bottom" : "halftone-bottom opacity-80"
         }`}
       />
 
       <div className="mx-auto max-w-[1320px] px-6 py-24 md:py-28 relative">
         <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
           <motion.div
-            className="order-2 md:order-1 relative h-[460px] md:h-[560px]"
+            className="order-2 md:order-1 relative h-[440px] md:h-[560px] overflow-hidden flex items-center justify-center"
             initial={{ opacity: 0, scale: 0.92 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.9, ease: "easeOut" }}
           >
-            <ThemedGlobe tone={isStudent ? "light" : "dark"} />
+            <ThemedGlobe key={isStudent ? "light" : "dark"} tone={isStudent ? "light" : "dark"} />
           </motion.div>
           <div className="order-1 md:order-2">
             <WaitlistForm audience={audience} />
