@@ -50,12 +50,20 @@ const World = dynamic(() => import("@/components/ui/globe").then((m) => m.World)
   ssr: false,
 });
 
-const chips: { label: string; cls: string; top: string; left: string }[] = [
-  { label: "12+ years experience",         cls: "chip-amber",    top: "6%",  left: "4%"  },
-  { label: "Stanford CS",                  cls: "chip-mint",     top: "2%",  left: "60%" },
-  { label: "Ex-Apple",                     cls: "chip-indigo",   top: "26%", left: "70%" },
-  { label: "CISSP certified",              cls: "chip-lavender", top: "72%", left: "4%"  },
-  { label: "IPO experience",               cls: "chip-yellow",   top: "82%", left: "58%" },
+type Chip = {
+  label: string;
+  cls: string;
+  top?: string;
+  bottom?: string;
+  left?: string;
+  right?: string;
+};
+
+const chips: Chip[] = [
+  { label: "Prabh just got placed",         cls: "chip-mint",     top: "2%",   left: "-4%"  },
+  { label: "Aren is hiring-ready",          cls: "chip-amber",    top: "-2%",  right: "-4%" },
+  { label: "Maya matched with a recruiter", cls: "chip-lavender", bottom: "8%", right: "-2%" },
+  { label: "Riya mapped her career path",   cls: "chip-yellow",   bottom: "-4%", left: "-4%" },
 ];
 
 const integrations: { name: string; domain: string }[] = [
@@ -122,7 +130,10 @@ function AuthGlobe() {
   );
 
   return (
-    <div className="relative mx-auto w-[240px] h-[240px] sm:w-[280px] sm:h-[280px] lg:w-[300px] lg:h-[300px]">
+    <div
+      className="relative mx-auto"
+      style={{ width: "clamp(200px, 22vw, 260px)", aspectRatio: "1 / 1" }}
+    >
       <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/70 via-transparent to-black/10 blur-2xl" />
       <div className="absolute inset-0 [&>div]:!w-full [&>div]:!h-full [&_canvas]:!w-full [&_canvas]:!h-full">
         <World data={sampleArcs} globeConfig={globeConfig} />
@@ -131,8 +142,8 @@ function AuthGlobe() {
       {chips.map((c) => (
         <div
           key={c.label}
-          className={`chip ${c.cls} absolute whitespace-nowrap shadow-sm z-10 text-[10px] sm:text-[11px]`}
-          style={{ top: c.top, left: c.left }}
+          className={`chip ${c.cls} absolute whitespace-nowrap shadow-sm z-10 !text-[10px] !px-2 !py-[3px] !gap-1.5`}
+          style={{ top: c.top, bottom: c.bottom, left: c.left, right: c.right }}
         >
           <span>{c.label}</span>
           <span className="opacity-50">×</span>
@@ -144,20 +155,20 @@ function AuthGlobe() {
 
 function IntegrationLogo({ name, domain }: { name: string; domain: string }) {
   return (
-    <div className="flex items-center gap-2.5 px-6 shrink-0">
+    <div className="flex items-center gap-2 px-5 shrink-0">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={`https://www.google.com/s2/favicons?domain=${domain}&sz=64`}
         alt={name}
-        width={22}
-        height={22}
+        width={20}
+        height={20}
         loading="lazy"
-        className="w-[22px] h-[22px] object-contain rounded-sm"
+        className="w-[20px] h-[20px] object-contain rounded-sm"
         onError={(e) => {
           (e.currentTarget as HTMLImageElement).style.visibility = "hidden";
         }}
       />
-      <span className="text-[14px] font-medium text-brand-ink/80 whitespace-nowrap">
+      <span className="text-[13px] font-medium text-brand-ink/80 whitespace-nowrap">
         {name}
       </span>
     </div>
@@ -167,20 +178,23 @@ function IntegrationLogo({ name, domain }: { name: string; domain: string }) {
 function IntegrationsMarquee() {
   const loop = [...integrations, ...integrations];
   return (
-    <div className="rounded-xl border border-black/10 bg-white px-4 py-4 overflow-hidden">
-      <div className="text-center label-mono text-brand-ink/80 mb-3">
-        Seamlessly integrates with the tools you already use
+    <div className="rounded-xl border border-black/[0.06] bg-white px-3 sm:px-4 pt-4 pb-3.5 overflow-hidden shadow-[0_1px_2px_rgba(0,0,0,0.03)]">
+      <div
+        className="text-center label-mono text-brand-ink/75 whitespace-nowrap mb-5"
+        style={{ fontSize: "clamp(8.5px, 1.05vw, 10.5px)", letterSpacing: "0.12em" }}
+      >
+        Connects with the tools you already use
       </div>
       <div className="relative">
         <div
-          className="pointer-events-none absolute inset-y-0 left-0 w-12 z-10"
+          className="pointer-events-none absolute inset-y-0 left-0 w-10 z-10"
           style={{
             background:
               "linear-gradient(to right, #ffffff 0%, rgba(255,255,255,0) 100%)",
           }}
         />
         <div
-          className="pointer-events-none absolute inset-y-0 right-0 w-12 z-10"
+          className="pointer-events-none absolute inset-y-0 right-0 w-10 z-10"
           style={{
             background:
               "linear-gradient(to left, #ffffff 0%, rgba(255,255,255,0) 100%)",
@@ -387,15 +401,11 @@ export default function AuthShell({ mode }: { mode: Mode }) {
   const isLogin = mode === "login";
 
   const leftHeadline = isLogin
-    ? "Welcome back to iNGen"
-    : isWaitlist
-    ? "Welcome to iNGen"
-    : "Welcome to iNGen";
+    ? "Welcome back to iNGEN"
+    : "Welcome to iNGEN";
   const leftSubhead = isLogin
     ? "Sign in to continue running proof-first hiring"
-    : isWaitlist
-    ? "Be first in line when iNGen opens to your team"
-    : "Rethink the way you source, engage, and hire talent";
+    : "Proof-first hiring for teams. Career mapping for talent.";
   const rightHeadline = isLogin
     ? "Sign in to your account"
     : isWaitlist
@@ -403,18 +413,37 @@ export default function AuthShell({ mode }: { mode: Mode }) {
     : "Get started for free";
 
   return (
-    <main className="min-h-screen w-full bg-brand-bg flex items-center justify-center px-3 sm:px-4 py-4 sm:py-6 md:py-8">
-      <div className="w-full max-w-[920px] grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5 items-stretch">
+    <main className="min-h-screen w-full bg-brand-bg flex items-center justify-center px-3 sm:px-4 py-4 sm:py-6">
+      <div className="w-full max-w-[880px] grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-5 items-stretch">
         {/* LEFT: Welcome card */}
-        <div className="rounded-2xl border border-black/5 bg-[#f1eef1] px-5 py-6 sm:px-6 sm:py-7 lg:px-8 lg:py-8 flex flex-col">
+        <div className="relative rounded-2xl border border-black/[0.06] bg-[#f1eef1] px-5 py-5 sm:px-6 sm:py-6 lg:px-7 lg:py-7 flex flex-col shadow-[0_12px_40px_-12px_rgba(0,0,0,0.08),0_2px_6px_-2px_rgba(0,0,0,0.04)]">
+          {/* Inner-edge seam shadow on the right (desktop only) */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-y-3 right-0 w-3 hidden lg:block"
+            style={{
+              background:
+                "linear-gradient(to left, rgba(0,0,0,0.05), rgba(0,0,0,0))",
+              borderTopRightRadius: "1rem",
+              borderBottomRightRadius: "1rem",
+            }}
+          />
           <div className="text-center">
-            <h1 className="font-display text-[22px] sm:text-[24px] md:text-[26px] leading-tight text-brand-ink">
+            <h1
+              className="font-display leading-[1.15] text-brand-ink"
+              style={{ fontSize: "clamp(20px, 2.2vw, 24px)" }}
+            >
               {leftHeadline}
             </h1>
-            <p className="mt-2 text-[13px] sm:text-[14px] text-brand-ink/70">{leftSubhead}</p>
+            <p
+              className="mt-1.5 text-brand-ink/70 leading-snug"
+              style={{ fontSize: "clamp(12px, 1.05vw, 13px)" }}
+            >
+              {leftSubhead}
+            </p>
           </div>
 
-          <div className="flex-1 flex items-center justify-center my-3 sm:my-4">
+          <div className="flex-1 flex items-center justify-center my-2 sm:my-3">
             <AuthGlobe />
           </div>
 
@@ -422,15 +451,29 @@ export default function AuthShell({ mode }: { mode: Mode }) {
         </div>
 
         {/* RIGHT: Auth panel */}
-        <div className="rounded-2xl border border-black/5 bg-white px-5 py-6 sm:px-6 sm:py-7 lg:px-10 lg:py-8 flex flex-col">
+        <div className="relative rounded-2xl border border-black/[0.06] bg-white px-5 py-5 sm:px-6 sm:py-6 lg:px-9 lg:py-7 flex flex-col shadow-[0_12px_40px_-12px_rgba(0,0,0,0.08),0_2px_6px_-2px_rgba(0,0,0,0.04)]">
+          {/* Inner-edge seam shadow on the left (desktop only) */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-y-3 left-0 w-3 hidden lg:block"
+            style={{
+              background:
+                "linear-gradient(to right, rgba(0,0,0,0.05), rgba(0,0,0,0))",
+              borderTopLeftRadius: "1rem",
+              borderBottomLeftRadius: "1rem",
+            }}
+          />
           <div className="flex justify-center">
-            <Link href="/" aria-label="iNGen home" className="inline-flex">
+            <Link href="/" aria-label="iNGEN home" className="inline-flex">
               <Logo />
             </Link>
           </div>
 
           <div className="flex-1 flex flex-col justify-center">
-            <h2 className="text-center font-display text-[20px] sm:text-[22px] md:text-[24px] leading-tight text-brand-ink mt-4 mb-5 sm:mb-6">
+            <h2
+              className="text-center font-display leading-tight text-brand-ink mt-3 mb-5"
+              style={{ fontSize: "clamp(18px, 1.9vw, 22px)" }}
+            >
               {rightHeadline}
             </h2>
 
