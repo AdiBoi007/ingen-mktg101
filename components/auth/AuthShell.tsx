@@ -2,8 +2,33 @@
 
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Logo from "@/components/Logo";
+
+declare global {
+  interface Window {
+    google?: {
+      accounts: {
+        oauth2: {
+          initTokenClient: (config: {
+            client_id: string;
+            scope: string;
+            callback: (response: {
+              access_token?: string;
+              error?: string;
+              error_description?: string;
+            }) => void;
+            error_callback?: (err: { type?: string; message?: string }) => void;
+          }) => { requestAccessToken: (overrides?: Record<string, unknown>) => void };
+        };
+      };
+    };
+  }
+}
+
+type GoogleTokenClient = {
+  requestAccessToken: (overrides?: Record<string, unknown>) => void;
+};
 
 type Mode = "signup" | "login" | "waitlist";
 
@@ -276,8 +301,88 @@ function WaitlistPanel() {
   const [email, setEmail] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [status, setStatus] = useState<"idle" | "submitting" | "success">("idle");
+  const [confirmedEmail, setConfirmedEmail] = useState<string | null>(null);
+  const googleClientRef = useRef<GoogleTokenClient | null>(null);
+  const [googleReady, setGoogleReady] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const googleClientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+
+  const submitWaitlist = useCallback(
+    async (payload:
+      | { type: "email"; email: string }
+      | { type: "google"; access_token: string }
+    ) => {
+      setError(null);
+      setStatus("submitting");
+      try {
+        const res = await fetch("/api/waitlist", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        const data = (await res.json().catch(() => ({}))) as {
+          ok?: boolean;
+          email?: string;
+          error?: string;
+        };
+        if (!res.ok || !data.ok) {
+          setError(data.error || "Something went wrong. Please try again.");
+          setStatus("idle");
+          return;
+        }
+        setConfirmedEmail(data.email || (payload.type === "email" ? payload.email : null));
+        setStatus("success");
+      } catch {
+        setError("Network error. Please try again.");
+        setStatus("idle");
+      }
+    },
+    []
+  );
+
+  useEffect(() => {
+    if (!googleClientId || typeof window === "undefined") return;
+
+    const initialize = () => {
+      if (!window.google?.accounts?.oauth2) return;
+      googleClientRef.current = window.google.accounts.oauth2.initTokenClient({
+        client_id: googleClientId,
+        scope: "openid email profile",
+        callback: (response) => {
+          if (response.error || !response.access_token) {
+            setStatus("idle");
+            if (response.error && response.error !== "popup_closed_by_user") {
+              setError(response.error_description || "Google sign-in failed.");
+            }
+            return;
+          }
+          submitWaitlist({ type: "google", access_token: response.access_token });
+        },
+        error_callback: (err) => {
+          setStatus("idle");
+          if (err?.type && err.type !== "popup_closed") {
+            setError(err.message || "Google sign-in failed.");
+          }
+        },
+      });
+      setGoogleReady(true);
+    };
+
+    const existing = document.getElementById("google-identity-services");
+    if (existing) {
+      initialize();
+      return;
+    }
+    const script = document.createElement("script");
+    script.id = "google-identity-services";
+    script.src = "https://accounts.google.com/gsi/client";
+    script.async = true;
+    script.defer = true;
+    script.onload = initialize;
+    document.head.appendChild(script);
+  }, [googleClientId, submitWaitlist]);
+
+  const handleEmailSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (status === "submitting") return;
     const result = validateEmail(email);
@@ -285,10 +390,23 @@ function WaitlistPanel() {
       setError(result.reason ?? "Please enter a valid email address.");
       return;
     }
+    submitWaitlist({ type: "email", email: email.trim().toLowerCase() });
+  };
+
+  const handleGoogleClick = () => {
+    if (status === "submitting") return;
+    if (!googleClientId) {
+      setError(
+        "Google sign-in isn't configured yet. Set NEXT_PUBLIC_GOOGLE_CLIENT_ID."
+      );
+      return;
+    }
+    if (!googleClientRef.current) {
+      setError("Google sign-in is still loading. Try again in a moment.");
+      return;
+    }
     setError(null);
-    setStatus("submitting");
-    // Optimistic local "join" — wire up to backend later.
-    window.setTimeout(() => setStatus("success"), 600);
+    googleClientRef.current.requestAccessToken();
   };
 
   if (status === "success") {
@@ -307,13 +425,17 @@ function WaitlistPanel() {
         </div>
         <h3 className="font-display text-[20px] text-brand-ink">You&apos;re on the list</h3>
         <p className="mt-2 text-[14px] text-brand-ink/70">
-          We&apos;ll email <span className="font-medium text-brand-ink">{email}</span> as soon
-          as your spot opens.
+          We&apos;ll email{" "}
+          <span className="font-medium text-brand-ink">
+            {confirmedEmail || "your email"}
+          </span>{" "}
+          as soon as your spot opens.
         </p>
         <button
           type="button"
           onClick={() => {
             setEmail("");
+            setConfirmedEmail(null);
             setStatus("idle");
             setView("choices");
           }}
@@ -329,15 +451,33 @@ function WaitlistPanel() {
     <div className="mx-auto w-full max-w-[380px] flex flex-col gap-2.5">
       {view === "choices" && (
         <>
-          <ProviderButton icon={GoogleIcon}>Continue with Google</ProviderButton>
-          <ProviderButton icon={EmailIcon} onClick={() => setView("email")}>
+          <ProviderButton
+            icon={GoogleIcon}
+            onClick={handleGoogleClick}
+            disabled={status === "submitting"}
+          >
+            {status === "submitting" ? "Joining…" : "Continue with Google"}
+          </ProviderButton>
+          <ProviderButton
+            icon={EmailIcon}
+            onClick={() => setView("email")}
+            disabled={status === "submitting"}
+          >
             Continue with Email
           </ProviderButton>
+          {error && (
+            <p className="text-center text-[12px] text-red-600 mt-1">{error}</p>
+          )}
+          {googleClientId && !googleReady && (
+            <p className="text-center text-[11px] text-brand-ink/50 mt-1">
+              Loading Google sign-in…
+            </p>
+          )}
         </>
       )}
 
       {view === "email" && (
-        <form onSubmit={handleSubmit} className="flex flex-col gap-2.5" noValidate>
+        <form onSubmit={handleEmailSubmit} className="flex flex-col gap-2.5" noValidate>
           <label htmlFor="waitlist-email" className="label-mono text-brand-ink/70">
             Work email
           </label>
