@@ -2,10 +2,49 @@
 
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import Logo from "@/components/Logo";
 
-type Mode = "signup" | "login";
+type Mode = "signup" | "login" | "waitlist";
+
+const DISPOSABLE_EMAIL_DOMAINS = new Set([
+  "mailinator.com",
+  "10minutemail.com",
+  "guerrillamail.com",
+  "tempmail.com",
+  "temp-mail.org",
+  "throwawaymail.com",
+  "yopmail.com",
+  "trashmail.com",
+  "getnada.com",
+  "fakeinbox.com",
+  "sharklasers.com",
+  "dispostable.com",
+  "maildrop.cc",
+  "mintemail.com",
+  "mohmal.com",
+  "spambox.us",
+  "tempinbox.com",
+  "tempr.email",
+  "throwaway.email",
+]);
+
+const EMAIL_REGEX =
+  /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*\.[a-zA-Z]{2,24}$/;
+
+function validateEmail(raw: string): { ok: boolean; reason?: string } {
+  const email = raw.trim().toLowerCase();
+  if (!email) return { ok: false, reason: "Please enter your email address." };
+  if (email.length > 254) return { ok: false, reason: "Email is too long." };
+  if (!EMAIL_REGEX.test(email))
+    return { ok: false, reason: "Please enter a valid email address." };
+  const domain = email.split("@")[1];
+  if (!domain || domain.includes("..") || domain.startsWith("-") || domain.endsWith("-"))
+    return { ok: false, reason: "Please enter a valid email address." };
+  if (DISPOSABLE_EMAIL_DOMAINS.has(domain))
+    return { ok: false, reason: "Disposable email addresses aren't allowed." };
+  return { ok: true };
+}
 
 const World = dynamic(() => import("@/components/ui/globe").then((m) => m.World), {
   ssr: false,
@@ -160,14 +199,22 @@ function IntegrationsMarquee() {
 function ProviderButton({
   children,
   icon,
+  onClick,
+  type = "button",
+  disabled,
 }: {
   children: React.ReactNode;
-  icon: React.ReactNode;
+  icon?: React.ReactNode;
+  onClick?: () => void;
+  type?: "button" | "submit";
+  disabled?: boolean;
 }) {
   return (
     <button
-      type="button"
-      className="w-full flex items-center justify-center gap-3 h-11 rounded-md border border-black/10 bg-white text-[14px] font-medium text-brand-ink hover:border-brand-ink/40 hover:bg-black/[0.02] transition-colors"
+      type={type}
+      onClick={onClick}
+      disabled={disabled}
+      className="w-full flex items-center justify-center gap-3 h-11 rounded-md border border-black/10 bg-white text-[14px] font-medium text-brand-ink hover:border-brand-ink/40 hover:bg-black/[0.02] transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
     >
       {icon}
       <span>{children}</span>
@@ -175,8 +222,190 @@ function ProviderButton({
   );
 }
 
+const GoogleIcon = (
+  <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden>
+    <path
+      fill="#4285F4"
+      d="M17.64 9.205c0-.639-.057-1.252-.164-1.841H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"
+    />
+    <path
+      fill="#34A853"
+      d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"
+    />
+    <path
+      fill="#FBBC05"
+      d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"
+    />
+    <path
+      fill="#EA4335"
+      d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z"
+    />
+  </svg>
+);
+
+const EmailIcon = (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
+    <rect x="3" y="5" width="18" height="14" rx="2" stroke="#1d161d" strokeWidth="1.6" />
+    <path
+      d="M3.5 6.5L12 13L20.5 6.5"
+      stroke="#1d161d"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+    />
+  </svg>
+);
+
+function WaitlistPanel() {
+  const [view, setView] = useState<"choices" | "email">("choices");
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [status, setStatus] = useState<"idle" | "submitting" | "success">("idle");
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (status === "submitting") return;
+    const result = validateEmail(email);
+    if (!result.ok) {
+      setError(result.reason ?? "Please enter a valid email address.");
+      return;
+    }
+    setError(null);
+    setStatus("submitting");
+    // Optimistic local "join" — wire up to backend later.
+    window.setTimeout(() => setStatus("success"), 600);
+  };
+
+  if (status === "success") {
+    return (
+      <div className="mx-auto w-full max-w-[380px] text-center">
+        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-brand-purple/10">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
+            <path
+              d="M5 12.5l4.5 4.5L19 7"
+              stroke="#6c5ce7"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </div>
+        <h3 className="font-display text-[20px] text-brand-ink">You&apos;re on the list</h3>
+        <p className="mt-2 text-[14px] text-brand-ink/70">
+          We&apos;ll email <span className="font-medium text-brand-ink">{email}</span> as soon
+          as your spot opens.
+        </p>
+        <button
+          type="button"
+          onClick={() => {
+            setEmail("");
+            setStatus("idle");
+            setView("choices");
+          }}
+          className="mt-5 text-[13px] font-medium text-brand-purple hover:underline"
+        >
+          Add another email
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="mx-auto w-full max-w-[380px] flex flex-col gap-2.5">
+      {view === "choices" && (
+        <>
+          <ProviderButton icon={GoogleIcon}>Continue with Google</ProviderButton>
+          <ProviderButton icon={EmailIcon} onClick={() => setView("email")}>
+            Continue with Email
+          </ProviderButton>
+        </>
+      )}
+
+      {view === "email" && (
+        <form onSubmit={handleSubmit} className="flex flex-col gap-2.5" noValidate>
+          <label htmlFor="waitlist-email" className="label-mono text-brand-ink/70">
+            Work email
+          </label>
+          <input
+            id="waitlist-email"
+            type="email"
+            inputMode="email"
+            autoComplete="email"
+            autoFocus
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              if (error) setError(null);
+            }}
+            placeholder="you@company.com"
+            aria-invalid={error ? "true" : "false"}
+            aria-describedby={error ? "waitlist-email-error" : undefined}
+            className={`h-11 w-full rounded-md border bg-white px-3 text-[14px] text-brand-ink outline-none transition-colors placeholder:text-brand-ink/35 ${
+              error
+                ? "border-red-500/70 focus:border-red-500"
+                : "border-black/10 focus:border-brand-ink/40"
+            }`}
+          />
+          {error && (
+            <p id="waitlist-email-error" className="text-[12px] text-red-600">
+              {error}
+            </p>
+          )}
+          <button
+            type="submit"
+            disabled={status === "submitting"}
+            className="mt-1 inline-flex h-11 w-full items-center justify-center rounded-md bg-brand-purple text-[14px] font-medium text-white hover:bg-brand-purple/90 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+          >
+            {status === "submitting" ? "Joining…" : "Join waiting list"}
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setView("choices");
+              setError(null);
+            }}
+            className="text-center text-[13px] text-brand-ink/60 hover:text-brand-ink"
+          >
+            ← Back
+          </button>
+        </form>
+      )}
+
+      <p className="text-center text-[12px] text-brand-ink/60 mt-3">
+        By proceeding, you agree to our{" "}
+        <Link href="/terms" className="underline hover:text-brand-ink">
+          Terms of Service
+        </Link>
+      </p>
+
+      <div className="mt-4 text-center text-[13px] text-brand-ink/70">
+        Already have an account?{" "}
+        <Link href="/login" className="font-medium text-brand-purple hover:underline">
+          Log in
+        </Link>
+      </div>
+    </div>
+  );
+}
+
 export default function AuthShell({ mode }: { mode: Mode }) {
-  const isSignup = mode === "signup";
+  const isWaitlist = mode === "waitlist";
+  const isLogin = mode === "login";
+
+  const leftHeadline = isLogin
+    ? "Welcome back to iNGen"
+    : isWaitlist
+    ? "Welcome to iNGen"
+    : "Welcome to iNGen";
+  const leftSubhead = isLogin
+    ? "Sign in to continue running proof-first hiring"
+    : isWaitlist
+    ? "Be first in line when iNGen opens to your team"
+    : "Rethink the way you source, engage, and hire talent";
+  const rightHeadline = isLogin
+    ? "Sign in to your account"
+    : isWaitlist
+    ? "Join the waiting list"
+    : "Get started for free";
 
   return (
     <main className="min-h-screen w-full bg-brand-bg flex items-center justify-center px-4 py-8">
@@ -185,13 +414,9 @@ export default function AuthShell({ mode }: { mode: Mode }) {
         <div className="rounded-2xl border border-black/5 bg-[#f1eef1] px-6 py-8 lg:px-10 lg:py-10 flex flex-col">
           <div className="text-center">
             <h1 className="font-display text-[28px] md:text-[32px] leading-tight text-brand-ink">
-              {isSignup ? "Welcome to iNGen" : "Welcome back to iNGen"}
+              {leftHeadline}
             </h1>
-            <p className="mt-2 text-[14px] text-brand-ink/70">
-              {isSignup
-                ? "Rethink the way you source, engage, and hire talent"
-                : "Sign in to continue running proof-first hiring"}
-            </p>
+            <p className="mt-2 text-[14px] text-brand-ink/70">{leftSubhead}</p>
           </div>
 
           <div className="flex-1 flex items-center justify-center my-4">
@@ -211,88 +436,58 @@ export default function AuthShell({ mode }: { mode: Mode }) {
 
           <div className="flex-1 flex flex-col justify-center">
             <h2 className="text-center font-display text-[24px] md:text-[26px] leading-tight text-brand-ink mt-4 mb-6">
-              {isSignup ? "Get started for free" : "Sign in to your account"}
+              {rightHeadline}
             </h2>
 
-            <div className="mx-auto w-full max-w-[380px] flex flex-col gap-2.5">
-              <ProviderButton
-                icon={
-                  <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden>
-                    <path
-                      fill="#4285F4"
-                      d="M17.64 9.205c0-.639-.057-1.252-.164-1.841H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"
-                    />
-                    <path
-                      fill="#34A853"
-                      d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"
-                    />
-                    <path
-                      fill="#FBBC05"
-                      d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"
-                    />
-                    <path
-                      fill="#EA4335"
-                      d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z"
-                    />
-                  </svg>
-                }
-              >
-                Continue with Google
-              </ProviderButton>
+            {isWaitlist ? (
+              <WaitlistPanel />
+            ) : (
+              <div className="mx-auto w-full max-w-[380px] flex flex-col gap-2.5">
+                <ProviderButton icon={GoogleIcon}>Continue with Google</ProviderButton>
+                <ProviderButton icon={EmailIcon}>Continue with Email</ProviderButton>
 
-              <ProviderButton
-                icon={
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
-                    <rect x="3" y="5" width="18" height="14" rx="2" stroke="#1d161d" strokeWidth="1.6" />
-                    <path d="M3.5 6.5L12 13L20.5 6.5" stroke="#1d161d" strokeWidth="1.6" strokeLinecap="round" />
-                  </svg>
-                }
-              >
-                Continue with Email
-              </ProviderButton>
+                <ProviderButton
+                  icon={
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
+                      <rect
+                        x="5"
+                        y="11"
+                        width="14"
+                        height="9"
+                        rx="2"
+                        stroke="#1d161d"
+                        strokeWidth="1.6"
+                      />
+                      <path
+                        d="M8 11V8a4 4 0 1 1 8 0v3"
+                        stroke="#1d161d"
+                        strokeWidth="1.6"
+                        strokeLinecap="round"
+                      />
+                    </svg>
+                  }
+                >
+                  Continue with SSO / SAML
+                </ProviderButton>
 
-              <ProviderButton
-                icon={
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
-                    <rect x="5" y="11" width="14" height="9" rx="2" stroke="#1d161d" strokeWidth="1.6" />
-                    <path d="M8 11V8a4 4 0 1 1 8 0v3" stroke="#1d161d" strokeWidth="1.6" strokeLinecap="round" />
-                  </svg>
-                }
-              >
-                Continue with SSO / SAML
-              </ProviderButton>
+                <p className="text-center text-[12px] text-brand-ink/60 mt-3">
+                  By proceeding, you agree to our{" "}
+                  <Link href="/terms" className="underline hover:text-brand-ink">
+                    Terms of Service
+                  </Link>
+                </p>
 
-              <p className="text-center text-[12px] text-brand-ink/60 mt-3">
-                By proceeding, you agree to our{" "}
-                <a href="#" className="underline hover:text-brand-ink">
-                  Terms of Service
-                </a>
-              </p>
-
-              <div className="mt-4 text-center text-[13px] text-brand-ink/70">
-                {isSignup ? (
-                  <>
-                    Already have an account?{" "}
-                    <Link
-                      href="/login"
-                      className="font-medium text-brand-purple hover:underline"
-                    >
-                      Log in
-                    </Link>
-                  </>
-                ) : (
-                  <>
-                    New to iNGen?{" "}
-                    <Link
-                      href="/signup"
-                      className="font-medium text-brand-purple hover:underline"
-                    >
-                      Create an account
-                    </Link>
-                  </>
-                )}
+                <div className="mt-4 text-center text-[13px] text-brand-ink/70">
+                  New to iNGen?{" "}
+                  <Link
+                    href="/signup"
+                    className="font-medium text-brand-purple hover:underline"
+                  >
+                    Join the waitlist
+                  </Link>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>
