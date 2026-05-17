@@ -122,7 +122,7 @@ function AuthGlobe() {
   );
 
   return (
-    <div className="relative mx-auto w-[320px] h-[320px] sm:w-[360px] sm:h-[360px]">
+    <div className="relative mx-auto w-[240px] h-[240px] sm:w-[280px] sm:h-[280px] lg:w-[300px] lg:h-[300px]">
       <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/70 via-transparent to-black/10 blur-2xl" />
       <div className="absolute inset-0 [&>div]:!w-full [&>div]:!h-full [&_canvas]:!w-full [&_canvas]:!h-full">
         <World data={sampleArcs} globeConfig={globeConfig} />
@@ -131,7 +131,7 @@ function AuthGlobe() {
       {chips.map((c) => (
         <div
           key={c.label}
-          className={`chip ${c.cls} absolute whitespace-nowrap shadow-sm z-10`}
+          className={`chip ${c.cls} absolute whitespace-nowrap shadow-sm z-10 text-[10px] sm:text-[11px]`}
           style={{ top: c.top, left: c.left }}
         >
           <span>{c.label}</span>
@@ -214,10 +214,12 @@ function ProviderButton({
       type={type}
       onClick={onClick}
       disabled={disabled}
-      className="w-full flex items-center justify-center gap-3 h-11 rounded-md border border-black/10 bg-white text-[14px] font-medium text-brand-ink hover:border-brand-ink/40 hover:bg-black/[0.02] transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+      className="group relative w-full flex items-center justify-center gap-3 h-11 rounded-md border border-black/10 bg-white text-[14px] font-medium text-brand-ink shadow-[0_1px_0_rgba(0,0,0,0.02)] transition-all duration-200 ease-out hover:-translate-y-[1px] hover:border-brand-ink/40 hover:bg-black/[0.02] hover:shadow-[0_6px_16px_-8px_rgba(29,22,29,0.25)] active:translate-y-0 active:shadow-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-purple/40 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none"
     >
-      {icon}
-      <span>{children}</span>
+      <span className="inline-flex transition-transform duration-200 ease-out group-hover:scale-110">
+        {icon}
+      </span>
+      <span className="transition-colors duration-200 group-hover:text-brand-ink">{children}</span>
     </button>
   );
 }
@@ -376,13 +378,6 @@ function WaitlistPanel() {
           Terms of Service
         </Link>
       </p>
-
-      <div className="mt-4 text-center text-[13px] text-brand-ink/70">
-        Already have an account?{" "}
-        <Link href="/login" className="font-medium text-brand-purple hover:underline">
-          Log in
-        </Link>
-      </div>
     </div>
   );
 }
@@ -408,18 +403,18 @@ export default function AuthShell({ mode }: { mode: Mode }) {
     : "Get started for free";
 
   return (
-    <main className="min-h-screen w-full bg-brand-bg flex items-center justify-center px-4 py-8">
-      <div className="w-full max-w-[1080px] grid grid-cols-1 lg:grid-cols-2 gap-5 items-stretch">
+    <main className="min-h-screen w-full bg-brand-bg flex items-center justify-center px-3 sm:px-4 py-4 sm:py-6 md:py-8">
+      <div className="w-full max-w-[920px] grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5 items-stretch">
         {/* LEFT: Welcome card */}
-        <div className="rounded-2xl border border-black/5 bg-[#f1eef1] px-6 py-8 lg:px-10 lg:py-10 flex flex-col">
+        <div className="rounded-2xl border border-black/5 bg-[#f1eef1] px-5 py-6 sm:px-6 sm:py-7 lg:px-8 lg:py-8 flex flex-col">
           <div className="text-center">
-            <h1 className="font-display text-[28px] md:text-[32px] leading-tight text-brand-ink">
+            <h1 className="font-display text-[22px] sm:text-[24px] md:text-[26px] leading-tight text-brand-ink">
               {leftHeadline}
             </h1>
-            <p className="mt-2 text-[14px] text-brand-ink/70">{leftSubhead}</p>
+            <p className="mt-2 text-[13px] sm:text-[14px] text-brand-ink/70">{leftSubhead}</p>
           </div>
 
-          <div className="flex-1 flex items-center justify-center my-4">
+          <div className="flex-1 flex items-center justify-center my-3 sm:my-4">
             <AuthGlobe />
           </div>
 
@@ -427,7 +422,7 @@ export default function AuthShell({ mode }: { mode: Mode }) {
         </div>
 
         {/* RIGHT: Auth panel */}
-        <div className="rounded-2xl border border-black/5 bg-white px-6 py-8 lg:px-12 lg:py-10 flex flex-col">
+        <div className="rounded-2xl border border-black/5 bg-white px-5 py-6 sm:px-6 sm:py-7 lg:px-10 lg:py-8 flex flex-col">
           <div className="flex justify-center">
             <Link href="/" aria-label="iNGen home" className="inline-flex">
               <Logo />
@@ -435,7 +430,7 @@ export default function AuthShell({ mode }: { mode: Mode }) {
           </div>
 
           <div className="flex-1 flex flex-col justify-center">
-            <h2 className="text-center font-display text-[24px] md:text-[26px] leading-tight text-brand-ink mt-4 mb-6">
+            <h2 className="text-center font-display text-[20px] sm:text-[22px] md:text-[24px] leading-tight text-brand-ink mt-4 mb-5 sm:mb-6">
               {rightHeadline}
             </h2>
 
