@@ -413,7 +413,34 @@ export default function AuthShell({ mode }: { mode: Mode }) {
     : "Get started for free";
 
   return (
-    <main className="min-h-screen w-full bg-brand-bg flex items-center justify-center px-3 sm:px-4 py-4 sm:py-6">
+    <main className="relative min-h-screen w-full bg-brand-bg flex items-center justify-center px-3 sm:px-4 pt-16 sm:pt-6 pb-4 sm:pb-6">
+      <Link
+        href="/"
+        aria-label="Go back to home"
+        title="Go back to home"
+        className="group fixed top-4 left-4 sm:top-5 sm:left-5 z-30 inline-flex items-center h-10 rounded-full border border-black/[0.08] bg-white/85 text-brand-ink shadow-[0_2px_8px_-2px_rgba(0,0,0,0.08)] backdrop-blur-md pl-[11px] pr-[11px] hover:pr-4 transition-all duration-300 ease-out hover:bg-white hover:shadow-[0_8px_20px_-6px_rgba(0,0,0,0.18)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-purple/40"
+      >
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          aria-hidden
+          className="shrink-0 transition-transform duration-300 ease-out group-hover:-translate-x-[2px]"
+        >
+          <path
+            d="M15 6l-6 6 6 6"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+        <span className="overflow-hidden whitespace-nowrap text-[13px] font-medium max-w-0 opacity-0 group-hover:max-w-[80px] group-hover:opacity-100 group-hover:ml-1.5 transition-[max-width,opacity,margin] duration-300 ease-out">
+          Go back
+        </span>
+      </Link>
+
       <div className="w-full max-w-[880px] grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-5 items-stretch">
         {/* LEFT: Welcome card */}
         <div className="relative rounded-2xl border border-black/[0.06] bg-[#f1eef1] px-5 py-5 sm:px-6 sm:py-6 lg:px-7 lg:py-7 flex flex-col shadow-[0_12px_40px_-12px_rgba(0,0,0,0.08),0_2px_6px_-2px_rgba(0,0,0,0.04)]">
@@ -428,29 +455,6 @@ export default function AuthShell({ mode }: { mode: Mode }) {
               borderBottomRightRadius: "1rem",
             }}
           />
-          <Link
-            href="/"
-            aria-label="Go back to home"
-            title="Go back to home"
-            className="group absolute top-3 left-3 z-20 inline-flex h-8 w-8 items-center justify-center rounded-full border border-black/[0.08] bg-white/80 text-brand-ink shadow-[0_1px_2px_rgba(0,0,0,0.05)] backdrop-blur-sm transition-all duration-200 ease-out hover:-translate-x-[1px] hover:bg-white hover:shadow-[0_4px_12px_-4px_rgba(0,0,0,0.18)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-purple/40"
-          >
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              aria-hidden
-              className="transition-transform duration-200 ease-out group-hover:-translate-x-[1px]"
-            >
-              <path
-                d="M15 6l-6 6 6 6"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </Link>
           <div className="text-center">
             <h1
               className="font-display leading-[1.15] text-brand-ink"
