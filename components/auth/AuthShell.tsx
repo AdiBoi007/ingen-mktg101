@@ -60,10 +60,10 @@ type Chip = {
 };
 
 const chips: Chip[] = [
-  { label: "Prabh just got placed",         cls: "chip-mint",     top: "2%",   left: "-4%"  },
-  { label: "Aren is hiring-ready",          cls: "chip-amber",    top: "-2%",  right: "-4%" },
-  { label: "Maya matched with a recruiter", cls: "chip-lavender", bottom: "8%", right: "-2%" },
-  { label: "Riya mapped her AI engineer path", cls: "chip-yellow", bottom: "-4%", left: "-4%" },
+  { label: "Prabh just got placed",            cls: "chip-mint",     top: "10%",    left: "4%"  },
+  { label: "Aren is hiring-ready",             cls: "chip-amber",    top: "16%",    right: "4%" },
+  { label: "Maya matched with a recruiter",    cls: "chip-lavender", bottom: "18%", right: "4%" },
+  { label: "Riya mapped her AI engineer path", cls: "chip-yellow",   bottom: "8%",  left: "4%"  },
 ];
 
 const integrations: { name: string; domain: string }[] = [
