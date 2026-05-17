@@ -63,7 +63,7 @@ const chips: Chip[] = [
   { label: "Prabh just got placed",         cls: "chip-mint",     top: "2%",   left: "-4%"  },
   { label: "Aren is hiring-ready",          cls: "chip-amber",    top: "-2%",  right: "-4%" },
   { label: "Maya matched with a recruiter", cls: "chip-lavender", bottom: "8%", right: "-2%" },
-  { label: "Riya mapped her career path",   cls: "chip-yellow",   bottom: "-4%", left: "-4%" },
+  { label: "Riya mapped her AI engineer path", cls: "chip-yellow", bottom: "-4%", left: "-4%" },
 ];
 
 const integrations: { name: string; domain: string }[] = [
@@ -132,7 +132,7 @@ function AuthGlobe() {
   return (
     <div
       className="relative mx-auto"
-      style={{ width: "clamp(200px, 22vw, 260px)", aspectRatio: "1 / 1" }}
+      style={{ width: "clamp(240px, 26vw, 320px)", aspectRatio: "1 / 1" }}
     >
       <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/70 via-transparent to-black/10 blur-2xl" />
       <div className="absolute inset-0 [&>div]:!w-full [&>div]:!h-full [&_canvas]:!w-full [&_canvas]:!h-full">
@@ -443,7 +443,7 @@ export default function AuthShell({ mode }: { mode: Mode }) {
             </p>
           </div>
 
-          <div className="flex-1 flex items-center justify-center my-2 sm:my-3">
+          <div className="flex-1 flex items-center justify-center mt-2 sm:mt-3 mb-7 sm:mb-9">
             <AuthGlobe />
           </div>
 
