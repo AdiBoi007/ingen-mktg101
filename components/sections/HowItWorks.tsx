@@ -707,7 +707,7 @@ export default function HowItWorks({
   if (!isDesktop || reducedMotion) {
     return (
       <section className="bg-white">
-        <div className="mx-auto max-w-[1280px] px-6 lg:px-12 pt-16 lg:pt-24 pb-20 lg:pb-28">
+        <div className="mx-auto max-w-[1280px] px-6 lg:px-12 pt-16 lg:pt-24 pb-10">
           <div className="text-[13px] font-mono uppercase tracking-[0.18em] text-ink/60 mb-1.5">
             [{sectionNumber}] {eyebrow}
           </div>
@@ -825,7 +825,7 @@ export default function HowItWorks({
         {/* Tab strip */}
         <div
           ref={tabBarRef}
-          className="relative mt-24 border-y border-ink/15 h-14 flex"
+          className="relative mt-12 border-y border-ink/15 h-14 flex"
           role="tablist"
           aria-label="Feature steps"
         >
