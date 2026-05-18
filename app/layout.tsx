@@ -6,6 +6,9 @@ export const metadata: Metadata = {
   title: "Ingen — Talent, reimagined",
   description:
     "Ingen connects recruiters with the right talent and students with the right opportunities.",
+  icons: {
+    icon: "/icon.svg",
+  },
 };
 
 export default function RootLayout({
