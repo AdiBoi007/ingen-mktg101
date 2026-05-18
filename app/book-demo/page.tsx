@@ -1,379 +1,28 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import Script from "next/script";
+import { useEffect } from "react";
 import Logo from "@/components/Logo";
 
-/* ------------------------------------------------------------------ */
-/*  Calendly-style "Select a Date & Time" booking interface            */
-/* ------------------------------------------------------------------ */
-
-const WEEKDAYS = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
-const SYDNEY_TZ = "Australia/Sydney";
-
-// 9:00 → 16:30 in the visitor's own local time, every 30 minutes
-const SLOT_TIMES: { h: number; m: number }[] = [];
-for (let h = 9; h <= 16; h++) {
-  SLOT_TIMES.push({ h, m: 0 });
-  SLOT_TIMES.push({ h, m: 30 });
-}
-
-function fmtTime(d: Date, timeZone?: string) {
-  return d.toLocaleTimeString("en-US", {
-    hour: "numeric",
-    minute: "2-digit",
-    ...(timeZone ? { timeZone } : {}),
-  });
-}
-
-function startOfDay(d: Date) {
-  return new Date(d.getFullYear(), d.getMonth(), d.getDate());
-}
-
-function BookingCalendar() {
-  const today = useMemo(() => startOfDay(new Date()), []);
-  const [viewMonth, setViewMonth] = useState(
-    () => new Date(today.getFullYear(), today.getMonth(), 1)
-  );
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [selectedSlot, setSelectedSlot] = useState<{ h: number; m: number } | null>(
-    null
-  );
-  const [confirmed, setConfirmed] = useState(false);
-
-  const { localTzName, localNow, sydneyNow } = useMemo(() => {
-    let name = "Local time";
-    try {
-      name = Intl.DateTimeFormat()
-        .resolvedOptions()
-        .timeZone.replace(/_/g, " ");
-    } catch {
-      /* keep fallback */
-    }
-    const now = new Date();
-    return {
-      localTzName: name,
-      localNow: fmtTime(now),
-      sydneyNow: fmtTime(now, SYDNEY_TZ),
-    };
-  }, []);
-
-  // The chosen instant, expressed from the visitor's own clock
-  const slotDate =
-    selectedDate && selectedSlot
-      ? new Date(
-          selectedDate.getFullYear(),
-          selectedDate.getMonth(),
-          selectedDate.getDate(),
-          selectedSlot.h,
-          selectedSlot.m
-        )
-      : null;
-  const localTimeStr = slotDate ? fmtTime(slotDate) : null;
-  const sydneyTimeStr = slotDate ? fmtTime(slotDate, SYDNEY_TZ) : null;
-
-  const year = viewMonth.getFullYear();
-  const month = viewMonth.getMonth();
-  const monthLabel = viewMonth.toLocaleString("default", {
-    month: "long",
-    year: "numeric",
-  });
-
-  // Monday-first leading blanks
-  const firstDow = (new Date(year, month, 1).getDay() + 6) % 7;
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-  const canGoPrev =
-    year > today.getFullYear() ||
-    (year === today.getFullYear() && month > today.getMonth());
-
-  const cells: (Date | null)[] = [];
-  for (let i = 0; i < firstDow; i++) cells.push(null);
-  for (let d = 1; d <= daysInMonth; d++) cells.push(new Date(year, month, d));
-
-  const isAvailable = (d: Date) => {
-    const dow = d.getDay();
-    return d >= today && dow !== 0 && dow !== 6;
-  };
-  const sameDay = (a: Date | null, b: Date | null) =>
-    !!a && !!b && a.getTime() === b.getTime();
-
-  /* -------- confirmed success state -------- */
-  if (confirmed && selectedDate && slotDate && localTimeStr && sydneyTimeStr) {
-    return (
-      <div className="flex flex-1 flex-col items-center justify-center px-8 py-24 text-center">
-        <div className="mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-brand-purple/10">
-          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" aria-hidden>
-            <path
-              d="M5 12.5l4.5 4.5L19 7"
-              stroke="#6c5ce7"
-              strokeWidth="2.2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </div>
-        <h3 className="font-display text-[26px] text-brand-ink">
-          You&apos;re booked in
-        </h3>
-        <p className="mt-3 max-w-md text-[15px] leading-relaxed text-brand-ink/70">
-          Your iNGen product demo is scheduled for{" "}
-          <span className="font-medium text-brand-ink">
-            {selectedDate.toLocaleDateString("default", {
-              weekday: "long",
-              month: "long",
-              day: "numeric",
-            })}
-          </span>
-          . A calendar invite with the video link is on its way to your inbox.
-        </p>
-        <div className="mt-4 w-full max-w-sm space-y-1.5 rounded-lg border border-black/[0.06] bg-brand-bg/60 px-4 py-3 text-[14px]">
-          <div className="flex items-center justify-between">
-            <span className="text-brand-ink/55">{localTzName}</span>
-            <span className="font-medium text-brand-ink">{localTimeStr}</span>
-          </div>
-          <div className="flex items-center justify-between">
-            <span className="text-brand-ink/55">Sydney (Australia)</span>
-            <span className="font-medium text-brand-ink">{sydneyTimeStr}</span>
-          </div>
-        </div>
-        <button
-          type="button"
-          onClick={() => {
-            setConfirmed(false);
-            setSelectedSlot(null);
-            setSelectedDate(null);
-          }}
-          className="mt-7 text-[14px] font-medium text-brand-purple hover:underline"
-        >
-          Pick a different time
-        </button>
-      </div>
-    );
-  }
-
-  return (
-    <div className="relative flex flex-1 flex-col lg:flex-row">
-      {/* diagonal corner ribbon */}
-      <div className="pointer-events-none absolute -right-[1px] -top-[1px] z-10 overflow-hidden">
-        <div className="absolute right-[-46px] top-[22px] w-[170px] rotate-45 bg-brand-ink/85 py-1.5 text-center text-[10px] font-semibold uppercase tracking-[0.14em] text-white">
-          Powered by iNGen
-        </div>
-      </div>
-
-      {/* event info column */}
-      <div className="border-b border-black/[0.07] px-8 py-9 lg:w-[38%] lg:border-b-0 lg:border-r lg:px-10 lg:py-12">
-        <Link href="/" aria-label="iNGen home" className="inline-flex">
-          <Logo />
-        </Link>
-
-        <h2 className="mt-8 font-display text-[28px] leading-tight text-brand-ink">
-          iNGen Product Demo
-        </h2>
-
-        <p className="mt-6 text-[14.5px] leading-relaxed text-brand-ink/70">
-          A live walkthrough of iNGen — Aristotle, Sherlock, and the full
-          proof-first hiring pipeline. Bring your toughest hiring questions and
-          we&apos;ll show you exactly how the workspace handles them.
-        </p>
-      </div>
-
-      {/* calendar column */}
-      <div className="flex flex-1 flex-col px-8 py-9 lg:px-12 lg:py-12">
-        <h3 className="font-display text-[22px] text-brand-ink">
-          Select a Date &amp; Time
-        </h3>
-
-        {/* month nav */}
-        <div className="mt-7 flex items-center justify-center gap-8">
-          <button
-            type="button"
-            disabled={!canGoPrev}
-            onClick={() => setViewMonth(new Date(year, month - 1, 1))}
-            aria-label="Previous month"
-            className="flex h-10 w-10 items-center justify-center rounded-full text-brand-ink transition-colors hover:bg-brand-purple/10 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-transparent"
-          >
-            <svg width="18" height="18" viewBox="0 0 16 16" fill="none">
-              <path
-                d="M10 12L6 8l4-4"
-                stroke="currentColor"
-                strokeWidth="1.8"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </button>
-          <span className="min-w-[160px] text-center text-[16px] font-medium text-brand-ink">
-            {monthLabel}
-          </span>
-          <button
-            type="button"
-            onClick={() => setViewMonth(new Date(year, month + 1, 1))}
-            aria-label="Next month"
-            className="flex h-10 w-10 items-center justify-center rounded-full text-brand-ink transition-colors hover:bg-brand-purple/10"
-          >
-            <svg width="18" height="18" viewBox="0 0 16 16" fill="none">
-              <path
-                d="M6 4l4 4-4 4"
-                stroke="currentColor"
-                strokeWidth="1.8"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </button>
-        </div>
-
-        {/* weekday header */}
-        <div className="mx-auto mt-7 grid w-full max-w-[460px] grid-cols-7 gap-y-2 text-center text-[12px] font-semibold tracking-wide text-brand-ink/45">
-          {WEEKDAYS.map((w) => (
-            <div key={w}>{w}</div>
-          ))}
-        </div>
-
-        {/* day grid */}
-        <div className="mx-auto mt-1 grid w-full max-w-[460px] grid-cols-7 gap-y-2">
-          {cells.map((date, i) => {
-            if (!date) return <div key={`b-${i}`} />;
-            const available = isAvailable(date);
-            const selected = sameDay(date, selectedDate);
-            return (
-              <div key={date.toISOString()} className="flex justify-center">
-                <button
-                  type="button"
-                  disabled={!available}
-                  onClick={() => {
-                    setSelectedDate(date);
-                    setSelectedTime(null);
-                  }}
-                  className={[
-                    "flex h-11 w-11 items-center justify-center rounded-full text-[15px] transition-colors",
-                    selected
-                      ? "bg-brand-purple font-semibold text-white"
-                      : available
-                      ? "bg-brand-purple/10 font-semibold text-brand-purple hover:bg-brand-purple/20"
-                      : "text-brand-ink/25",
-                  ].join(" ")}
-                >
-                  {date.getDate()}
-                </button>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* time zone — visitor's local zone + Sydney */}
-        <div className="mx-auto mt-7 w-full max-w-[460px] border-t border-black/[0.06] pt-4">
-          <div className="flex items-center gap-2 text-[14px] font-semibold text-brand-ink">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
-              <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.6" />
-              <path
-                d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"
-                stroke="currentColor"
-                strokeWidth="1.4"
-              />
-            </svg>
-            Time zones
-          </div>
-          <div className="mt-2 space-y-1.5 text-[13.5px] text-brand-ink/65">
-            <div className="flex items-center justify-between">
-              <span>{localTzName} (your time)</span>
-              <span className="font-medium text-brand-ink/80">{localNow}</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span>Sydney (Australia)</span>
-              <span className="font-medium text-brand-ink/80">{sydneyNow}</span>
-            </div>
-          </div>
-          <p className="mt-2 text-[12px] text-brand-ink/45">
-            Pick a slot in your own time — we&apos;ll show the Sydney equivalent
-            too.
-          </p>
-        </div>
-
-        {/* time slots — shown after a date is picked */}
-        {selectedDate && (
-          <div className="mx-auto mt-6 w-full max-w-[460px] border-t border-black/[0.06] pt-6">
-            <div className="mb-4 text-[14px] font-medium text-brand-ink">
-              {selectedDate.toLocaleDateString("default", {
-                weekday: "long",
-                month: "long",
-                day: "numeric",
-              })}
-            </div>
-            <div className="grid max-h-[260px] grid-cols-2 gap-2.5 overflow-y-auto pr-1 sm:grid-cols-3">
-              {SLOT_TIMES.map((slot) => {
-                const d = new Date(
-                  selectedDate.getFullYear(),
-                  selectedDate.getMonth(),
-                  selectedDate.getDate(),
-                  slot.h,
-                  slot.m
-                );
-                const active =
-                  !!selectedSlot &&
-                  selectedSlot.h === slot.h &&
-                  selectedSlot.m === slot.m;
-                return (
-                  <button
-                    key={`${slot.h}-${slot.m}`}
-                    type="button"
-                    onClick={() => setSelectedSlot(slot)}
-                    className={[
-                      "rounded-md border py-2.5 transition-colors",
-                      active
-                        ? "border-brand-purple bg-brand-purple text-white"
-                        : "border-brand-purple/40 text-brand-purple hover:border-brand-purple hover:bg-brand-purple/[0.06]",
-                    ].join(" ")}
-                  >
-                    <span className="block text-[14px] font-medium">
-                      {fmtTime(d)}
-                    </span>
-                    <span
-                      className={`block text-[11px] ${
-                        active ? "text-white/75" : "text-brand-ink/45"
-                      }`}
-                    >
-                      SYD {fmtTime(d, SYDNEY_TZ)}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-
-            {slotDate && localTimeStr && sydneyTimeStr && (
-              <>
-                <p className="mt-4 text-center text-[13px] text-brand-ink/60">
-                  <span className="font-medium text-brand-ink">
-                    {localTimeStr}
-                  </span>{" "}
-                  {localTzName} · {" "}
-                  <span className="font-medium text-brand-ink">
-                    {sydneyTimeStr}
-                  </span>{" "}
-                  Sydney
-                </p>
-                <button
-                  type="button"
-                  onClick={() => setConfirmed(true)}
-                  className="mt-3 inline-flex h-12 w-full items-center justify-center rounded-md bg-brand-purple text-[15px] font-medium text-white transition-colors hover:bg-brand-purple/90"
-                >
-                  Schedule demo — {localTimeStr}
-                </button>
-              </>
-            )}
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/*  PAGE                                                               */
-/* ------------------------------------------------------------------ */
+const CALENDLY_URL =
+  "https://calendly.com/contact-ingenworkspace?hide_landing_page_details=1&hide_gdpr_banner=1&primary_color=ea7659";
 
 export default function BookDemoPage() {
+  // Handle client-side navigation: if widget.js is already loaded it won't
+  // auto-scan again, so init the embed manually when it's empty.
+  useEffect(() => {
+    const w = window as unknown as {
+      Calendly?: {
+        initInlineWidget: (o: { url: string; parentElement: HTMLElement }) => void;
+      };
+    };
+    const el = document.getElementById("calendly-embed");
+    if (w.Calendly && el && !el.querySelector("iframe")) {
+      w.Calendly.initInlineWidget({ url: CALENDLY_URL, parentElement: el });
+    }
+  }, []);
+
   return (
     <main className="relative min-h-screen w-full bg-brand-bg flex items-center justify-center px-3 sm:px-6 pt-16 sm:pt-10 pb-6 sm:pb-10">
       <Link
@@ -404,9 +53,39 @@ export default function BookDemoPage() {
       </Link>
 
       {/* Booking card — full width, centered */}
-      <div className="relative flex w-full max-w-[1080px] flex-col overflow-hidden rounded-2xl border border-black/[0.06] bg-white shadow-[0_12px_40px_-12px_rgba(0,0,0,0.08),0_2px_6px_-2px_rgba(0,0,0,0.04)]">
-        <BookingCalendar />
+      <div className="relative flex w-full max-w-[1080px] flex-col overflow-hidden rounded-2xl border border-black/[0.06] bg-white shadow-[0_12px_40px_-12px_rgba(0,0,0,0.08),0_2px_6px_-2px_rgba(0,0,0,0.04)] lg:flex-row">
+        {/* LEFT: existing event info column */}
+        <div className="border-b border-black/[0.07] px-8 py-9 lg:w-[38%] lg:border-b-0 lg:border-r lg:px-10 lg:py-12">
+          <Link href="/" aria-label="iNGen home" className="inline-flex">
+            <Logo />
+          </Link>
+
+          <h2 className="mt-8 font-display text-[28px] leading-tight text-brand-ink">
+            iNGen Product Demo
+          </h2>
+
+          <p className="mt-6 text-[14.5px] leading-relaxed text-brand-ink/70">
+            A live walkthrough of iNGen — Aristotle, Sherlock, and the full
+            proof-first hiring pipeline. Bring your toughest hiring questions and
+            we&apos;ll show you exactly how the workspace handles them.
+          </p>
+        </div>
+
+        {/* RIGHT: Calendly inline widget */}
+        <div className="flex-1 px-2 py-4 sm:px-4 lg:px-2 lg:py-2">
+          <div
+            id="calendly-embed"
+            className="calendly-inline-widget"
+            data-url={CALENDLY_URL}
+            style={{ minWidth: 320, height: 700 }}
+          />
+        </div>
       </div>
+
+      <Script
+        src="https://assets.calendly.com/assets/external/widget.js"
+        strategy="afterInteractive"
+      />
     </main>
   );
 }
