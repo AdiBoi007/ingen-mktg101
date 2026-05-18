@@ -583,7 +583,7 @@ export default function AuthShell({ mode }: { mode: Mode }) {
 
       <div className="w-full max-w-[880px] grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-5 items-stretch">
         {/* LEFT: Welcome card */}
-        <div className="relative rounded-2xl border border-black/[0.06] bg-[#f1eef1] px-5 py-5 sm:px-6 sm:py-6 lg:px-7 lg:py-7 flex flex-col shadow-[0_12px_40px_-12px_rgba(0,0,0,0.08),0_2px_6px_-2px_rgba(0,0,0,0.04)]">
+        <div className="order-2 lg:order-1 relative rounded-2xl border border-black/[0.06] bg-[#f1eef1] px-5 py-5 sm:px-6 sm:py-6 lg:px-7 lg:py-7 flex flex-col shadow-[0_12px_40px_-12px_rgba(0,0,0,0.08),0_2px_6px_-2px_rgba(0,0,0,0.04)]">
           {/* Inner-edge seam shadow on the right (desktop only) */}
           <div
             aria-hidden
@@ -618,7 +618,7 @@ export default function AuthShell({ mode }: { mode: Mode }) {
         </div>
 
         {/* RIGHT: Auth panel */}
-        <div className="relative rounded-2xl border border-black/[0.06] bg-white px-5 py-5 sm:px-6 sm:py-6 lg:px-9 lg:py-7 flex flex-col shadow-[0_12px_40px_-12px_rgba(0,0,0,0.08),0_2px_6px_-2px_rgba(0,0,0,0.04)]">
+        <div className="order-1 lg:order-2 relative rounded-2xl border border-black/[0.06] bg-white px-5 py-5 sm:px-6 sm:py-6 lg:px-9 lg:py-7 flex flex-col shadow-[0_12px_40px_-12px_rgba(0,0,0,0.08),0_2px_6px_-2px_rgba(0,0,0,0.04)]">
           {/* Inner-edge seam shadow on the left (desktop only) */}
           <div
             aria-hidden
