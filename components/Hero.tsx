@@ -127,7 +127,7 @@ function RecruiterHero() {
                 <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
                   <path d="M8 2L9.5 6L13.5 7.5L9.5 9L8 13L6.5 9L2.5 7.5L6.5 6L8 2Z" fill="currentColor" />
                 </svg>
-                Aristotle · Role to shortlist
+                Aristotle · Hiring Agent
               </span>
             </div>
             <div className="flex items-center px-3 py-3 gap-2">
