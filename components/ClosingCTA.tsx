@@ -21,10 +21,10 @@ function RecruiterCTA() {
           $24k budget, and let Aristotle and Sherlock work the pipeline.
         </p>
         <div className="mt-9 flex items-center justify-center gap-3">
-          <a href="#" className="btn-dark bg-white !text-brand-ink hover:!bg-white/90">
+          <a href="/signup" className="btn-dark bg-white !text-brand-ink hover:!bg-white/90">
             Start free
           </a>
-          <a href="#" className="btn-outline btn-outline-light">
+          <a href="/book-demo" className="btn-outline btn-outline-light">
             Book a demo
           </a>
         </div>
@@ -65,10 +65,10 @@ function StudentCTA() {
           collection that already speaks recruiter.
         </p>
         <div className="mt-9 flex items-center justify-center gap-3">
-          <a href="#" className="btn-dark bg-white !text-brand-ink hover:!bg-white/90">
+          <a href="/signup" className="btn-dark bg-white !text-brand-ink hover:!bg-white/90">
             Start your roadmap
           </a>
-          <a href="#" className="btn-outline btn-outline-light">
+          <a href="/book-demo" className="btn-outline btn-outline-light">
             Watch the demo
           </a>
         </div>

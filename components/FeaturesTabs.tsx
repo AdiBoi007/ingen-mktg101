@@ -233,8 +233,8 @@ function RecruiterFeatures() {
                 {data.copy}
               </p>
               <div className="mt-7 flex items-center gap-3">
-                <a href="#" className="btn-dark">{data.cta}</a>
-                <a href="#" className="btn-outline">Book a Demo</a>
+                <a href="/signup" className="btn-dark">{data.cta}</a>
+                <a href="/book-demo" className="btn-outline">Book a Demo</a>
               </div>
             </div>
           </div>
@@ -652,13 +652,13 @@ function StudentFeatures() {
               </p>
               <div className="mt-10 flex flex-wrap items-center gap-3">
                 <a
-                  href="#"
+                  href="/signup"
                   className="font-mono uppercase tracking-[0.05em] text-[13px] bg-[#0E0E0E] text-white px-7 py-4 border border-[#0E0E0E] hover:bg-white hover:text-[#0E0E0E] transition-colors"
                 >
                   {data.primaryCta}
                 </a>
                 <a
-                  href="#"
+                  href="/book-demo"
                   className="font-mono uppercase tracking-[0.05em] text-[13px] bg-white text-[#0E0E0E] border border-[#0E0E0E] px-7 py-4 hover:bg-[#0E0E0E] hover:text-white transition-colors"
                 >
                   {data.secondaryCta}

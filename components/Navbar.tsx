@@ -105,7 +105,7 @@ export default function Navbar() {
             Join Waitlist
           </Link>
           <a
-            href="#"
+            href="/book-demo"
             className="group relative hidden md:inline-flex items-center label-mono px-4 py-2 rounded-full bg-black backdrop-blur-md border border-white/10 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] hover:border-white/25 hover:bg-neutral-900 transition-all overflow-hidden"
           >
             <span className="relative z-10">View Demo</span>

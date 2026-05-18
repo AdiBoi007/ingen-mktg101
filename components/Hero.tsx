@@ -56,10 +56,10 @@ function RecruiterHero() {
           </p>
 
           <div className="mt-9 flex items-center justify-center gap-3">
-            <a href="#" className="btn-dark !bg-white !text-brand-ink hover:!bg-white/90">
+            <a href="/signup" className="btn-dark !bg-white !text-brand-ink hover:!bg-white/90">
               Try for Free
             </a>
-            <a href="#" className="btn-outline btn-outline-light">
+            <a href="/book-demo" className="btn-outline btn-outline-light">
               Book a Demo
             </a>
           </div>
@@ -153,10 +153,10 @@ function StudentHero() {
           </p>
 
           <div className="mt-9 flex items-center justify-center gap-3">
-            <a href="#" className="btn-dark bg-white !text-brand-ink hover:!bg-white/90">
+            <a href="/signup" className="btn-dark bg-white !text-brand-ink hover:!bg-white/90">
               Start your roadmap
             </a>
-            <a href="#" className="btn-outline btn-outline-light">
+            <a href="/book-demo" className="btn-outline btn-outline-light">
               Watch the Demo
             </a>
           </div>
