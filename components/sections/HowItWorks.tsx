@@ -275,74 +275,74 @@ function recruiterSteps(): Step[] {
   return [
     {
       id: "intake",
-      tabLabel: "INTAKE · ARISTOTLE",
+      tabLabel: "ROLE INTAKE · ARISTOTLE",
       icon: Search,
       bgColor: "#5B2B8C",
       accentColor: "#C9B6E4",
-      pillLabel: "INTAKE & SEARCH",
-      heading: "Brief, search and shortlist in one workflow",
-      body: "Aristotle runs the intake conversation, drafts the role brief, and turns it into a structured search across GitHub, work history, and university signals. Shortlists arrive ranked by proof, not keywords.",
-      primaryCta: { label: "TRY ARISTOTLE", href: "#" },
+      pillLabel: "ARISTOTLE · RECRUITING AGENT",
+      heading: "Turn a messy hiring need into a real search.",
+      body: "Tell Aristotle who you need to hire. It turns a rough role idea into a sharp brief, must-have criteria, search logic, and a proof-ranked candidate pipeline your team can actually act on — shipped projects, GitHub depth, work history, university and role fit.",
+      primaryCta: { label: "BUILD THE ROLE", href: "#" },
       secondaryCta: { label: "BOOK A DEMO", href: "#" },
       visual: (
         <SearchResultsCard
-          pillLeft="Strong fit"
-          pillRight="Reviewed"
+          pillLeft="High fit"
+          pillRight="Proof ranked"
           filterChips={[
-            "Backend · MVP",
+            "Founding Full-Stack",
             "Sydney / Remote",
-            "Idea → Series A",
+            "Seed-stage AI",
             "+2 filters",
           ]}
-          resultsLabel="Aristotle shortlist (12)"
+          resultsLabel="Aristotle shortlist (12) · ranked by proof"
           rows={[
-            { name: "Alex Rivera", role: "Backend · MVP", company: "Hello AI", match: 92 },
             { name: "Maya Chen", role: "Founding FS", company: "Orbit", match: 93 },
+            { name: "Alex Rivera", role: "Backend · MVP", company: "Hello AI", match: 92 },
+            { name: "Anika Sharma", role: "Product systems", company: "Sheridine", match: 91 },
             { name: "Owen Brooks", role: "Data · Launch", company: "Stark", match: 90 },
-            { name: "Anika Sharma", role: "Designer · v1", company: "Sheridine", match: 91 },
           ]}
         />
       ),
     },
     {
       id: "proof",
-      tabLabel: "PROOF · SHERLOCK",
+      tabLabel: "PROOF SCAN · SHERLOCK",
       icon: BarChart3,
       bgColor: "#1F6F73",
       accentColor: "#9DD5D8",
-      pillLabel: "PROOF & TRIANGULATION",
-      heading: "Triangulated proof for every candidate",
-      body: "Sherlock cross-checks GitHub commits, university clubs, prior teams, and project artefacts to surface the few candidates whose claims actually hold up. Hiring managers see the receipts, not just the resume.",
-      primaryCta: { label: "TRY SHERLOCK", href: "#" },
+      pillLabel: "SHERLOCK · PROOF AGENT",
+      heading: "Know if the candidate is actually legit.",
+      body: "Sherlock investigates the evidence behind every candidate — GitHub, projects, work history, university, clubs, and public signals — and flags weak claims before they reach your inbox. No keyword theatre. Just receipts.",
+      primaryCta: { label: "RUN PROOF SCAN", href: "#" },
       secondaryCta: { label: "BOOK A DEMO", href: "#" },
       visual: (
         <InsightsChartCard
-          filterChips={["Founding eng · NYC", "+3 filters"]}
-          resultsLabel="Proof signal (last 90 days)"
+          filterChips={["Alex Rivera · Backend", "92% confidence", "LOW risk"]}
+          resultsLabel="Sherlock proof report · 5 sources verified"
           bars={[
-            { label: "GitHub depth", value: 82, color: "#6B2F8E" },
-            { label: "Team impact", value: 71, color: "#B054E7" },
-            { label: "Club / community", value: 56, color: "#DDC73C" },
+            { label: "GitHub depth", value: 92, color: "#6B2F8E" },
+            { label: "Work history", value: 84, color: "#B054E7" },
+            { label: "Project evidence", value: 78, color: "#DDC73C" },
           ]}
         />
       ),
     },
     {
-      id: "outreach",
-      tabLabel: "OUTREACH · WORKFLOW",
+      id: "interview",
+      tabLabel: "INTERVIEW COMMAND",
       icon: Mail,
       bgColor: "#2B3A6B",
       accentColor: "#A8B6E0",
-      pillLabel: "OUTREACH",
-      heading: "Personal outreach, written from the proof",
-      body: "Drafts grounded in each candidate's actual work — the repo they shipped, the club they led — so first messages read like a hiring manager wrote them, not a sequence tool.",
-      primaryCta: { label: "TRY OUTREACH", href: "#" },
+      pillLabel: "INTERVIEW COMMAND",
+      heading: "Walk into every interview already briefed.",
+      body: "iNGEN turns candidate proof into interview context. Your team gets strengths, risks, proof sources, questions, red flags, and a scorecard before the call starts — every interview begins with evidence, not assumptions.",
+      primaryCta: { label: "PREPARE INTERVIEW PACK", href: "#" },
       secondaryCta: { label: "BOOK A DEMO", href: "#" },
       visual: (
         <EmailComposerCard
-          recipientsLabel="Drafts ready (28)"
-          tokens={["First name", "Last role", "Top repo", "Recent project"]}
-          subjectLine="Subject — Saw your work on {Top repo}"
+          recipientsLabel="Interview pack ready · Maya Chen · Founding Full-Stack"
+          tokens={["Why this candidate", "Proof summary", "Questions to ask", "Red flags"]}
+          subjectLine="Pack — Maya Chen · 6 proof sources · LOW risk"
         />
       ),
     },
@@ -450,7 +450,7 @@ export default function HowItWorks({
   const heading =
     title ?? (audience === "student"
       ? "How it works: Roadmap + Agents"
-      : "How it works: Humans + Agents");
+      : "From role intent to interview-ready talent.");
 
   const containerRef = useRef<HTMLDivElement>(null);
   const stickyRef = useRef<HTMLDivElement>(null);
@@ -575,9 +575,16 @@ export default function HowItWorks({
           <div className="text-[13px] font-mono uppercase tracking-[0.18em] text-ink/60 mb-1.5">
             [{sectionNumber}] {eyebrow}
           </div>
-          <h2 className="font-display text-[32px] lg:text-[48px] leading-[1.0] tracking-[-0.02em] text-ink">
+          <h2 className="font-display text-[32px] lg:text-[48px] leading-[1.0] tracking-[-0.02em] text-ink max-w-4xl">
             {heading}
           </h2>
+          {audience === "recruiter" && (
+            <p className="mt-4 max-w-2xl text-[15px] lg:text-[17px] leading-relaxed text-ink/70">
+              iNGEN gives recruiters a proof-first hiring workflow: build the role, find candidates,
+              verify evidence, prepare interviews, and move the pipeline — all with Aristotle and
+              Sherlock working behind the scenes.
+            </p>
+          )}
         </div>
         <div className="space-y-16 pb-24">
           {steps.map((step) => (
@@ -667,9 +674,16 @@ export default function HowItWorks({
           <div className="text-[13px] font-mono uppercase tracking-[0.18em] text-ink/60 mb-1.5">
             [{sectionNumber}] {eyebrow}
           </div>
-          <h2 className="font-display text-[48px] leading-[1.0] tracking-[-0.02em] text-ink">
+          <h2 className="font-display text-[48px] leading-[1.0] tracking-[-0.02em] text-ink max-w-4xl">
             {heading}
           </h2>
+          {audience === "recruiter" && (
+            <p className="mt-4 max-w-2xl text-[16px] leading-relaxed text-ink/70">
+              iNGEN gives recruiters a proof-first hiring workflow: build the role, find candidates,
+              verify evidence, prepare interviews, and move the pipeline — all with Aristotle and
+              Sherlock working behind the scenes.
+            </p>
+          )}
         </motion.div>
 
         {/* Tab strip */}
