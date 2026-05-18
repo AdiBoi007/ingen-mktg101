@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import Logo from "@/components/Logo";
 
 const CALENDLY_URL =
-  "https://calendly.com/contact-ingenworkspace?hide_landing_page_details=1&hide_gdpr_banner=1&primary_color=ea7659";
+  "https://calendly.com/contact-ingenworkspace/product-demo?hide_event_type_details=1&hide_gdpr_banner=1&primary_color=ea7659";
 
 export default function BookDemoPage() {
   // Handle client-side navigation: if widget.js is already loaded it won't
