@@ -9,11 +9,22 @@ import Logo from "@/components/Logo";
 /* ------------------------------------------------------------------ */
 
 const WEEKDAYS = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
-const TIME_SLOTS = [
-  "9:00am", "9:30am", "10:00am", "10:30am", "11:00am", "11:30am",
-  "12:00pm", "12:30pm", "1:00pm", "1:30pm", "2:00pm", "2:30pm",
-  "3:00pm", "3:30pm", "4:00pm", "4:30pm",
-];
+const SYDNEY_TZ = "Australia/Sydney";
+
+// 9:00 → 16:30 in the visitor's own local time, every 30 minutes
+const SLOT_TIMES: { h: number; m: number }[] = [];
+for (let h = 9; h <= 16; h++) {
+  SLOT_TIMES.push({ h, m: 0 });
+  SLOT_TIMES.push({ h, m: 30 });
+}
+
+function fmtTime(d: Date, timeZone?: string) {
+  return d.toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    ...(timeZone ? { timeZone } : {}),
+  });
+}
 
 function startOfDay(d: Date) {
   return new Date(d.getFullYear(), d.getMonth(), d.getDate());
@@ -25,21 +36,41 @@ function BookingCalendar() {
     () => new Date(today.getFullYear(), today.getMonth(), 1)
   );
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [selectedTime, setSelectedTime] = useState<string | null>(null);
+  const [selectedSlot, setSelectedSlot] = useState<{ h: number; m: number } | null>(
+    null
+  );
   const [confirmed, setConfirmed] = useState(false);
 
-  const tz = useMemo(() => {
+  const { localTzName, localNow, sydneyNow } = useMemo(() => {
+    let name = "Local time";
     try {
-      const name = Intl.DateTimeFormat().resolvedOptions().timeZone;
-      const time = new Date().toLocaleTimeString([], {
-        hour: "numeric",
-        minute: "2-digit",
-      });
-      return `${name.replace(/_/g, " ")} (${time})`;
+      name = Intl.DateTimeFormat()
+        .resolvedOptions()
+        .timeZone.replace(/_/g, " ");
     } catch {
-      return "Local time";
+      /* keep fallback */
     }
+    const now = new Date();
+    return {
+      localTzName: name,
+      localNow: fmtTime(now),
+      sydneyNow: fmtTime(now, SYDNEY_TZ),
+    };
   }, []);
+
+  // The chosen instant, expressed from the visitor's own clock
+  const slotDate =
+    selectedDate && selectedSlot
+      ? new Date(
+          selectedDate.getFullYear(),
+          selectedDate.getMonth(),
+          selectedDate.getDate(),
+          selectedSlot.h,
+          selectedSlot.m
+        )
+      : null;
+  const localTimeStr = slotDate ? fmtTime(slotDate) : null;
+  const sydneyTimeStr = slotDate ? fmtTime(slotDate, SYDNEY_TZ) : null;
 
   const year = viewMonth.getFullYear();
   const month = viewMonth.getMonth();
@@ -68,7 +99,7 @@ function BookingCalendar() {
     !!a && !!b && a.getTime() === b.getTime();
 
   /* -------- confirmed success state -------- */
-  if (confirmed && selectedDate && selectedTime) {
+  if (confirmed && selectedDate && slotDate && localTimeStr && sydneyTimeStr) {
     return (
       <div className="flex flex-1 flex-col items-center justify-center px-8 py-24 text-center">
         <div className="mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-brand-purple/10">
@@ -93,15 +124,24 @@ function BookingCalendar() {
               month: "long",
               day: "numeric",
             })}
-          </span>{" "}
-          at <span className="font-medium text-brand-ink">{selectedTime}</span>.
-          A calendar invite with the video link is on its way to your inbox.
+          </span>
+          . A calendar invite with the video link is on its way to your inbox.
         </p>
+        <div className="mt-4 w-full max-w-sm space-y-1.5 rounded-lg border border-black/[0.06] bg-brand-bg/60 px-4 py-3 text-[14px]">
+          <div className="flex items-center justify-between">
+            <span className="text-brand-ink/55">{localTzName}</span>
+            <span className="font-medium text-brand-ink">{localTimeStr}</span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-brand-ink/55">Sydney (Australia)</span>
+            <span className="font-medium text-brand-ink">{sydneyTimeStr}</span>
+          </div>
+        </div>
         <button
           type="button"
           onClick={() => {
             setConfirmed(false);
-            setSelectedTime(null);
+            setSelectedSlot(null);
             setSelectedDate(null);
           }}
           className="mt-7 text-[14px] font-medium text-brand-purple hover:underline"
@@ -222,10 +262,9 @@ function BookingCalendar() {
           })}
         </div>
 
-        {/* time zone */}
+        {/* time zone — visitor's local zone + Sydney */}
         <div className="mx-auto mt-7 w-full max-w-[460px] border-t border-black/[0.06] pt-4">
-          <div className="text-[14px] font-semibold text-brand-ink">Time zone</div>
-          <div className="mt-1.5 flex items-center gap-2 text-[14px] text-brand-ink/65">
+          <div className="flex items-center gap-2 text-[14px] font-semibold text-brand-ink">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
               <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.6" />
               <path
@@ -234,8 +273,22 @@ function BookingCalendar() {
                 strokeWidth="1.4"
               />
             </svg>
-            {tz}
+            Time zones
           </div>
+          <div className="mt-2 space-y-1.5 text-[13.5px] text-brand-ink/65">
+            <div className="flex items-center justify-between">
+              <span>{localTzName} (your time)</span>
+              <span className="font-medium text-brand-ink/80">{localNow}</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span>Sydney (Australia)</span>
+              <span className="font-medium text-brand-ink/80">{sydneyNow}</span>
+            </div>
+          </div>
+          <p className="mt-2 text-[12px] text-brand-ink/45">
+            Pick a slot in your own time — we&apos;ll show the Sydney equivalent
+            too.
+          </p>
         </div>
 
         {/* time slots — shown after a date is picked */}
@@ -248,35 +301,66 @@ function BookingCalendar() {
                 day: "numeric",
               })}
             </div>
-            <div className="grid max-h-[220px] grid-cols-2 gap-2.5 overflow-y-auto pr-1 sm:grid-cols-4">
-              {TIME_SLOTS.map((t) => {
-                const active = selectedTime === t;
+            <div className="grid max-h-[260px] grid-cols-2 gap-2.5 overflow-y-auto pr-1 sm:grid-cols-3">
+              {SLOT_TIMES.map((slot) => {
+                const d = new Date(
+                  selectedDate.getFullYear(),
+                  selectedDate.getMonth(),
+                  selectedDate.getDate(),
+                  slot.h,
+                  slot.m
+                );
+                const active =
+                  !!selectedSlot &&
+                  selectedSlot.h === slot.h &&
+                  selectedSlot.m === slot.m;
                 return (
                   <button
-                    key={t}
+                    key={`${slot.h}-${slot.m}`}
                     type="button"
-                    onClick={() => setSelectedTime(t)}
+                    onClick={() => setSelectedSlot(slot)}
                     className={[
-                      "rounded-md border py-3 text-[14px] font-medium transition-colors",
+                      "rounded-md border py-2.5 transition-colors",
                       active
                         ? "border-brand-purple bg-brand-purple text-white"
                         : "border-brand-purple/40 text-brand-purple hover:border-brand-purple hover:bg-brand-purple/[0.06]",
                     ].join(" ")}
                   >
-                    {t}
+                    <span className="block text-[14px] font-medium">
+                      {fmtTime(d)}
+                    </span>
+                    <span
+                      className={`block text-[11px] ${
+                        active ? "text-white/75" : "text-brand-ink/45"
+                      }`}
+                    >
+                      SYD {fmtTime(d, SYDNEY_TZ)}
+                    </span>
                   </button>
                 );
               })}
             </div>
 
-            {selectedTime && (
-              <button
-                type="button"
-                onClick={() => setConfirmed(true)}
-                className="mt-5 inline-flex h-12 w-full items-center justify-center rounded-md bg-brand-purple text-[15px] font-medium text-white transition-colors hover:bg-brand-purple/90"
-              >
-                Schedule demo — {selectedTime}
-              </button>
+            {slotDate && localTimeStr && sydneyTimeStr && (
+              <>
+                <p className="mt-4 text-center text-[13px] text-brand-ink/60">
+                  <span className="font-medium text-brand-ink">
+                    {localTimeStr}
+                  </span>{" "}
+                  {localTzName} · {" "}
+                  <span className="font-medium text-brand-ink">
+                    {sydneyTimeStr}
+                  </span>{" "}
+                  Sydney
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setConfirmed(true)}
+                  className="mt-3 inline-flex h-12 w-full items-center justify-center rounded-md bg-brand-purple text-[15px] font-medium text-white transition-colors hover:bg-brand-purple/90"
+                >
+                  Schedule demo — {localTimeStr}
+                </button>
+              </>
             )}
           </div>
         )}
