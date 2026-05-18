@@ -7,7 +7,7 @@ import { useAudience } from "./AudienceContext";
 const recruiterFaqs = [
   {
     q: "Who can use iNGen?",
-    a: "iNGen is built for recruiters, founders, and hiring leads at startups between Idea and Series A. If you are searching for hard-to-find engineering talent on a constrained budget, iNGen is a fit for you. We work with companies ranging from Y Combinator early-stage to Series A — and hopefully, you too.",
+    a: "iNGen is built for recruiters, founders, and hiring leads at startups between Idea and Series A — anyone hunting hard-to-find engineering talent on a constrained budget.",
   },
   {
     q: "Can I try iNGen for free?",

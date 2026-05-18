@@ -20,7 +20,7 @@ export default function TrustBar() {
     <section className="border-t border-b border-hairline py-8 overflow-hidden bg-brand-bg">
       <div className="mx-auto max-w-[1320px] px-6 mb-5 flex items-center justify-between gap-4">
         <span className="label-mono text-brand-mute">
-          Trusted by 25,000+ recruiters and hiring managers
+          Proof-first hiring for startup teams
         </span>
         <span className="label-mono text-brand-mute hidden md:inline">
           Idea → Series A · 30+ pipelines

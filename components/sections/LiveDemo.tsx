@@ -26,7 +26,7 @@ const RECRUITER: Variant = {
   agentTag: "Sherlock",
   agentLabel: "Proof analyzer",
   heading: "Drop in a profile. Watch Sherlock triangulate the proof.",
-  body: "Sherlock is the proof engine behind FORGE. Paste a candidate URL — GitHub, LinkedIn, portfolio — and it pulls the receipts that actually map to the role: depth of commits, team impact, real artefacts. No keyword theatre.",
+  body: "Sherlock is the proof engine behind iNGEN. Paste a candidate URL — GitHub, LinkedIn, portfolio — and it pulls the receipts that map to the role: commit depth, team impact, real artefacts. No keyword theatre.",
   bullets: [
     { label: "Triangulates", text: "GitHub · work history · clubs · projects" },
     { label: "Surfaces", text: "the few candidates whose claims hold up" },

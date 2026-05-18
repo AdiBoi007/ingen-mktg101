@@ -4,7 +4,7 @@ import { useAudience } from "./AudienceContext";
 
 /* Aceternity-style Bento Grid + Card Hover Effect for the recruiter side.
  * Renders only when the audience switch is on "recruiter".
- * Mirrors the seven sidebar destinations described in the FORGE
+ * Mirrors the seven sidebar destinations described in the iNGEN
  * recruiter product context: Dashboard, Job Brief, Search, Analyse Profile,
  * Interviews, Settings, Dark Mode toggle. */
 

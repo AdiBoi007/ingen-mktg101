@@ -16,7 +16,7 @@ function RecruiterMarquee() {
   return (
     <section className="bg-brand-bg border-t border-b border-black/5 py-10 overflow-hidden">
       <div className="mx-auto max-w-[1320px] px-6 mb-5 flex items-center justify-between">
-        <span className="label-mono text-brand-mute">Hiring teams shipping with FORGE</span>
+        <span className="label-mono text-brand-mute">Hiring teams shipping with iNGEN</span>
         <span className="label-mono text-brand-mute hidden md:inline">Idea → Series A · 30+ pipelines</span>
       </div>
       <div className="relative">

@@ -48,11 +48,10 @@ function RecruiterHero() {
           </h1>
 
           <p className="mt-6 max-w-2xl mx-auto text-[17px] leading-relaxed text-white/85">
-            FORGE is the{" "}
-            <span className="text-white">AI recruiter command center</span> built
-            for startup hiring teams (Idea → Series A). Two agents — Aristotle
-            runs the workflow, Sherlock triangulates the proof — across GitHub,
-            work history, university, and club signals.
+            iNGEN is the{" "}
+            <span className="text-white">AI recruiter command center</span> for
+            startup hiring teams. Aristotle runs the workflow, Sherlock
+            triangulates the proof.
           </p>
 
           <div className="mt-9 flex items-center justify-center gap-3">

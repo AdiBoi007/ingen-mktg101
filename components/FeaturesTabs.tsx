@@ -167,7 +167,7 @@ const RECRUITER_PANELS: Record<
     eyebrow: "Job Brief Builder · Aristotle",
     title: "From rough idea to recruiter-ready brief in 2 minutes",
     copy:
-      "Aristotle asks a handful of conversational questions, then ships three artifacts in one pass — a recruiter brief, a LinkedIn post you can publish, and a Boolean candidate search query. Drop a draft JD or describe the role roughly. Your brief writes itself in the right pane as you answer.",
+      "Describe the role or drop a draft JD. Aristotle asks a few questions and ships three publishable artifacts in one pass: recruiter brief, LinkedIn post, Boolean search.",
     cta: "Build a brief with Aristotle",
     panel: <BriefPanel />,
   },
@@ -175,7 +175,7 @@ const RECRUITER_PANELS: Record<
     eyebrow: "Candidate Intake · Aristotle",
     title: "Ranked candidates for the role you actually described",
     copy:
-      "Tell Aristotle what you're hiring for — Backend engineer for MVP, Founding full-stack, Data analyst for launch, Product designer for v1. The chat compresses sourcing into one composer; the right pane stages discovered candidates ranked by fit against your brief, not a generic title match.",
+      "Tell Aristotle what you're hiring for. The right pane stages discovered candidates ranked by fit against your brief — not a generic title match.",
     cta: "Open candidate intake",
     panel: <IntakePanel />,
   },
@@ -183,7 +183,7 @@ const RECRUITER_PANELS: Record<
     eyebrow: "Interview Command Live · Sherlock",
     title: "Triage, prep, and screen — all backed by triangulated proof",
     copy:
-      "Sherlock surfaces the candidates you've already selected, plus a constellation of top proof sources — universities, employers, clubs, certifications — color-coded so you can scan institutional credibility at a glance. Filter by READY, VIP, HIGH FIT or REVIEW, and open a one-click interview packet with red flags and scorecard.",
+      "Triage, prep, and screen in one place. Candidates arrive pre-tagged READY, VIP, HIGH FIT, or REVIEW — each backed by color-coded proof sources and a one-click interview packet with red flags and scorecard.",
     cta: "Open interview command",
     panel: <InterviewsPanel />,
   },
@@ -196,7 +196,7 @@ function RecruiterFeatures() {
   return (
     <section className="bg-brand-bg relative">
       <div className="mx-auto max-w-[1320px] px-6 py-24">
-        <div className="label-mono text-brand-mute mb-3">[01] How FORGE works</div>
+        <div className="label-mono text-brand-mute mb-3">[01] How iNGEN works</div>
         <h2 className="font-display text-[44px] md:text-[58px] leading-[1.05] tracking-tightest text-brand-ink max-w-3xl">
           Brief, intake, interview — one command center.
         </h2>
