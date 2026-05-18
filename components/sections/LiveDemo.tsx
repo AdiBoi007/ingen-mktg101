@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ExternalLink, RefreshCw, Lock } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 
 type Page = {
   key: string;
@@ -12,7 +12,6 @@ type Page = {
 };
 
 const BASE = "https://ingen-hrandstudent.vercel.app";
-const DISPLAY_BASE = "ingenworkspace.com";
 
 const PAGES: Page[] = [
   { key: "sherlock",   label: "Sherlock",   path: "/analyse-profile", accent: "#6B2F8E" },
@@ -59,6 +58,13 @@ function ScaledIframe({
     return () => ro.disconnect();
   }, []);
 
+  // Cross-origin iframes may not fire onLoad reliably; force-clear the
+  // overlay after a short delay so the embed stays interactive.
+  useEffect(() => {
+    const t = window.setTimeout(onLoad, 2500);
+    return () => window.clearTimeout(t);
+  }, [iframeKey, onLoad]);
+
   const scaledHeight = DESIGN_HEIGHT * scale;
 
   return (
@@ -67,26 +73,6 @@ function ScaledIframe({
       className="relative w-full overflow-hidden bg-[#FBFAF8]"
       style={{ height: scaledHeight }}
     >
-      {!loaded && (
-        <>
-          <div className="absolute inset-0 flex items-center justify-center text-[12px] font-mono uppercase tracking-[0.18em] text-ink/40 z-20 bg-[#FBFAF8]">
-            <span className="inline-flex items-center gap-2">
-              <span
-                className="inline-block w-2 h-2 rounded-full animate-pulse"
-                style={{ background: accent }}
-              />
-              Loading {label}…
-            </span>
-          </div>
-          <div
-            className="absolute inset-x-0 top-0 h-[2px] z-30 scan-line"
-            style={{
-              background: `linear-gradient(90deg, transparent, ${accent}, transparent)`,
-            }}
-            aria-hidden
-          />
-        </>
-      )}
       <div
         style={{
           width: DESIGN_WIDTH,
@@ -100,73 +86,25 @@ function ScaledIframe({
           src={url}
           title={`${label} live preview`}
           onLoad={onLoad}
-          loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
           allow="clipboard-read; clipboard-write"
           style={{ width: DESIGN_WIDTH, height: DESIGN_HEIGHT }}
           className="bg-white border-0 block"
         />
       </div>
-      <style jsx>{`
-        .scan-line {
-          animation: scan 1.6s ease-in-out infinite;
-        }
-        @keyframes scan {
-          0% {
-            transform: translateY(0);
-            opacity: 0.2;
-          }
-          50% {
-            opacity: 1;
-          }
-          100% {
-            transform: translateY(${scaledHeight}px);
-            opacity: 0.2;
-          }
-        }
-      `}</style>
-    </div>
-  );
-}
-
-function BrowserChrome({
-  displayUrl,
-  liveUrl,
-  onReload,
-}: {
-  displayUrl: string;
-  liveUrl: string;
-  onReload: () => void;
-}) {
-  return (
-    <div className="flex items-center gap-3 px-4 h-11 bg-[#F4F1EE] border-b border-ink/10 shrink-0">
-      <div className="flex items-center gap-1.5 shrink-0">
-        <span className="w-3 h-3 rounded-full bg-[#FF5F57]" />
-        <span className="w-3 h-3 rounded-full bg-[#FEBC2E]" />
-        <span className="w-3 h-3 rounded-full bg-[#28C840]" />
-      </div>
-      <div className="flex-1 min-w-0 flex items-center gap-2 bg-white border border-ink/10 rounded px-3 h-7 max-w-[640px]">
-        <Lock className="w-3 h-3 text-ink/40 shrink-0" />
-        <span className="text-[12px] font-mono text-ink/70 truncate">
-          {displayUrl}
-        </span>
-      </div>
-      <button
-        onClick={onReload}
-        aria-label="Reload preview"
-        className="text-ink/50 hover:text-ink transition-colors shrink-0"
-      >
-        <RefreshCw className="w-4 h-4" />
-      </button>
-      <a
-        href={liveUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-ink/50 hover:text-ink transition-colors shrink-0"
-        aria-label="Open in new tab"
-      >
-        <ExternalLink className="w-4 h-4" />
-      </a>
+      {!loaded && (
+        <div
+          className="absolute inset-0 flex items-center justify-center text-[12px] font-mono uppercase tracking-[0.18em] text-ink/40 z-20 bg-[#FBFAF8]/85 backdrop-blur-sm pointer-events-none"
+        >
+          <span className="inline-flex items-center gap-2">
+            <span
+              className="inline-block w-2 h-2 rounded-full animate-pulse"
+              style={{ background: accent }}
+            />
+            Loading {label}…
+          </span>
+        </div>
+      )}
     </div>
   );
 }
@@ -182,12 +120,6 @@ export default function LiveDemo() {
   );
 
   const liveUrl = `${BASE}${active.path}`;
-  const displayUrl = `${DISPLAY_BASE}${active.path}`;
-
-  const reload = () => {
-    setLoaded(false);
-    setIframeKey((k) => k + 1);
-  };
 
   const switchTo = (next: string) => {
     if (next === activeKey) return;
@@ -291,15 +223,9 @@ export default function LiveDemo() {
           </AnimatePresence>
 
           <div
-            className="relative rounded-2xl bg-white shadow-[0_40px_80px_-30px_rgba(14,14,16,0.35)] overflow-hidden flex flex-col"
+            className="relative rounded-2xl bg-white shadow-[0_40px_80px_-30px_rgba(14,14,16,0.35)] overflow-hidden"
             style={{ border: "1px solid rgba(14,14,16,0.10)" }}
           >
-            <BrowserChrome
-              displayUrl={displayUrl}
-              liveUrl={liveUrl}
-              onReload={reload}
-            />
-
             <ScaledIframe
               url={liveUrl}
               iframeKey={iframeKey}
