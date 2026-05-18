@@ -1,70 +1,51 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
-import { ExternalLink, RefreshCw, Lock, Sparkles } from "lucide-react";
-import { useAudience } from "../AudienceContext";
+import { motion, AnimatePresence } from "framer-motion";
+import { ExternalLink, RefreshCw, Lock } from "lucide-react";
 
-type Variant = {
-  eyebrow: string;
-  agentTag: string;
-  agentLabel: string;
-  heading: string;
-  body: string;
-  bullets: { label: string; text: string }[];
+type Demo = {
+  key: "sherlock" | "aristotle";
+  tag: string;
+  label: string;
+  headline: string;
+  subline: string;
+  support: string;
+  displayUrl: string;
   url: string;
-  primaryCta: { label: string; href: string };
-  secondaryCta: { label: string; href: string };
   accent: string;
   ringColor: string;
-  pillBg: string;
-  pillFg: string;
 };
 
-const RECRUITER: Variant = {
-  eyebrow: "[02] LIVE — SHERLOCK",
-  agentTag: "Sherlock",
-  agentLabel: "Proof analyzer",
-  heading: "Drop in a profile. Watch Sherlock triangulate the proof.",
-  body: "Sherlock is the proof engine behind iNGEN. Paste a candidate URL — GitHub, LinkedIn, portfolio — and it pulls the receipts that map to the role: commit depth, team impact, real artefacts. No keyword theatre.",
-  bullets: [
-    { label: "Triangulates", text: "GitHub · work history · clubs · projects" },
-    { label: "Surfaces", text: "the few candidates whose claims hold up" },
-    { label: "Output", text: "a proof report your hiring manager will read" },
-  ],
+const SHERLOCK: Demo = {
+  key: "sherlock",
+  tag: "Sherlock",
+  label: "Proof analyzer",
+  headline: "Live proof scan.",
+  subline: "Paste a candidate URL and watch Sherlock reveal the evidence.",
+  support: "Triangulates GitHub · work history · university · clubs · projects.",
+  displayUrl: "ingenworkspace.com/analyse-profile",
   url: "https://ingen-hrandstudent.vercel.app/analyse-profile",
-  primaryCta: { label: "OPEN FULL APP", href: "https://ingen-hrandstudent.vercel.app/analyse-profile" },
-  secondaryCta: { label: "BOOK A DEMO", href: "#" },
   accent: "#6B2F8E",
   ringColor: "rgba(176,84,231,0.35)",
-  pillBg: "rgba(176,84,231,0.14)",
-  pillFg: "#6B2F8E",
 };
 
-const STUDENT: Variant = {
-  eyebrow: "[02] LIVE — STUDENT WORKSPACE",
-  agentTag: "iNGEN",
-  agentLabel: "Student workspace",
-  heading: "Step inside your iNGEN workspace.",
-  body: "This is the actual student app — the same surface where Aristotle drafts your roadmap and Columbus ranks open roles against your evidence. Click around, scroll, try it.",
-  bullets: [
-    { label: "Roadmap", text: "milestones sequenced for the next 90 days" },
-    { label: "Evidence", text: "repos, courses, projects auto-attached" },
-    { label: "Scout", text: "matched roles ranked against your proof" },
-  ],
+const ARISTOTLE: Demo = {
+  key: "aristotle",
+  tag: "Aristotle",
+  label: "Roadmap engine",
+  headline: "Live roadmap build.",
+  subline: "Three inputs, one curriculum — see Aristotle map the next 90 days.",
+  support: "Sequences topics · scores profile · tracks readiness in real time.",
+  displayUrl: "ingenworkspace.com/student",
   url: "https://ingen-hrandstudent.vercel.app/student",
-  primaryCta: { label: "OPEN FULL APP", href: "https://ingen-hrandstudent.vercel.app/student" },
-  secondaryCta: { label: "WATCH A DEMO", href: "#" },
   accent: "#F5A623",
   ringColor: "rgba(245,166,35,0.4)",
-  pillBg: "rgba(245,166,35,0.15)",
-  pillFg: "#7a5310",
 };
 
 // The hosted demo app is designed for a ~1440px desktop layout.
 // We render the iframe at that fixed size, then CSS-scale it down to
-// whatever width the container has — so the full app always fits, no
-// horizontal scrollbars, regardless of viewport.
+// whatever width the container has — so the full app always fits.
 const DESIGN_WIDTH = 1440;
 const DESIGN_HEIGHT = 900;
 
@@ -108,15 +89,24 @@ function ScaledIframe({
       style={{ height: scaledHeight }}
     >
       {!loaded && (
-        <div className="absolute inset-0 flex items-center justify-center text-[12px] font-mono uppercase tracking-[0.18em] text-ink/40 z-10">
-          <span className="inline-flex items-center gap-2">
-            <span
-              className="inline-block w-2 h-2 rounded-full animate-pulse"
-              style={{ background: accent }}
-            />
-            Loading {agentTag}…
-          </span>
-        </div>
+        <>
+          <div className="absolute inset-0 flex items-center justify-center text-[12px] font-mono uppercase tracking-[0.18em] text-ink/40 z-20">
+            <span className="inline-flex items-center gap-2">
+              <span
+                className="inline-block w-2 h-2 rounded-full animate-pulse"
+                style={{ background: accent }}
+              />
+              Scanning {agentTag}…
+            </span>
+          </div>
+          <div
+            className="absolute inset-x-0 top-0 h-[2px] z-20 scan-line"
+            style={{
+              background: `linear-gradient(90deg, transparent, ${accent}, transparent)`,
+            }}
+            aria-hidden
+          />
+        </>
       )}
       <div
         style={{
@@ -138,20 +128,37 @@ function ScaledIframe({
           className="bg-white border-0 block"
         />
       </div>
+      <style jsx>{`
+        .scan-line {
+          animation: scan 1.6s ease-in-out infinite;
+        }
+        @keyframes scan {
+          0% {
+            transform: translateY(0);
+            opacity: 0.2;
+          }
+          50% {
+            opacity: 1;
+          }
+          100% {
+            transform: translateY(${scaledHeight}px);
+            opacity: 0.2;
+          }
+        }
+      `}</style>
     </div>
   );
 }
 
 function BrowserChrome({
-  url,
-  iframeKey,
+  displayUrl,
+  liveUrl,
   onReload,
 }: {
-  url: string;
-  iframeKey: number;
+  displayUrl: string;
+  liveUrl: string;
   onReload: () => void;
 }) {
-  const display = url.replace(/^https?:\/\//, "");
   return (
     <div className="flex items-center gap-3 px-4 h-11 border-b border-ink/10 bg-[#F4F1EE]">
       <div className="flex items-center gap-1.5">
@@ -162,7 +169,7 @@ function BrowserChrome({
       <div className="flex-1 flex items-center gap-2 bg-white border border-ink/10 rounded px-3 h-7 max-w-[640px]">
         <Lock className="w-3 h-3 text-ink/40" />
         <span className="text-[12px] font-mono text-ink/70 truncate">
-          {display}
+          {displayUrl}
         </span>
       </div>
       <button
@@ -173,7 +180,7 @@ function BrowserChrome({
         <RefreshCw className="w-4 h-4" />
       </button>
       <a
-        href={url}
+        href={liveUrl}
         target="_blank"
         rel="noopener noreferrer"
         className="text-ink/50 hover:text-ink transition-colors"
@@ -186,12 +193,20 @@ function BrowserChrome({
 }
 
 export default function LiveDemo() {
-  const { audience } = useAudience();
-  const v = audience === "student" ? STUDENT : RECRUITER;
+  const [active, setActive] = useState<"sherlock" | "aristotle">("sherlock");
   const [iframeKey, setIframeKey] = useState(0);
   const [loaded, setLoaded] = useState(false);
 
+  const v = active === "sherlock" ? SHERLOCK : ARISTOTLE;
+
   const reload = () => {
+    setLoaded(false);
+    setIframeKey((k) => k + 1);
+  };
+
+  const switchTo = (next: "sherlock" | "aristotle") => {
+    if (next === active) return;
+    setActive(next);
     setLoaded(false);
     setIframeKey((k) => k + 1);
   };
@@ -207,63 +222,91 @@ export default function LiveDemo() {
       />
 
       <div className="mx-auto max-w-[1480px] px-6 lg:px-12 pt-20 pb-24 relative">
-        <div className="grid lg:grid-cols-[1fr_1.4fr] gap-10 lg:gap-16 items-start mb-10">
+        <div className="grid lg:grid-cols-[1fr_1.4fr] gap-10 lg:gap-16 items-center mb-8 text-center lg:text-left">
           <div>
             <div className="text-[12px] font-mono uppercase tracking-[0.18em] text-ink/55 mb-3">
-              {v.eyebrow}
+              [02] LIVE — {v.tag.toUpperCase()}
             </div>
-            <h2 className="font-display text-[40px] lg:text-[52px] leading-[1.02] tracking-[-0.02em] text-ink mb-5">
-              {v.heading}
-            </h2>
-            <p className="text-[16px] leading-[1.6] text-ink/70 max-w-[42ch]">
-              {v.body}
-            </p>
-          </div>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={v.key}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.35 }}
+              >
+                <h2 className="font-display text-[40px] lg:text-[56px] leading-[1.02] tracking-[-0.02em] text-ink mb-4">
+                  {v.headline}
+                </h2>
+                <p className="text-[17px] leading-[1.5] text-ink/75 max-w-[44ch] mx-auto lg:mx-0">
+                  {v.subline}
+                </p>
+                <p className="mt-3 text-[13px] font-mono text-ink/55 max-w-[48ch] mx-auto lg:mx-0">
+                  {v.support}
+                </p>
+              </motion.div>
+            </AnimatePresence>
 
-          <div className="lg:pt-10">
-            <span
-              className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[11px] font-mono uppercase tracking-[0.14em] mb-5"
-              style={{ background: v.pillBg, color: v.pillFg }}
-            >
-              <Sparkles className="w-3 h-3" />
-              {v.agentTag} — {v.agentLabel}
-            </span>
-            <ul className="space-y-3">
-              {v.bullets.map((b) => (
-                <li
-                  key={b.label}
-                  className="flex items-start gap-3 text-[14px] text-ink/80"
-                >
-                  <span
-                    className="mt-1.5 inline-block w-1.5 h-1.5 rounded-full shrink-0"
-                    style={{ background: v.accent }}
-                  />
-                  <span>
-                    <span className="font-mono uppercase tracking-[0.14em] text-[11px] text-ink/55 mr-2">
-                      {b.label}
-                    </span>
-                    {b.text}
-                  </span>
-                </li>
-              ))}
-            </ul>
-            <div className="flex flex-wrap gap-2 mt-7">
+            <div className="flex flex-wrap justify-center lg:justify-start gap-2 mt-6">
               <a
-                href={v.primaryCta.href}
+                href={v.url}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-[12px] font-mono uppercase tracking-[0.1em] bg-ink text-white px-5 py-3 inline-flex items-center gap-2"
               >
-                {v.primaryCta.label}
+                Open full app
                 <ExternalLink className="w-3.5 h-3.5" />
               </a>
               <a
-                href={v.secondaryCta.href}
+                href="/book-demo"
                 className="text-[12px] font-mono uppercase tracking-[0.1em] border border-ink text-ink px-5 py-3"
               >
-                {v.secondaryCta.label}
+                Book a demo
               </a>
             </div>
+          </div>
+
+          <div className="lg:pt-2">
+            <div
+              role="tablist"
+              aria-label="Switch demo"
+              className="inline-flex items-center gap-1 rounded-full border border-ink/15 bg-white/70 backdrop-blur p-1 mb-5"
+            >
+              {[SHERLOCK, ARISTOTLE].map((d) => {
+                const isOn = active === d.key;
+                return (
+                  <button
+                    key={d.key}
+                    role="tab"
+                    aria-selected={isOn}
+                    onClick={() => switchTo(d.key)}
+                    className="relative text-[11px] font-mono uppercase tracking-[0.14em] px-4 py-2 rounded-full transition-colors"
+                    style={{
+                      color: isOn ? "#fff" : "rgba(14,14,16,0.7)",
+                    }}
+                  >
+                    {isOn && (
+                      <motion.span
+                        layoutId="demo-toggle-pill"
+                        className="absolute inset-0 rounded-full"
+                        style={{ background: d.accent }}
+                        transition={{ type: "spring", stiffness: 400, damping: 32 }}
+                      />
+                    )}
+                    <span className="relative inline-flex items-center gap-1.5">
+                      <span
+                        className="inline-block w-1.5 h-1.5 rounded-full"
+                        style={{ background: isOn ? "#fff" : d.accent }}
+                      />
+                      {d.tag}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+            <p className="text-[12px] font-mono uppercase tracking-[0.14em] text-ink/45 hidden lg:block">
+              {v.tag} — {v.label}
+            </p>
           </div>
         </div>
 
@@ -274,8 +317,12 @@ export default function LiveDemo() {
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           className="relative"
         >
-          <div
-            className="absolute -inset-3 rounded-2xl blur-2xl opacity-50 pointer-events-none"
+          <motion.div
+            key={`glow-${v.key}`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.5 }}
+            transition={{ duration: 0.6 }}
+            className="absolute -inset-3 rounded-2xl blur-2xl pointer-events-none"
             style={{
               background: `radial-gradient(circle at 30% 20%, ${v.ringColor}, transparent 60%)`,
             }}
@@ -285,7 +332,11 @@ export default function LiveDemo() {
             className="relative rounded-2xl overflow-hidden border bg-white shadow-[0_40px_80px_-30px_rgba(14,14,16,0.35)]"
             style={{ borderColor: "rgba(14,14,16,0.10)" }}
           >
-            <BrowserChrome url={v.url} iframeKey={iframeKey} onReload={reload} />
+            <BrowserChrome
+              displayUrl={v.displayUrl}
+              liveUrl={v.url}
+              onReload={reload}
+            />
 
             <ScaledIframe
               url={v.url}
@@ -293,12 +344,12 @@ export default function LiveDemo() {
               onLoad={() => setLoaded(true)}
               loaded={loaded}
               accent={v.accent}
-              agentTag={v.agentTag}
+              agentTag={v.tag}
             />
           </div>
 
           <div className="mt-3 flex items-center justify-between text-[11px] font-mono uppercase tracking-[0.14em] text-ink/45">
-            <span>Live · embedded from {v.url.replace(/^https?:\/\//, "").split("/")[0]}</span>
+            <span>Live · proof, not assumptions</span>
             <a
               href={v.url}
               target="_blank"
