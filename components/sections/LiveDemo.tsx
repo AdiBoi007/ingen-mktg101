@@ -1,47 +1,26 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ExternalLink, RefreshCw, Lock } from "lucide-react";
 
-type Demo = {
-  key: "sherlock" | "aristotle";
-  tag: string;
+type Page = {
+  key: string;
   label: string;
-  headline: string;
-  subline: string;
-  support: string;
-  displayUrl: string;
-  url: string;
+  path: string;
   accent: string;
-  ringColor: string;
 };
 
-const SHERLOCK: Demo = {
-  key: "sherlock",
-  tag: "Sherlock",
-  label: "Proof analyzer",
-  headline: "Live proof scan.",
-  subline: "Paste a candidate URL and watch Sherlock reveal the evidence.",
-  support: "Triangulates GitHub · work history · university · clubs · projects.",
-  displayUrl: "ingenworkspace.com/analyse-profile",
-  url: "https://ingen-hrandstudent.vercel.app/analyse-profile",
-  accent: "#6B2F8E",
-  ringColor: "rgba(176,84,231,0.35)",
-};
+const BASE = "https://ingen-hrandstudent.vercel.app";
+const DISPLAY_BASE = "ingenworkspace.com";
 
-const ARISTOTLE: Demo = {
-  key: "aristotle",
-  tag: "Aristotle",
-  label: "Roadmap engine",
-  headline: "Live roadmap build.",
-  subline: "Three inputs, one curriculum — see Aristotle map the next 90 days.",
-  support: "Sequences topics · scores profile · tracks readiness in real time.",
-  displayUrl: "ingenworkspace.com/student",
-  url: "https://ingen-hrandstudent.vercel.app/student",
-  accent: "#F5A623",
-  ringColor: "rgba(245,166,35,0.4)",
-};
+const PAGES: Page[] = [
+  { key: "sherlock",   label: "Sherlock",   path: "/analyse-profile", accent: "#6B2F8E" },
+  { key: "aristotle",  label: "Aristotle",  path: "/job-brief",       accent: "#F5A623" },
+  { key: "chat",       label: "Chat",       path: "/chat",            accent: "#2E7DAF" },
+  { key: "interviews", label: "Interviews", path: "/interviews",      accent: "#0E8F6E" },
+  { key: "settings",   label: "Settings",   path: "/settings",        accent: "#C24A4A" },
+];
 
 // The hosted demo app is designed for a ~1440px desktop layout.
 // We render the iframe at that fixed size, then CSS-scale it down to
@@ -55,14 +34,14 @@ function ScaledIframe({
   onLoad,
   loaded,
   accent,
-  agentTag,
+  label,
 }: {
   url: string;
   iframeKey: number;
   onLoad: () => void;
   loaded: boolean;
   accent: string;
-  agentTag: string;
+  label: string;
 }) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
@@ -90,17 +69,17 @@ function ScaledIframe({
     >
       {!loaded && (
         <>
-          <div className="absolute inset-0 flex items-center justify-center text-[12px] font-mono uppercase tracking-[0.18em] text-ink/40 z-20">
+          <div className="absolute inset-0 flex items-center justify-center text-[12px] font-mono uppercase tracking-[0.18em] text-ink/40 z-20 bg-[#FBFAF8]">
             <span className="inline-flex items-center gap-2">
               <span
                 className="inline-block w-2 h-2 rounded-full animate-pulse"
                 style={{ background: accent }}
               />
-              Scanning {agentTag}…
+              Loading {label}…
             </span>
           </div>
           <div
-            className="absolute inset-x-0 top-0 h-[2px] z-20 scan-line"
+            className="absolute inset-x-0 top-0 h-[2px] z-30 scan-line"
             style={{
               background: `linear-gradient(90deg, transparent, ${accent}, transparent)`,
             }}
@@ -119,7 +98,7 @@ function ScaledIframe({
         <iframe
           key={iframeKey}
           src={url}
-          title={`${agentTag} live preview`}
+          title={`${label} live preview`}
           onLoad={onLoad}
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
@@ -160,14 +139,14 @@ function BrowserChrome({
   onReload: () => void;
 }) {
   return (
-    <div className="flex items-center gap-3 px-4 h-11 border-b border-ink/10 bg-[#F4F1EE]">
-      <div className="flex items-center gap-1.5">
+    <div className="flex items-center gap-3 px-4 h-11 bg-[#F4F1EE] border-b border-ink/10 shrink-0">
+      <div className="flex items-center gap-1.5 shrink-0">
         <span className="w-3 h-3 rounded-full bg-[#FF5F57]" />
         <span className="w-3 h-3 rounded-full bg-[#FEBC2E]" />
         <span className="w-3 h-3 rounded-full bg-[#28C840]" />
       </div>
-      <div className="flex-1 flex items-center gap-2 bg-white border border-ink/10 rounded px-3 h-7 max-w-[640px]">
-        <Lock className="w-3 h-3 text-ink/40" />
+      <div className="flex-1 min-w-0 flex items-center gap-2 bg-white border border-ink/10 rounded px-3 h-7 max-w-[640px]">
+        <Lock className="w-3 h-3 text-ink/40 shrink-0" />
         <span className="text-[12px] font-mono text-ink/70 truncate">
           {displayUrl}
         </span>
@@ -175,7 +154,7 @@ function BrowserChrome({
       <button
         onClick={onReload}
         aria-label="Reload preview"
-        className="text-ink/50 hover:text-ink transition-colors"
+        className="text-ink/50 hover:text-ink transition-colors shrink-0"
       >
         <RefreshCw className="w-4 h-4" />
       </button>
@@ -183,7 +162,7 @@ function BrowserChrome({
         href={liveUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-ink/50 hover:text-ink transition-colors"
+        className="text-ink/50 hover:text-ink transition-colors shrink-0"
         aria-label="Open in new tab"
       >
         <ExternalLink className="w-4 h-4" />
@@ -193,20 +172,26 @@ function BrowserChrome({
 }
 
 export default function LiveDemo() {
-  const [active, setActive] = useState<"sherlock" | "aristotle">("sherlock");
+  const [activeKey, setActiveKey] = useState<string>(PAGES[0].key);
   const [iframeKey, setIframeKey] = useState(0);
   const [loaded, setLoaded] = useState(false);
 
-  const v = active === "sherlock" ? SHERLOCK : ARISTOTLE;
+  const active = useMemo(
+    () => PAGES.find((p) => p.key === activeKey) ?? PAGES[0],
+    [activeKey]
+  );
+
+  const liveUrl = `${BASE}${active.path}`;
+  const displayUrl = `${DISPLAY_BASE}${active.path}`;
 
   const reload = () => {
     setLoaded(false);
     setIframeKey((k) => k + 1);
   };
 
-  const switchTo = (next: "sherlock" | "aristotle") => {
-    if (next === active) return;
-    setActive(next);
+  const switchTo = (next: string) => {
+    if (next === activeKey) return;
+    setActiveKey(next);
     setLoaded(false);
     setIframeKey((k) => k + 1);
   };
@@ -222,94 +207,67 @@ export default function LiveDemo() {
       />
 
       <div className="mx-auto max-w-[1480px] px-6 lg:px-12 pt-20 pb-24 relative">
-        <div className="grid lg:grid-cols-[1fr_1.4fr] gap-10 lg:gap-16 items-center mb-8 text-center lg:text-left">
-          <div>
-            <div className="text-[12px] font-mono uppercase tracking-[0.18em] text-ink/55 mb-3">
-              [02] LIVE — {v.tag.toUpperCase()}
-            </div>
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={v.key}
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.35 }}
-              >
-                <h2 className="font-display text-[40px] lg:text-[56px] leading-[1.02] tracking-[-0.02em] text-ink mb-4">
-                  {v.headline}
-                </h2>
-                <p className="text-[17px] leading-[1.5] text-ink/75 max-w-[44ch] mx-auto lg:mx-0">
-                  {v.subline}
-                </p>
-                <p className="mt-3 text-[13px] font-mono text-ink/55 max-w-[48ch] mx-auto lg:mx-0">
-                  {v.support}
-                </p>
-              </motion.div>
-            </AnimatePresence>
-
-            <div className="flex flex-wrap justify-center lg:justify-start gap-2 mt-6">
-              <a
-                href={v.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[12px] font-mono uppercase tracking-[0.1em] bg-ink text-white px-5 py-3 inline-flex items-center gap-2"
-              >
-                Open full app
-                <ExternalLink className="w-3.5 h-3.5" />
-              </a>
-              <a
-                href="/book-demo"
-                className="text-[12px] font-mono uppercase tracking-[0.1em] border border-ink text-ink px-5 py-3"
-              >
-                Book a demo
-              </a>
-            </div>
-          </div>
-
-          <div className="lg:pt-2">
-            <div
-              role="tablist"
-              aria-label="Switch demo"
-              className="inline-flex items-center gap-1 rounded-full border border-ink/15 bg-white/70 backdrop-blur p-1 mb-5"
+        {/* Headline + CTAs */}
+        <div className="text-center max-w-[820px] mx-auto mb-10">
+          <h2 className="font-display text-[40px] lg:text-[56px] leading-[1.02] tracking-[-0.02em] text-ink mb-4">
+            Live preview.
+          </h2>
+          <p className="text-[17px] leading-[1.5] text-ink/70 max-w-[44ch] mx-auto">
+            Try interacting with the interface below.
+          </p>
+          <div className="flex flex-wrap justify-center gap-2 mt-6">
+            <a
+              href={liveUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[12px] font-mono uppercase tracking-[0.1em] bg-ink text-white px-5 py-3 inline-flex items-center gap-2"
             >
-              {[SHERLOCK, ARISTOTLE].map((d) => {
-                const isOn = active === d.key;
-                return (
-                  <button
-                    key={d.key}
-                    role="tab"
-                    aria-selected={isOn}
-                    onClick={() => switchTo(d.key)}
-                    className="relative text-[11px] font-mono uppercase tracking-[0.14em] px-4 py-2 rounded-full transition-colors"
-                    style={{
-                      color: isOn ? "#fff" : "rgba(14,14,16,0.7)",
-                    }}
-                  >
-                    {isOn && (
-                      <motion.span
-                        layoutId="demo-toggle-pill"
-                        className="absolute inset-0 rounded-full"
-                        style={{ background: d.accent }}
-                        transition={{ type: "spring", stiffness: 400, damping: 32 }}
-                      />
-                    )}
-                    <span className="relative inline-flex items-center gap-1.5">
-                      <span
-                        className="inline-block w-1.5 h-1.5 rounded-full"
-                        style={{ background: isOn ? "#fff" : d.accent }}
-                      />
-                      {d.tag}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-            <p className="text-[12px] font-mono uppercase tracking-[0.14em] text-ink/45 hidden lg:block">
-              {v.tag} — {v.label}
-            </p>
+              Open full app
+              <ExternalLink className="w-3.5 h-3.5" />
+            </a>
+            <a
+              href="/book-demo"
+              className="text-[12px] font-mono uppercase tracking-[0.1em] border border-ink text-ink px-5 py-3"
+            >
+              Book a demo
+            </a>
           </div>
         </div>
 
+        {/* Page selector tabs — ABOVE the frame, do not overlap it */}
+        <div
+          role="tablist"
+          aria-label="Switch preview page"
+          className="flex flex-nowrap justify-start lg:justify-center gap-2 mb-5 overflow-x-auto pb-1 -mx-6 px-6 lg:mx-0 lg:px-0 no-scrollbar"
+        >
+          {PAGES.map((p) => {
+            const isOn = activeKey === p.key;
+            return (
+              <button
+                key={p.key}
+                role="tab"
+                aria-selected={isOn}
+                onClick={() => switchTo(p.key)}
+                className="relative shrink-0 text-[11px] font-mono uppercase tracking-[0.14em] px-4 py-2.5 rounded-full border transition-colors"
+                style={{
+                  background: isOn ? p.accent : "transparent",
+                  color: isOn ? "#fff" : "rgba(14,14,16,0.75)",
+                  borderColor: isOn ? p.accent : "rgba(14,14,16,0.15)",
+                }}
+              >
+                <span className="inline-flex items-center gap-1.5">
+                  <span
+                    className="inline-block w-1.5 h-1.5 rounded-full"
+                    style={{ background: isOn ? "#fff" : p.accent }}
+                  />
+                  {p.label}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Browser frame — chrome and iframe are siblings; no overlap */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -317,41 +275,45 @@ export default function LiveDemo() {
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           className="relative"
         >
-          <motion.div
-            key={`glow-${v.key}`}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.5 }}
-            transition={{ duration: 0.6 }}
-            className="absolute -inset-3 rounded-2xl blur-2xl pointer-events-none"
-            style={{
-              background: `radial-gradient(circle at 30% 20%, ${v.ringColor}, transparent 60%)`,
-            }}
-            aria-hidden
-          />
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={`glow-${active.key}`}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.45 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.6 }}
+              className="absolute -inset-3 rounded-2xl blur-2xl pointer-events-none"
+              style={{
+                background: `radial-gradient(circle at 30% 20%, ${active.accent}55, transparent 60%)`,
+              }}
+              aria-hidden
+            />
+          </AnimatePresence>
+
           <div
-            className="relative rounded-2xl overflow-hidden border bg-white shadow-[0_40px_80px_-30px_rgba(14,14,16,0.35)]"
-            style={{ borderColor: "rgba(14,14,16,0.10)" }}
+            className="relative rounded-2xl bg-white shadow-[0_40px_80px_-30px_rgba(14,14,16,0.35)] overflow-hidden flex flex-col"
+            style={{ border: "1px solid rgba(14,14,16,0.10)" }}
           >
             <BrowserChrome
-              displayUrl={v.displayUrl}
-              liveUrl={v.url}
+              displayUrl={displayUrl}
+              liveUrl={liveUrl}
               onReload={reload}
             />
 
             <ScaledIframe
-              url={v.url}
+              url={liveUrl}
               iframeKey={iframeKey}
               onLoad={() => setLoaded(true)}
               loaded={loaded}
-              accent={v.accent}
-              agentTag={v.tag}
+              accent={active.accent}
+              label={active.label}
             />
           </div>
 
           <div className="mt-3 flex items-center justify-between text-[11px] font-mono uppercase tracking-[0.14em] text-ink/45">
             <span>Live · proof, not assumptions</span>
             <a
-              href={v.url}
+              href={liveUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 hover:text-ink transition-colors"
