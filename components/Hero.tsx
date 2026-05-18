@@ -36,7 +36,7 @@ function RecruiterHero() {
   useEffect(() => {
     const id = setInterval(() => {
       setTaglineIndex((i) => (i + 1) % recruiterTaglines.length);
-    }, 4000);
+    }, 5000);
     return () => clearInterval(id);
   }, []);
 
