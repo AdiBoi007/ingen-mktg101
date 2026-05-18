@@ -131,41 +131,6 @@ function BookingCalendar() {
           iNGen Product Demo
         </h2>
 
-        <div className="mt-6 space-y-4 text-[15px] text-brand-ink/70">
-          <div className="flex items-center gap-3">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
-              <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.6" />
-              <path
-                d="M12 7.5V12l3 2"
-                stroke="currentColor"
-                strokeWidth="1.6"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            <span className="font-medium text-brand-ink">30 min</span>
-          </div>
-          <div className="flex items-start gap-3">
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              aria-hidden
-              className="mt-[1px] shrink-0"
-            >
-              <rect x="3" y="6" width="13" height="12" rx="2" stroke="currentColor" strokeWidth="1.6" />
-              <path
-                d="M16 10l5-3v10l-5-3"
-                stroke="currentColor"
-                strokeWidth="1.6"
-                strokeLinejoin="round"
-              />
-            </svg>
-            <span>Web conferencing details provided upon confirmation.</span>
-          </div>
-        </div>
-
         <p className="mt-6 text-[14.5px] leading-relaxed text-brand-ink/70">
           A live walkthrough of iNGen — Aristotle, Sherlock, and the full
           proof-first hiring pipeline. Bring your toughest hiring questions and
