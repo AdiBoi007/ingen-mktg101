@@ -18,10 +18,9 @@ import {
   BarChart3,
   Mail,
   Sparkles,
-  ThumbsUp,
-  ThumbsDown,
   FileText,
   LayoutDashboard,
+  Check,
   type LucideIcon,
 } from "lucide-react";
 import { useAudience } from "../AudienceContext";
@@ -43,14 +42,116 @@ type Step = {
 };
 
 /* ----------------------------- Visual mocks ----------------------------- */
+/*
+ * One cohesive premium card system shared by recruiter + student steps.
+ * Prop signatures are intentionally unchanged so both audiences keep working.
+ */
 
-function FilterChipRow({ chips }: { chips: string[] }) {
+const ACCENT = "#EA7659"; // brand coral
+const GOOD = "#2F8D6E"; // verified / positive
+const WARN = "#B45309"; // risk / attention
+
+/* Shared chrome: agent badge + label + right-side status pill */
+function MockHeader({
+  agent,
+  label,
+  status,
+  tone = ACCENT,
+}: {
+  agent: string;
+  label: string;
+  status?: string;
+  tone?: string;
+}) {
   return (
-    <div className="flex flex-wrap items-center gap-1.5 mb-3">
+    <div className="flex items-center gap-2.5 pb-3 mb-4 border-b border-ink/[0.08]">
+      <span
+        className="w-6 h-6 rounded-md flex items-center justify-center shrink-0"
+        style={{ background: `${tone}1A` }}
+      >
+        <span
+          className="w-2 h-2 rounded-full"
+          style={{ background: tone }}
+        />
+      </span>
+      <div className="min-w-0">
+        <div className="text-[12px] font-semibold text-ink leading-none">
+          {agent}
+        </div>
+        <div className="text-[9px] font-mono uppercase tracking-[0.18em] text-ink/45 mt-1">
+          {label}
+        </div>
+      </div>
+      {status && (
+        <span className="ml-auto inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-[0.12em] text-ink/55 bg-ink/[0.04] border border-ink/[0.08] rounded-full px-2.5 py-1">
+          <span
+            className="w-1.5 h-1.5 rounded-full"
+            style={{ background: GOOD }}
+          />
+          {status}
+        </span>
+      )}
+    </div>
+  );
+}
+
+function SignalBar({
+  label,
+  value,
+  color,
+  verified = false,
+}: {
+  label: string;
+  value: number;
+  color: string;
+  verified?: boolean;
+}) {
+  return (
+    <div className="flex items-center gap-3">
+      <div className="flex items-center gap-1.5 w-[110px] shrink-0">
+        {verified && (
+          <span
+            className="w-3.5 h-3.5 rounded-full flex items-center justify-center shrink-0"
+            style={{ background: `${GOOD}1F` }}
+          >
+            <Check className="w-2.5 h-2.5" style={{ color: GOOD }} strokeWidth={3} />
+          </span>
+        )}
+        <span className="text-[11px] text-ink/75 truncate">{label}</span>
+      </div>
+      <div className="flex-1 h-1.5 rounded-full bg-ink/[0.06] overflow-hidden">
+        <div
+          className="h-full rounded-full"
+          style={{ width: `${value}%`, background: color }}
+        />
+      </div>
+      <div className="text-[11px] font-mono text-ink/55 w-9 text-right tabular-nums">
+        {value}
+      </div>
+    </div>
+  );
+}
+
+function ChipRow({ chips, accent }: { chips: string[]; accent?: boolean }) {
+  return (
+    <div className="flex flex-wrap items-center gap-1.5">
       {chips.map((c, i) => (
         <span
           key={i}
-          className="text-[11px] font-mono text-ink/70 bg-ink/[0.04] border border-ink/10 rounded px-2 py-1"
+          className="text-[10.5px] font-mono tracking-tight rounded-md px-2 py-1 border"
+          style={
+            accent
+              ? {
+                  color: ACCENT,
+                  background: `${ACCENT}12`,
+                  borderColor: `${ACCENT}33`,
+                }
+              : {
+                  color: "rgba(29,22,29,0.62)",
+                  background: "rgba(29,22,29,0.035)",
+                  borderColor: "rgba(29,22,29,0.10)",
+                }
+          }
         >
           {c}
         </span>
@@ -59,43 +160,60 @@ function FilterChipRow({ chips }: { chips: string[] }) {
   );
 }
 
-function CandidateRow({
-  name,
-  role,
-  company,
-  match,
-}: {
-  name: string;
-  role: string;
-  company: string;
-  match: number;
-}) {
-  const initials = name
-    .split(" ")
-    .map((s) => s[0])
-    .join("");
+function InsightNote({ children }: { children: ReactNode }) {
   return (
-    <div className="grid grid-cols-[28px,1fr,auto] items-center gap-3 py-2 border-t border-ink/[0.06] first:border-t-0">
-      <div className="w-7 h-7 rounded-full bg-gradient-to-br from-ink/10 to-ink/5 flex items-center justify-center text-[10px] font-medium text-ink/70">
-        {initials}
-      </div>
-      <div className="min-w-0">
-        <div className="text-[12px] font-medium text-ink truncate">{name}</div>
-        <div className="text-[11px] text-ink/55 truncate">
-          {role} · {company}
-        </div>
-      </div>
-      <div className="flex items-center gap-2">
-        <span className="text-[11px] font-mono text-emerald-700 bg-emerald-50 border border-emerald-200 rounded px-1.5 py-0.5">
-          {match}%
-        </span>
-        <ThumbsUp className="w-3.5 h-3.5 text-ink/40" />
-        <ThumbsDown className="w-3.5 h-3.5 text-ink/40" />
+    <div
+      className="mt-4 rounded-lg p-3 border"
+      style={{ background: `${ACCENT}0D`, borderColor: `${ACCENT}26` }}
+    >
+      <div className="flex items-start gap-2">
+        <Sparkles
+          className="w-3.5 h-3.5 mt-0.5 shrink-0"
+          style={{ color: ACCENT }}
+        />
+        <div className="text-[12px] text-ink/75 leading-relaxed">{children}</div>
       </div>
     </div>
   );
 }
 
+/* 1 · ROLE INTAKE — Aristotle turns a rough need into a structured brief */
+function RoleBriefCard({
+  title,
+  subtitle,
+  chips,
+  aiNote,
+}: {
+  title: string;
+  subtitle: string;
+  chips: string[];
+  aiNote: string;
+}) {
+  return (
+    <div>
+      <MockHeader agent="Aristotle" label="Role Brief" status="Generated" />
+      <div className="relative pl-3">
+        <span
+          className="absolute left-0 top-0.5 bottom-0.5 w-[3px] rounded-full"
+          style={{ background: ACCENT }}
+        />
+        <div className="text-[16px] font-semibold text-ink leading-snug tracking-[-0.01em]">
+          {title}
+        </div>
+        <div className="text-[12px] text-ink/55 mt-1">{subtitle}</div>
+      </div>
+      <div className="mt-4">
+        <div className="text-[9px] font-mono uppercase tracking-[0.18em] text-ink/45 mb-2">
+          Search criteria
+        </div>
+        <ChipRow chips={chips} accent />
+      </div>
+      <InsightNote>{aiNote}</InsightNote>
+    </div>
+  );
+}
+
+/* 2 · CANDIDATE SEARCH — shortlist ranked by evidence, not keywords */
 function SearchResultsCard({
   resultsLabel,
   filterChips,
@@ -110,26 +228,91 @@ function SearchResultsCard({
   pillRight: string;
 }) {
   return (
-    <div className="relative">
-      <div className="absolute -top-3 -left-3 z-10 text-[10px] font-mono uppercase tracking-wider bg-amber-300 text-ink rounded px-2 py-1 shadow-sm">
-        {pillLeft}
+    <div>
+      <div className="flex items-center gap-2 pb-3 mb-3 border-b border-ink/[0.08]">
+        <span
+          className="text-[9.5px] font-mono uppercase tracking-[0.12em] rounded-full px-2.5 py-1"
+          style={{ background: `${ACCENT}1A`, color: ACCENT }}
+        >
+          {pillLeft}
+        </span>
+        <span
+          className="text-[9.5px] font-mono uppercase tracking-[0.12em] rounded-full px-2.5 py-1"
+          style={{ background: `${GOOD}1A`, color: GOOD }}
+        >
+          {pillRight}
+        </span>
+        <span className="ml-auto text-[10px] font-mono text-ink/40 tabular-nums">
+          {rows.length} shown
+        </span>
       </div>
-      <div className="absolute -top-3 -right-3 z-10 text-[10px] font-mono uppercase tracking-wider bg-emerald-300 text-ink rounded px-2 py-1 shadow-sm">
-        {pillRight}
+      <div className="mb-3">
+        <ChipRow chips={filterChips} />
       </div>
-      <FilterChipRow chips={filterChips} />
-      <div className="text-[11px] font-mono text-ink/60 mb-2">
+      <div className="text-[10px] font-mono text-ink/50 mb-1 uppercase tracking-[0.1em]">
         {resultsLabel}
       </div>
       <div>
-        {rows.map((r) => (
-          <CandidateRow key={r.name} {...r} />
-        ))}
+        {rows.map((r, i) => {
+          const initials = r.name
+            .split(" ")
+            .map((s) => s[0])
+            .join("")
+            .slice(0, 2);
+          return (
+            <div
+              key={r.name}
+              className="grid grid-cols-[20px,28px,1fr,auto] items-center gap-2.5 py-2.5 border-t border-ink/[0.06] first:border-t-0 group"
+            >
+              <span className="text-[10px] font-mono text-ink/35 tabular-nums">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <div
+                className="w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-semibold"
+                style={{ background: `${ACCENT}14`, color: ACCENT }}
+              >
+                {initials}
+              </div>
+              <div className="min-w-0">
+                <div className="text-[12px] font-medium text-ink truncate">
+                  {r.name}
+                </div>
+                <div className="text-[10.5px] text-ink/50 truncate">
+                  {r.role} · {r.company}
+                </div>
+              </div>
+              <div className="flex items-center gap-2.5">
+                <div className="hidden sm:flex items-center gap-[3px]" aria-hidden>
+                  {[0, 1, 2, 3].map((b) => (
+                    <span
+                      key={b}
+                      className="w-1 rounded-full"
+                      style={{
+                        height: 6 + b * 3,
+                        background:
+                          b < Math.round((r.match / 100) * 4)
+                            ? GOOD
+                            : "rgba(29,22,29,0.12)",
+                      }}
+                    />
+                  ))}
+                </div>
+                <span
+                  className="text-[11px] font-mono font-semibold rounded-md px-1.5 py-0.5 tabular-nums"
+                  style={{ background: `${GOOD}14`, color: GOOD }}
+                >
+                  {r.match}%
+                </span>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
 }
 
+/* 3 · PROOF SCAN — Sherlock verifies the evidence behind a candidate */
 function InsightsChartCard({
   resultsLabel,
   filterChips,
@@ -139,95 +322,67 @@ function InsightsChartCard({
   filterChips: string[];
   bars: { label: string; value: number; color: string }[];
 }) {
+  const avg = Math.round(
+    bars.reduce((a, b) => a + b.value, 0) / Math.max(1, bars.length),
+  );
+  const R = 26;
+  const C = 2 * Math.PI * R;
   return (
     <div>
-      <FilterChipRow chips={filterChips} />
-      <div className="text-[11px] font-mono text-ink/60 mb-3">
-        {resultsLabel}
-      </div>
-      <div className="grid grid-cols-2 gap-3">
-        <div className="border border-ink/[0.06] rounded-md p-3">
-          <div className="text-[10px] font-mono text-ink/50 mb-2 uppercase tracking-wider">
-            Trend
-          </div>
-          <svg viewBox="0 0 120 60" className="w-full h-20">
-            <defs>
-              <linearGradient id="iw-area" x1="0" x2="0" y1="0" y2="1">
-                <stop offset="0%" stopColor="#6B2F8E" stopOpacity="0.35" />
-                <stop offset="100%" stopColor="#6B2F8E" stopOpacity="0" />
-              </linearGradient>
-            </defs>
-            <path
-              d="M0 45 L20 38 L40 42 L60 28 L80 22 L100 18 L120 10 L120 60 L0 60 Z"
-              fill="url(#iw-area)"
-            />
-            <path
-              d="M0 45 L20 38 L40 42 L60 28 L80 22 L100 18 L120 10"
-              stroke="#6B2F8E"
-              strokeWidth="1.6"
+      <MockHeader agent="Sherlock" label="Proof Report" status="Verified" />
+      <div className="flex items-center gap-5">
+        <div className="relative w-[88px] h-[88px] shrink-0">
+          <svg viewBox="0 0 64 64" className="w-full h-full -rotate-90">
+            <circle
+              cx="32"
+              cy="32"
+              r={R}
               fill="none"
+              stroke="rgba(29,22,29,0.08)"
+              strokeWidth="6"
+            />
+            <circle
+              cx="32"
+              cy="32"
+              r={R}
+              fill="none"
+              stroke={GOOD}
+              strokeWidth="6"
+              strokeLinecap="round"
+              strokeDasharray={`${(avg / 100) * C} ${C}`}
             />
           </svg>
-        </div>
-        <div className="border border-ink/[0.06] rounded-md p-3 flex flex-col items-center">
-          <div className="text-[10px] font-mono text-ink/50 mb-2 uppercase tracking-wider self-start">
-            Mix
+          <div className="absolute inset-0 flex flex-col items-center justify-center">
+            <span className="text-[18px] font-mono font-semibold text-ink leading-none tabular-nums">
+              {avg}
+            </span>
+            <span className="text-[8px] font-mono uppercase tracking-[0.14em] text-ink/45 mt-1">
+              Confidence
+            </span>
           </div>
-          <svg viewBox="0 0 60 60" className="w-20 h-20">
-            <circle
-              cx="30"
-              cy="30"
-              r="22"
-              fill="none"
-              stroke="#EEE8FD"
-              strokeWidth="10"
-            />
-            <circle
-              cx="30"
-              cy="30"
-              r="22"
-              fill="none"
-              stroke="#6B2F8E"
-              strokeWidth="10"
-              strokeDasharray="80 200"
-              transform="rotate(-90 30 30)"
-            />
-            <circle
-              cx="30"
-              cy="30"
-              r="22"
-              fill="none"
-              stroke="#B054E7"
-              strokeWidth="10"
-              strokeDasharray="40 200"
-              strokeDashoffset="-80"
-              transform="rotate(-90 30 30)"
-            />
-          </svg>
+        </div>
+        <div className="flex-1 min-w-0">
+          <div className="text-[10px] font-mono text-ink/50 mb-2 uppercase tracking-[0.1em]">
+            {resultsLabel}
+          </div>
+          <ChipRow chips={filterChips} />
         </div>
       </div>
-      <div className="mt-3 space-y-2">
-        {bars.map((b) => (
-          <div key={b.label} className="flex items-center gap-2">
-            <div className="text-[11px] text-ink/70 w-24 truncate">
-              {b.label}
-            </div>
-            <div className="flex-1 h-2 rounded-full bg-ink/[0.05] overflow-hidden">
-              <div
-                className="h-full rounded-full"
-                style={{ width: `${b.value}%`, background: b.color }}
-              />
-            </div>
-            <div className="text-[11px] font-mono text-ink/50 w-8 text-right">
-              {b.value}
-            </div>
-          </div>
-        ))}
+      <div className="mt-5 pt-4 border-t border-ink/[0.08]">
+        <div className="text-[9px] font-mono uppercase tracking-[0.18em] text-ink/45 mb-3">
+          Sources triangulated
+        </div>
+        <div className="space-y-3">
+          {bars.map((b) => (
+            <SignalBar key={b.label} {...b} verified />
+          ))}
+        </div>
       </div>
     </div>
   );
 }
 
+/* 4 · INTERVIEW COMMAND — proof turned into an interview briefing */
 function EmailComposerCard({
   recipientsLabel,
   tokens,
@@ -239,76 +394,57 @@ function EmailComposerCard({
 }) {
   return (
     <div>
-      <div className="text-[11px] font-mono text-ink/60 mb-3">
-        {recipientsLabel}
-      </div>
-      <div className="flex flex-wrap gap-1.5 mb-3">
-        <span className="inline-flex items-center gap-1 text-[11px] font-mono bg-violet-100 text-violet-800 border border-violet-200 rounded px-2 py-1">
-          <Sparkles className="w-3 h-3" /> Smart AI
-        </span>
-        {tokens.map((t) => (
-          <span
-            key={t}
-            className="text-[11px] font-mono bg-ink/[0.04] text-ink/70 border border-ink/10 rounded px-2 py-1"
-          >
-            + {t}
-          </span>
-        ))}
-      </div>
-      <div className="flex items-center gap-1 text-[12px] text-ink/50 border-t border-b border-ink/[0.06] py-1.5 mb-3">
-        <span className="font-bold px-1.5">B</span>
-        <span className="italic px-1.5">I</span>
-        <span className="underline px-1.5">U</span>
-        <span className="px-1.5">≡</span>
-        <span className="px-1.5 font-mono">⌘</span>
-        <span className="px-1.5">…</span>
-      </div>
-      <div className="text-[12px] text-ink/40 mb-2">{subjectLine}</div>
-      <div className="text-[13px] text-ink min-h-[80px]">
-        H<span className="inline-block w-[1px] h-3.5 bg-ink animate-pulse ml-0.5" />
-      </div>
-    </div>
-  );
-}
-
-function RoleBriefCard({
-  title,
-  subtitle,
-  chips,
-  aiNote,
-}: {
-  title: string;
-  subtitle: string;
-  chips: string[];
-  aiNote: string;
-}) {
-  return (
-    <div>
-      <div className="text-[11px] font-mono text-ink/60 mb-1.5 uppercase tracking-wider">
-        Role brief · Aristotle
-      </div>
-      <div className="text-[15px] font-semibold text-ink leading-snug">{title}</div>
-      <div className="text-[12px] text-ink/55 mt-0.5">{subtitle}</div>
-      <div className="flex flex-wrap gap-1.5 mt-3 mb-3">
-        {chips.map((c) => (
-          <span
-            key={c}
-            className="text-[11px] font-mono text-violet-800 bg-violet-50 border border-violet-200 rounded px-2 py-1"
-          >
-            {c}
-          </span>
-        ))}
-      </div>
-      <div className="mt-3 rounded-md border border-ink/[0.08] bg-ink/[0.02] p-3">
-        <div className="flex items-start gap-2">
-          <Sparkles className="w-3.5 h-3.5 text-violet-700 mt-0.5 shrink-0" />
-          <div className="text-[12px] text-ink/75 leading-relaxed">{aiNote}</div>
+      <MockHeader agent="Sherlock" label="Interview Brief" status="Ready" />
+      <div className="rounded-lg border border-ink/[0.08] bg-ink/[0.02] px-3 py-2.5">
+        <div className="text-[9px] font-mono uppercase tracking-[0.18em] text-ink/40 mb-1">
+          Subject
+        </div>
+        <div className="text-[12px] text-ink/80 leading-snug">
+          {recipientsLabel}
         </div>
       </div>
+      <div className="mt-4">
+        <div className="text-[9px] font-mono uppercase tracking-[0.18em] text-ink/45 mb-2">
+          Briefing sections
+        </div>
+        <div className="grid grid-cols-2 gap-2">
+          {tokens.map((t) => (
+            <div
+              key={t}
+              className="flex items-center gap-2 rounded-md border border-ink/[0.08] bg-white px-2.5 py-2"
+            >
+              <span
+                className="w-4 h-4 rounded-full flex items-center justify-center shrink-0"
+                style={{ background: `${GOOD}1F` }}
+              >
+                <Check
+                  className="w-2.5 h-2.5"
+                  style={{ color: GOOD }}
+                  strokeWidth={3}
+                />
+              </span>
+              <span className="text-[11px] text-ink/75 truncate">{t}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+      <InsightNote>{subjectLine}</InsightNote>
+      <div className="mt-4 flex items-center gap-3">
+        <div className="flex-1 h-1.5 rounded-full bg-ink/[0.06] overflow-hidden">
+          <div
+            className="h-full rounded-full"
+            style={{ width: "88%", background: GOOD }}
+          />
+        </div>
+        <span className="text-[10px] font-mono uppercase tracking-[0.12em] text-ink/55">
+          Interview ready
+        </span>
+      </div>
     </div>
   );
 }
 
+/* 5 · HIRING DASHBOARD — the pipeline command center */
 function HiringDashboardCard({
   stats,
   pipeline,
@@ -322,43 +458,53 @@ function HiringDashboardCard({
 }) {
   return (
     <div>
-      <div className="text-[11px] font-mono text-ink/60 mb-3 uppercase tracking-wider">
-        {title}
-      </div>
-      <div className="grid grid-cols-2 gap-2 mb-4">
+      <MockHeader agent={title} label="Command Center" status="Live" />
+      <div className="grid grid-cols-2 gap-2 mb-5">
         {stats.map((s) => (
           <div
             key={s.label}
-            className="border border-ink/[0.08] rounded-md p-2.5 bg-white"
+            className="rounded-lg border border-ink/[0.08] bg-white p-3 relative overflow-hidden"
           >
-            <div className="text-[14px] font-mono font-semibold text-ink">{s.value}</div>
-            <div className="text-[10px] uppercase tracking-wider text-ink/50 mt-0.5">
+            <span
+              className="absolute left-0 top-2 bottom-2 w-[2px] rounded-full"
+              style={{ background: ACCENT }}
+            />
+            <div className="text-[18px] font-mono font-semibold text-ink leading-none tabular-nums pl-2">
+              {s.value}
+            </div>
+            <div className="text-[9px] font-mono uppercase tracking-[0.14em] text-ink/50 mt-2 pl-2">
               {s.label}
             </div>
           </div>
         ))}
       </div>
-      <div className="text-[10px] font-mono text-ink/50 mb-2 uppercase tracking-wider">
+      <div className="text-[9px] font-mono uppercase tracking-[0.18em] text-ink/45 mb-3">
         Pipeline
       </div>
-      <div className="flex items-center flex-wrap gap-1.5 mb-4">
+      <div className="flex items-center mb-1">
         {pipeline.map((p, i) => (
-          <div key={p} className="flex items-center gap-1.5">
-            <span className="text-[11px] font-mono text-violet-800 bg-violet-50 border border-violet-200 rounded px-2 py-1">
-              {p}
-            </span>
+          <div key={p} className="flex items-center flex-1 last:flex-none">
+            <div className="flex flex-col items-center gap-1.5">
+              <span
+                className="w-2.5 h-2.5 rounded-full ring-2 ring-white"
+                style={{
+                  background: i === pipeline.length - 1 ? ACCENT : GOOD,
+                }}
+              />
+              <span className="text-[9.5px] font-mono text-ink/60 whitespace-nowrap">
+                {p}
+              </span>
+            </div>
             {i < pipeline.length - 1 && (
-              <span className="text-ink/40 text-[11px]">→</span>
+              <div
+                className="flex-1 h-[2px] mx-1.5 -mt-4 rounded-full"
+                style={{ background: `${GOOD}55` }}
+              />
             )}
           </div>
         ))}
       </div>
-      <div className="rounded-md border border-ink/[0.08] bg-ink/[0.02] p-3">
-        <div className="flex items-start gap-2">
-          <Sparkles className="w-3.5 h-3.5 text-violet-700 mt-0.5 shrink-0" />
-          <div className="text-[12px] text-ink/75 leading-relaxed">{insight}</div>
-        </div>
-      </div>
+      <InsightNote>{insight}</InsightNote>
     </div>
   );
 }
