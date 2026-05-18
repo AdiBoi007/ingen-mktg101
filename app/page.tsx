@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
+import ToolMarquee from "@/components/ToolMarquee";
 import HowItWorks from "@/components/sections/HowItWorks";
 import LiveDemo from "@/components/sections/LiveDemo";
 import GlobeWaitlist from "@/components/GlobeWaitlist";
@@ -11,6 +12,7 @@ export default function HomePage() {
     <main>
       <Navbar />
       <Hero />
+      <ToolMarquee />
       <HowItWorks />
       <LiveDemo />
       <GlobeWaitlist />
