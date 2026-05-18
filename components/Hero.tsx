@@ -9,12 +9,13 @@ const recruiterTaglines = [
   "iNGEN uses two agents — Aristotle builds the hiring workflow around your role. Sherlock checks the real signals behind each candidate : GitHub, work history, university, projects, and club activity.. so every interview starts with evidence, not assumptions.",
 ];
 
-const recruiterPlaceholders = [
-  "Backend engineer for MVP",
-  "Founding full-stack engineer",
-  "Data analyst for launch",
-  "Product designer for v1",
-  "Alex Rivera, github",
+const recruiterPrompts = [
+  "Find me a backend engineer in Sydney with 3+ years of experience",
+  "Tell me who is actually worth interviewing for this role",
+  "Deeply assess this student profile for a junior software role",
+  "Verify this candidate across GitHub, work history, university, and clubs",
+  "Build me an interview pack from this candidate’s proof",
+  "Find high-signal AI interns with real project evidence",
 ];
 
 const studentPlaceholders = [
@@ -28,7 +29,8 @@ const studentPlaceholders = [
 function RecruiterHero() {
   const router = useRouter();
   const [value, setValue] = useState("");
-  const [phIndex, setPhIndex] = useState(0);
+  const [focused, setFocused] = useState(false);
+  const [typed, setTyped] = useState("");
   const [taglineIndex, setTaglineIndex] = useState(0);
 
   useEffect(() => {
@@ -37,6 +39,41 @@ function RecruiterHero() {
     }, 4000);
     return () => clearInterval(id);
   }, []);
+
+  useEffect(() => {
+    if (focused || value) return;
+    let phrase = 0;
+    let char = 0;
+    let deleting = false;
+    let timer: ReturnType<typeof setTimeout>;
+
+    const tick = () => {
+      const full = recruiterPrompts[phrase];
+      if (!deleting) {
+        char += 1;
+        setTyped(full.slice(0, char));
+        if (char === full.length) {
+          deleting = true;
+          timer = setTimeout(tick, 2000);
+          return;
+        }
+        timer = setTimeout(tick, 42);
+      } else {
+        char -= 1;
+        setTyped(full.slice(0, char));
+        if (char === 0) {
+          deleting = false;
+          phrase = (phrase + 1) % recruiterPrompts.length;
+          timer = setTimeout(tick, 350);
+          return;
+        }
+        timer = setTimeout(tick, 22);
+      }
+    };
+
+    timer = setTimeout(tick, 400);
+    return () => clearTimeout(timer);
+  }, [focused, value]);
 
   const goAuth = () => {
     const q = value.trim() ? `?q=${encodeURIComponent(value.trim())}` : "";
@@ -80,7 +117,7 @@ function RecruiterHero() {
         <div className="mt-16">
           <div className="text-center mb-3">
             <span className="inline-block bg-brand-ink text-white label-mono px-3 py-1.5 rounded-sm">
-              Tell me what role you&apos;re hiring for
+              TELL iNGEN WHO YOU NEED TO HIRE
             </span>
           </div>
 
@@ -90,7 +127,7 @@ function RecruiterHero() {
                 <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
                   <path d="M8 2L9.5 6L13.5 7.5L9.5 9L8 13L6.5 9L2.5 7.5L6.5 6L8 2Z" fill="currentColor" />
                 </svg>
-                Aristotle — candidate intake
+                Aristotle · Role to shortlist
               </span>
             </div>
             <div className="flex items-center px-3 py-3 gap-2">
@@ -107,8 +144,15 @@ function RecruiterHero() {
                     goAuth();
                   }
                 }}
-                onFocus={() => setPhIndex((i) => (i + 1) % recruiterPlaceholders.length)}
-                placeholder={recruiterPlaceholders[phIndex]}
+                onFocus={() => setFocused(true)}
+                onBlur={() => setFocused(false)}
+                placeholder={
+                  focused || value
+                    ? "Describe the role or paste a candidate profile…"
+                    : typed
+                      ? `${typed}▌`
+                      : ""
+                }
                 className="flex-1 outline-none text-[15px] text-brand-ink placeholder:text-brand-mute py-1"
               />
               <button
