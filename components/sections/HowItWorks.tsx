@@ -313,15 +313,17 @@ function HiringDashboardCard({
   stats,
   pipeline,
   insight,
+  title = "Startup hiring dashboard",
 }: {
   stats: { label: string; value: string }[];
   pipeline: string[];
   insight: string;
+  title?: string;
 }) {
   return (
     <div>
       <div className="text-[11px] font-mono text-ink/60 mb-3 uppercase tracking-wider">
-        Startup hiring dashboard
+        {title}
       </div>
       <div className="grid grid-cols-2 gap-2 mb-4">
         {stats.map((s) => (
@@ -489,74 +491,119 @@ function studentSteps(): Step[] {
   return [
     {
       id: "roadmap",
-      tabLabel: "ROADMAP · ARISTOTLE",
-      icon: Search,
+      tabLabel: "ROADMAP",
+      icon: FileText,
       bgColor: "#5B2B8C",
       accentColor: "#C9B6E4",
-      pillLabel: "ROADMAP",
-      heading: "A roadmap built around your target role",
-      body: "Tell Aristotle the role you want. It maps the skills, projects, and proof artefacts you need — sequenced for the next 90 days, not a four-year plan you'll never finish.",
-      primaryCta: { label: "START YOUR ROADMAP", href: "#" },
+      pillLabel: "ARISTOTLE · SKILL ROADMAP",
+      heading: "Build the skills companies actually hire for.",
+      body: "Tell Aristotle your target role, current level, and weekly study time. It creates a step-by-step roadmap so you know exactly what to learn next — a role-based learning path, a weekly skill plan, progress tracking, and job-ready milestones.",
+      primaryCta: { label: "BUILD MY ROADMAP", href: "#" },
       secondaryCta: { label: "WATCH A DEMO", href: "#" },
       visual: (
-        <SearchResultsCard
-          pillLeft="On track"
-          pillRight="Proof ready"
-          filterChips={[
-            "Target · AI Engineer",
-            "Junior",
-            "Remote-friendly",
-            "+1 filter",
+        <RoleBriefCard
+          title="Target role: Frontend Engineer"
+          subtitle="Plan: 12 months · 420 hours"
+          chips={[
+            "React",
+            "TypeScript",
+            "APIs",
+            "Projects",
           ]}
-          resultsLabel="Your roadmap (8 milestones)"
-          rows={[
-            { name: "Build retrieval demo", role: "Project · Week 2", company: "Aristotle", match: 88 },
-            { name: "Ship eval suite", role: "Project · Week 4", company: "Aristotle", match: 85 },
-            { name: "Join open-source RAG", role: "Community · Week 6", company: "Columbus", match: 90 },
-            { name: "Talk: model evals", role: "Talk · Week 8", company: "Aristotle", match: 82 },
-          ]}
+          aiNote="Status: 0 of 52 skills completed. No more “where do I start?” — iNGEN turns your goal into a clear placement path."
         />
       ),
     },
     {
       id: "scout",
-      tabLabel: "SCOUT · COLUMBUS",
-      icon: BarChart3,
+      tabLabel: "JOB SCOUT",
+      icon: Search,
       bgColor: "#1F6F73",
       accentColor: "#9DD5D8",
-      pillLabel: "ROLES & MATCH",
-      heading: "Real roles, ranked against your proof",
-      body: "Columbus scans the open roles and ranks them by how well your roadmap evidence — repos, courses, projects — matches what each team is actually hiring for.",
-      primaryCta: { label: "OPEN ROLE FEED", href: "#" },
+      pillLabel: "COLUMBUS · JOB SCOUT",
+      heading: "Find jobs that actually match you.",
+      body: "Columbus scans roles, ranks them by fit, explains why they match, and helps you focus on the opportunities worth applying to — internships and graduate roles, a match score for every job, salary and skill signals, and apply-path suggestions.",
+      primaryCta: { label: "SCOUT JOBS FOR ME", href: "#" },
       secondaryCta: { label: "WATCH A DEMO", href: "#" },
       visual: (
-        <InsightsChartCard
-          filterChips={["AI / ML eng", "Junior · 2025 grad", "+2 filters"]}
-          resultsLabel="Match strength by signal"
-          bars={[
-            { label: "GitHub depth", value: 74, color: "#6B2F8E" },
-            { label: "Coursework", value: 68, color: "#B054E7" },
-            { label: "Project impact", value: 81, color: "#DDC73C" },
+        <SearchResultsCard
+          pillLeft="Ranked by fit"
+          pillRight="96% match"
+          filterChips={["Internships", "Graduate roles", "Remote-friendly", "+1 filter"]}
+          resultsLabel="Stop doom-scrolling job boards. Columbus brings the right roles to you."
+          rows={[
+            { name: "Backend Product Engineer", role: "Python · SQL · APIs", company: "Strong fit", match: 96 },
+            { name: "Frontend Engineer", role: "React · TypeScript", company: "High fit", match: 92 },
+            { name: "Data Analyst (New Grad)", role: "SQL · Python", company: "Good fit", match: 88 },
+            { name: "ML Intern", role: "Projects · Repos", company: "Worth a look", match: 84 },
           ]}
         />
       ),
     },
     {
-      id: "apply",
-      tabLabel: "APPLY · WORKFLOW",
+      id: "proof",
+      tabLabel: "PROOF PROFILE",
+      icon: BarChart3,
+      bgColor: "#7A3CA8",
+      accentColor: "#D6BCF0",
+      pillLabel: "ARISTOTLE · PROOF PROFILE",
+      heading: "Turn your projects into recruiter signal.",
+      body: "iNGEN converts your GitHub, projects, hackathons, certifications, and experience into a clean proof-based profile recruiters can understand instantly — verified project proof, skill confidence scores, a role-fit summary, and a recruiter-ready export.",
+      primaryCta: { label: "BUILD MY PROOF PROFILE", href: "#" },
+      secondaryCta: { label: "WATCH A DEMO", href: "#" },
+      visual: (
+        <InsightsChartCard
+          filterChips={["82% Placement Ready", "7 Projects", "12 Repos", "3 Certifications"]}
+          resultsLabel="Your resume says what you did. Your iNGEN profile proves it."
+          bars={[
+            { label: "React", value: 93, color: "#6B2F8E" },
+            { label: "TypeScript", value: 91, color: "#B054E7" },
+            { label: "Python", value: 88, color: "#DDC73C" },
+          ]}
+        />
+      ),
+    },
+    {
+      id: "interview",
+      tabLabel: "INTERVIEW PREP",
       icon: Mail,
       bgColor: "#2B3A6B",
       accentColor: "#A8B6E0",
-      pillLabel: "APPLY",
-      heading: "Applications written from your evidence",
-      body: "Cover letters and outreach drafted from the projects you've actually shipped — not a generic template. Each one points the hiring team straight to the proof.",
-      primaryCta: { label: "DRAFT AN APPLICATION", href: "#" },
+      pillLabel: "ARISTOTLE · INTERVIEW COACH",
+      heading: "Know what to say before the interview.",
+      body: "Aristotle turns your proof profile into talking points, role-fit answers, and project stories so you can explain your work like a strong candidate — project explanations, role-fit answers, strength and gap analysis, and interview talking points.",
+      primaryCta: { label: "PREPARE MY INTERVIEW", href: "#" },
       secondaryCta: { label: "WATCH A DEMO", href: "#" },
       visual: (
         <EmailComposerCard
-          recipientsLabel="Applications drafted (5)"
-          tokens={["Hiring manager", "Team", "Top project", "Course"]}
-          subjectLine="Subject — Re: {Role} at {Team}"
+          recipientsLabel="Walk in prepared. Talk like someone who knows their work."
+          tokens={["Project story", "Role-fit answer", "Strengths", "Gaps"]}
+          subjectLine="Interview talking point — explain how your API project shows backend thinking, data flow, and production awareness."
+        />
+      ),
+    },
+    {
+      id: "workspace",
+      tabLabel: "SAVED APPLICATIONS",
+      icon: LayoutDashboard,
+      bgColor: "#2F8D6E",
+      accentColor: "#B8E2D1",
+      pillLabel: "PLACEMENT WORKSPACE",
+      heading: "Save every job, roadmap, and profile version.",
+      body: "Keep your best job matches, tailored profiles, and skill roadmaps in one place so every application has the right version of you — saved job shortlists, role-specific profiles, roadmap versions, and an application-ready workspace.",
+      primaryCta: { label: "OPEN MY WORKSPACE", href: "#" },
+      secondaryCta: { label: "WATCH A DEMO", href: "#" },
+      visual: (
+        <HiringDashboardCard
+          title="Saved collection"
+          stats={[
+            { label: "Profiles", value: "4" },
+            { label: "Job shortlists", value: "4" },
+            { label: "Roadmaps", value: "3" },
+            { label: "High-signal saves", value: "6" },
+          ]}
+          pipeline={["Saved", "Tailored", "Applied", "Tracked"]}
+          insight="One place for every role you are chasing."
         />
       ),
     },
@@ -583,10 +630,14 @@ export default function HowItWorks({
     () => (audience === "student" ? studentSteps() : recruiterSteps()),
     [audience],
   );
+  const isStudent = audience === "student";
   const heading =
-    title ?? (audience === "student"
-      ? "How it works: Roadmap + Agents"
+    title ?? (isStudent
+      ? "Everything you need to go from student to shortlisted."
       : "From role intent to interview-ready talent.");
+  const eyebrowLabel = isStudent ? "STUDENT PLACEMENT OS" : eyebrow;
+  const studentSubheadline =
+    "iNGEN gives you a clear career path, matched job opportunities, a proof-based profile, and interview-ready talking points in one workspace.";
 
   const containerRef = useRef<HTMLDivElement>(null);
   const stickyRef = useRef<HTMLDivElement>(null);
@@ -709,7 +760,7 @@ export default function HowItWorks({
       <section className="bg-white">
         <div className="mx-auto max-w-[1280px] px-6 lg:px-12 pt-16 lg:pt-24 pb-10">
           <div className="text-[13px] font-mono uppercase tracking-[0.18em] text-ink/60 mb-1.5">
-            [{sectionNumber}] {eyebrow}
+            [{sectionNumber}] {eyebrowLabel}
           </div>
           <h2 className="font-display text-[32px] lg:text-[48px] leading-[1.0] tracking-[-0.02em] text-ink max-w-4xl">
             {heading}
@@ -719,6 +770,11 @@ export default function HowItWorks({
               iNGEN gives recruiters a proof-first hiring workflow: build the role, find candidates,
               verify evidence, prepare interviews, and move the pipeline — all with Aristotle and
               Sherlock working behind the scenes.
+            </p>
+          )}
+          {isStudent && (
+            <p className="mt-4 max-w-2xl text-[15px] lg:text-[17px] leading-relaxed text-ink/70">
+              {studentSubheadline}
             </p>
           )}
         </div>
@@ -808,7 +864,7 @@ export default function HowItWorks({
           className="mx-auto max-w-[1280px] w-full px-12 pt-16"
         >
           <div className="text-[13px] font-mono uppercase tracking-[0.18em] text-ink/60 mb-1.5">
-            [{sectionNumber}] {eyebrow}
+            [{sectionNumber}] {eyebrowLabel}
           </div>
           <h2 className="font-display text-[48px] leading-[1.0] tracking-[-0.02em] text-ink max-w-4xl">
             {heading}
@@ -818,6 +874,11 @@ export default function HowItWorks({
               iNGEN gives recruiters a proof-first hiring workflow: build the role, find candidates,
               verify evidence, prepare interviews, and move the pipeline — all with Aristotle and
               Sherlock working behind the scenes.
+            </p>
+          )}
+          {isStudent && (
+            <p className="mt-4 max-w-2xl text-[16px] leading-relaxed text-ink/70">
+              {studentSubheadline}
             </p>
           )}
         </motion.div>

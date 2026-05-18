@@ -19,11 +19,10 @@ const recruiterPrompts = [
 ];
 
 const studentPlaceholders = [
-  "Data Analyst",
-  "AI Engineer",
-  "Frontend Engineer",
-  "Backend Developer at DoorDash",
-  "Product Manager at a Series B startup",
+  'Try: "I want to get placed as a frontend engineer in 6 months"',
+  'Try: "Help me land a backend role at a product startup"',
+  'Try: "Get me interview-ready for an AI engineer role"',
+  'Try: "Build my placement plan for a data analyst job"',
 ];
 
 function RecruiterHero() {
@@ -203,31 +202,35 @@ function StudentHero() {
           </span>
 
           <h1 className="font-display mt-7 text-[64px] md:text-[88px] leading-[0.95] tracking-tightest text-white">
-            Build the role roadmap.
+            Get placed with proof.
           </h1>
 
           <p className="mt-6 max-w-2xl mx-auto text-[17px] leading-relaxed text-white/85">
-            iNGEN is the{" "}
-            <span className="text-white">proof-first career platform</span> built
-            for students and early-career engineers. Two agents — Aristotle
-            generates the roadmap, Columbus scouts the roles — across GitHub,
-            LinkedIn, Coursera, and project evidence.
+            iNGEN helps students build the right skills, find matching jobs,
+            turn projects into{" "}
+            <span className="text-white">recruiter-ready proof</span>, and apply
+            with confidence.
           </p>
 
           <div className="mt-9 flex items-center justify-center gap-3">
             <a href="/signup" className="btn-dark bg-white !text-brand-ink hover:!bg-white/90">
-              Start your roadmap
+              Start my placement plan
             </a>
             <a href="/book-demo" className="btn-outline btn-outline-light">
-              Watch the Demo
+              Find matching jobs
             </a>
           </div>
+
+          <p className="mt-5 text-[13px] text-white/60">
+            Your AI placement assistant for roadmaps, jobs, proof profiles, and
+            interview prep.
+          </p>
         </div>
 
         <div className="mt-16">
           <div className="text-center mb-3">
             <span className="inline-block bg-brand-ink text-white label-mono px-3 py-1.5 rounded-sm">
-              Tell Aristotle your target role
+              Tell iNGEN what role you want
             </span>
           </div>
 
@@ -270,6 +273,11 @@ function StudentHero() {
               </button>
             </div>
           </div>
+
+          <p className="mt-4 text-center text-[13px] text-white/60">
+            Aristotle builds your path. Columbus finds your roles. You focus on
+            getting hired.
+          </p>
         </div>
       </div>
     </section>

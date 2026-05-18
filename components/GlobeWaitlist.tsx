@@ -597,10 +597,11 @@ function StudentWaitlistForm() {
     <div className="space-y-6">
       <span className="label-mono text-forge-amber">Early access</span>
       <h2 className="font-display text-[40px] md:text-[52px] leading-[1.02] tracking-tightest text-forge-ink">
-        Join the iNGEN waitlist
+        Join the student waitlist
       </h2>
       <p className="text-[16px] leading-relaxed max-w-md text-forge-ink/70">
-        Be first in line when Aristotle and Columbus open to your university.
+        Be first to use iNGEN as your AI placement assistant for skill roadmaps,
+        job matching, proof profiles, and interview prep.
       </p>
 
       <form
@@ -616,7 +617,7 @@ function StudentWaitlistForm() {
           className="flex-1 bg-transparent outline-none px-3 py-2 text-[15px] text-forge-ink placeholder:text-forge-mute"
         />
         <button type="submit" className="btn-amber">
-          Join waitlist
+          Join student waitlist
         </button>
       </form>
 
@@ -626,7 +627,7 @@ function StudentWaitlistForm() {
             className="inline-block w-1.5 h-1.5 rounded-full"
             style={{ background: "#F5A623" }}
           />
-          No spam, unsubscribe anytime
+          No spam. Just early access and product updates.
         </span>
       </div>
     </div>
@@ -686,6 +687,18 @@ export default function GlobeWaitlist() {
             <div className="relative h-[440px] md:h-[560px] w-full flex items-center justify-center">
               <ThemedGlobe key={isStudent ? "light" : "dark"} tone={isStudent ? "light" : "dark"} />
             </div>
+
+            {isStudent && (
+              <div className="mt-2 max-w-md text-center">
+                <h3 className="font-display text-[26px] md:text-[32px] leading-[1.05] tracking-tightest text-forge-ink">
+                  Your placement journey starts here.
+                </h3>
+                <p className="mt-3 text-[15px] leading-relaxed text-forge-ink/70">
+                  Build the right skills. Prove your work. Apply smarter. Get
+                  placed.
+                </p>
+              </div>
+            )}
 
             {!isStudent && (
               <div className="mt-4 md:mt-2 flex justify-center">

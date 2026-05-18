@@ -1,5 +1,7 @@
 "use client";
 
+import { useAudience } from "./AudienceContext";
+
 const integrations: { name: string; domain: string }[] = [
   { name: "LinkedIn", domain: "linkedin.com" },
   { name: "GitHub", domain: "github.com" },
@@ -38,14 +40,24 @@ function ToolLogo({ name, domain }: { name: string; domain: string }) {
 }
 
 export default function ToolMarquee() {
+  const { audience } = useAudience();
+  const isStudent = audience === "student";
   const loop = [...integrations, ...integrations];
   return (
     <section className="bg-brand-bg border-b border-black/5 overflow-hidden">
       <div className="mx-auto max-w-[1320px] px-0 md:px-6 pt-16 pb-12 md:pt-28 md:pb-24">
         <div className="text-center mb-8 md:mb-14 px-6">
           <h2 className="font-display text-[26px] md:text-[46px] leading-[1.08] tracking-tightest text-brand-ink">
-            Connects with the tools you already use
+            {isStudent
+              ? "Bring your proof from everywhere."
+              : "Connects with the tools you already use"}
           </h2>
+          {isStudent && (
+            <p className="mt-4 max-w-2xl mx-auto text-[15px] md:text-[17px] leading-relaxed text-brand-ink/65">
+              Connect GitHub, LinkedIn, projects, certificates, portfolios, and
+              job boards so iNGEN can understand your real career signal.
+            </p>
+          )}
         </div>
 
         <div className="relative group">

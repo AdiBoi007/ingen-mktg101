@@ -33,28 +33,24 @@ const recruiterFaqs = [
 
 const studentFaqs = [
   {
-    q: "Who can use iNGen?",
-    a: "iNGen is built for students, early-career engineers, and graduating candidates preparing for technical roles. If you have scattered projects, internships, and certifications and want a single, recruiter-grade dossier — iNGen is a fit for you.",
+    q: "Who is iNGEN for?",
+    a: "Students, fresh graduates, and early-career candidates who want a clearer path to internships, graduate roles, and technical jobs.",
   },
   {
-    q: "Can I try iNGen for free?",
-    a: "Yes. iNGen has a generous free tier with full Aristotle and Columbus access for one active target role. You can build your verified profile, run a roadmap, and stage job dossiers without paying a cent.",
+    q: "How does iNGEN help me get hired?",
+    a: "It helps you build role-specific skills, find matching jobs, create a proof-based profile, and prepare stronger interview answers.",
   },
   {
-    q: "Can I use iNGen with my study group?",
-    a: "Yes. Share Collections with peers, swap roadmap milestones, and compare proof scores. Your projects stay private by default — you control what is visible to the group.",
+    q: "Is this just another resume builder?",
+    a: "No. iNGEN focuses on proof. It turns your projects, GitHub, certificates, and experience into recruiter-ready evidence.",
   },
   {
-    q: "How long does it take to set up and start using iNGen?",
-    a: "Under three minutes. Connect LinkedIn or GitHub, drop in one project, and Aristotle does the first pass. Most students go from 0% readiness to a recruiter-shareable profile in a single sitting.",
+    q: "Can iNGEN help if I do not know what role to target?",
+    a: "Yes. Aristotle can help you choose a direction, build a roadmap, and show what skills you need for different roles.",
   },
   {
-    q: "Does iNGen have jobs from outside the US?",
-    a: "Yes. Columbus stages dossiers from RemoteOK, HN Who's Hiring, GitHub Jobs Archive, Adzuna, and global company career pages — ranked against your profile with a percentage match and salary band.",
-  },
-  {
-    q: "Will it integrate with my LinkedIn or GitHub?",
-    a: "Both, natively. Aristotle pulls from LinkedIn for work history and from GitHub for code evidence, then turns the raw signal into scored skills, role-fit summaries, and interview talking points.",
+    q: "Can I save different profiles for different jobs?",
+    a: "Yes. You can keep multiple profile versions for backend, frontend, AI, data, product, or specific company applications.",
   },
 ];
 
@@ -126,10 +122,12 @@ function FAQSection({
   items,
   intro,
   ctaLabel,
+  heading = "Your questions, answered",
 }: {
   items: { q: string; a: string }[];
   intro: string;
   ctaLabel: string;
+  heading?: string;
 }) {
   return (
     <section className="relative bg-brand-bg">
@@ -151,7 +149,7 @@ function FAQSection({
 
           <div className="label-mono text-black/55 mb-3">[06] FAQ</div>
           <h2 className="font-display text-[44px] md:text-[58px] leading-[1.04] tracking-tightest text-black">
-            Your questions, answered
+            {heading}
           </h2>
           <p className="mt-5 text-[15px] text-black/65 max-w-md leading-relaxed">
             {intro}
@@ -189,7 +187,8 @@ export default function FAQ() {
     return (
       <FAQSection
         items={studentFaqs}
-        intro="We're here to help. Reach out to the iNGen team for guidance on getting your profile, roadmap, and Columbus job dossiers set up in minutes."
+        heading="Student questions, answered"
+        intro="Everything you need to know about using iNGEN to build skills, find roles, and become placement-ready."
         ctaLabel="Start free"
       />
     );

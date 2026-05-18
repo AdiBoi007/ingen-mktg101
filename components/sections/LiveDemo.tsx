@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ExternalLink } from "lucide-react";
+import { useAudience } from "../AudienceContext";
 
 type Page = {
   key: string;
@@ -113,6 +114,8 @@ function ScaledIframe({
 }
 
 export default function LiveDemo() {
+  const { audience } = useAudience();
+  const isStudent = audience === "student";
   const [activeKey, setActiveKey] = useState<string>(PAGES[0].key);
   const [iframeKey, setIframeKey] = useState(0);
   const [loaded, setLoaded] = useState(false);
@@ -144,12 +147,27 @@ export default function LiveDemo() {
       <div className="mx-auto max-w-[1480px] px-6 lg:px-12 pt-20 pb-24 relative">
         {/* Headline + CTAs */}
         <div className="text-center max-w-[820px] mx-auto mb-10">
+          {isStudent && (
+            <div className="text-[13px] font-mono uppercase tracking-[0.18em] text-ink/55 mb-3">
+              [02] LIVE STUDENT PREVIEW
+            </div>
+          )}
           <h2 className="font-display text-[40px] lg:text-[56px] leading-[1.02] tracking-[-0.02em] text-ink mb-4">
-            Live preview.
+            {isStudent
+              ? "See your placement assistant in action."
+              : "Live preview."}
           </h2>
-          <p className="text-[17px] leading-[1.5] text-ink/70 max-w-[44ch] mx-auto">
-            Try interacting with the interface below.
+          <p className="text-[17px] leading-[1.5] text-ink/70 max-w-[52ch] mx-auto">
+            {isStudent
+              ? "Explore how iNGEN helps students plan skills, find jobs, build proof profiles, and prepare for interviews."
+              : "Try interacting with the interface below."}
           </p>
+          {isStudent && (
+            <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-ink/15 bg-white px-4 py-1.5 text-[12px] font-mono text-ink/60">
+              <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500" />
+              ingenworkspace.com/student
+            </div>
+          )}
           <div className="flex flex-wrap justify-center gap-2 mt-6">
             <a
               href={liveUrl}
@@ -157,14 +175,14 @@ export default function LiveDemo() {
               rel="noopener noreferrer"
               className="text-[12px] font-mono uppercase tracking-[0.1em] bg-ink text-white px-5 py-3 inline-flex items-center gap-2"
             >
-              Open full app
+              {isStudent ? "Open student workspace" : "Open full app"}
               <ExternalLink className="w-3.5 h-3.5" />
             </a>
             <a
-              href="/book-demo"
+              href={isStudent ? "/signup" : "/book-demo"}
               className="text-[12px] font-mono uppercase tracking-[0.1em] border border-ink text-ink px-5 py-3"
             >
-              Book a demo
+              {isStudent ? "Join waitlist" : "Book a demo"}
             </a>
           </div>
         </div>
@@ -240,14 +258,18 @@ export default function LiveDemo() {
           </div>
 
           <div className="mt-3 flex items-center justify-between text-[11px] font-mono uppercase tracking-[0.14em] text-ink/45">
-            <span>Live · proof, not assumptions</span>
+            <span>
+              {isStudent
+                ? "Live · roadmap, job scout, proof profile, and placement readiness"
+                : "Live · proof, not assumptions"}
+            </span>
             <a
               href={liveUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 hover:text-ink transition-colors"
             >
-              Open full app
+              {isStudent ? "Open student workspace" : "Open full app"}
               <ExternalLink className="w-3 h-3" />
             </a>
           </div>
