@@ -21,11 +21,14 @@ const PAGES: Page[] = [
   { key: "settings",   label: "Settings",   path: "/settings",        accent: "#C24A4A" },
 ];
 
-// The hosted demo app is designed for a ~1440px desktop layout.
-// We render the iframe at that fixed size, then CSS-scale it down to
-// whatever width the container has — so the full app always fits.
+// The hosted demo app is a full-height (100vh) app shell — it reflows to
+// fill whatever viewport it's given rather than having a fixed content
+// height. We render the iframe at a realistic desktop aspect ratio
+// (16:9, like a maximized laptop browser) so the app looks natural with
+// no over-stretched dead space, then CSS-scale it down to the container
+// width so the full app always fits.
 const DESIGN_WIDTH = 1440;
-const DESIGN_HEIGHT = 900;
+const DESIGN_HEIGHT = 810;
 
 function ScaledIframe({
   url,
