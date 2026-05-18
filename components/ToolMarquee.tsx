@@ -17,7 +17,7 @@ const integrations: { name: string; domain: string }[] = [
 
 function ToolLogo({ name, domain }: { name: string; domain: string }) {
   return (
-    <div className="flex items-center gap-3 px-8 shrink-0 group/logo transition-all duration-300 hover:-translate-y-1 hover:scale-110">
+    <div className="flex items-center gap-2 md:gap-3 px-4 md:px-8 shrink-0 group/logo transition-all duration-300 hover:-translate-y-1 hover:scale-110">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={`https://www.google.com/s2/favicons?domain=${domain}&sz=64`}
@@ -25,12 +25,12 @@ function ToolLogo({ name, domain }: { name: string; domain: string }) {
         width={28}
         height={28}
         loading="lazy"
-        className="w-[28px] h-[28px] object-contain rounded-sm opacity-80 transition-all duration-300 group-hover/logo:opacity-100 group-hover/logo:scale-110"
+        className="w-5 h-5 md:w-7 md:h-7 object-contain rounded-sm opacity-80 transition-all duration-300 group-hover/logo:opacity-100 group-hover/logo:scale-110"
         onError={(e) => {
           (e.currentTarget as HTMLImageElement).style.visibility = "hidden";
         }}
       />
-      <span className="text-[20px] font-semibold tracking-tight text-brand-ink/45 whitespace-nowrap transition-colors duration-300 group-hover/logo:text-brand-ink">
+      <span className="text-[14px] md:text-[20px] font-semibold tracking-tight text-brand-ink/45 whitespace-nowrap transition-colors duration-300 group-hover/logo:text-brand-ink">
         {name}
       </span>
     </div>
@@ -40,17 +40,17 @@ function ToolLogo({ name, domain }: { name: string; domain: string }) {
 export default function ToolMarquee() {
   const loop = [...integrations, ...integrations];
   return (
-    <section className="bg-brand-bg border-b border-black/5">
-      <div className="mx-auto max-w-[1320px] px-6 pt-28 pb-24">
-        <div className="text-center mb-14">
-          <h2 className="font-display text-[34px] md:text-[46px] leading-[1.08] tracking-tightest text-brand-ink">
+    <section className="bg-brand-bg border-b border-black/5 overflow-hidden">
+      <div className="mx-auto max-w-[1320px] px-0 md:px-6 pt-16 pb-12 md:pt-28 md:pb-24">
+        <div className="text-center mb-8 md:mb-14 px-6">
+          <h2 className="font-display text-[26px] md:text-[46px] leading-[1.08] tracking-tightest text-brand-ink">
             Connects with the tools you already use
           </h2>
         </div>
 
         <div className="relative group">
-          <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-brand-bg to-transparent z-10" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-brand-bg to-transparent z-10" />
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-10 md:w-24 bg-gradient-to-r from-brand-bg to-transparent z-10" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-10 md:w-24 bg-gradient-to-l from-brand-bg to-transparent z-10" />
 
           <div className="flex w-max animate-marquee group-hover:[animation-play-state:paused]">
             {loop.map((it, i) => (
