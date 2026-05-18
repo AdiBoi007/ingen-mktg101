@@ -25,7 +25,7 @@ function ToolLogo({ name, domain }: { name: string; domain: string }) {
         width={28}
         height={28}
         loading="lazy"
-        className="w-[28px] h-[28px] object-contain rounded-sm grayscale opacity-60 transition-all duration-300 group-hover/logo:grayscale-0 group-hover/logo:opacity-100"
+        className="w-[28px] h-[28px] object-contain rounded-sm opacity-80 transition-all duration-300 group-hover/logo:opacity-100 group-hover/logo:scale-110"
         onError={(e) => {
           (e.currentTarget as HTMLImageElement).style.visibility = "hidden";
         }}
