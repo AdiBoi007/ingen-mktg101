@@ -20,6 +20,8 @@ import {
   Sparkles,
   ThumbsUp,
   ThumbsDown,
+  FileText,
+  LayoutDashboard,
   type LucideIcon,
 } from "lucide-react";
 import { useAudience } from "../AudienceContext";
@@ -269,55 +271,165 @@ function EmailComposerCard({
   );
 }
 
+function RoleBriefCard({
+  title,
+  subtitle,
+  chips,
+  aiNote,
+}: {
+  title: string;
+  subtitle: string;
+  chips: string[];
+  aiNote: string;
+}) {
+  return (
+    <div>
+      <div className="text-[11px] font-mono text-ink/60 mb-1.5 uppercase tracking-wider">
+        Role brief · Aristotle
+      </div>
+      <div className="text-[15px] font-semibold text-ink leading-snug">{title}</div>
+      <div className="text-[12px] text-ink/55 mt-0.5">{subtitle}</div>
+      <div className="flex flex-wrap gap-1.5 mt-3 mb-3">
+        {chips.map((c) => (
+          <span
+            key={c}
+            className="text-[11px] font-mono text-violet-800 bg-violet-50 border border-violet-200 rounded px-2 py-1"
+          >
+            {c}
+          </span>
+        ))}
+      </div>
+      <div className="mt-3 rounded-md border border-ink/[0.08] bg-ink/[0.02] p-3">
+        <div className="flex items-start gap-2">
+          <Sparkles className="w-3.5 h-3.5 text-violet-700 mt-0.5 shrink-0" />
+          <div className="text-[12px] text-ink/75 leading-relaxed">{aiNote}</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function HiringDashboardCard({
+  stats,
+  pipeline,
+  insight,
+}: {
+  stats: { label: string; value: string }[];
+  pipeline: string[];
+  insight: string;
+}) {
+  return (
+    <div>
+      <div className="text-[11px] font-mono text-ink/60 mb-3 uppercase tracking-wider">
+        Startup hiring dashboard
+      </div>
+      <div className="grid grid-cols-2 gap-2 mb-4">
+        {stats.map((s) => (
+          <div
+            key={s.label}
+            className="border border-ink/[0.08] rounded-md p-2.5 bg-white"
+          >
+            <div className="text-[14px] font-mono font-semibold text-ink">{s.value}</div>
+            <div className="text-[10px] uppercase tracking-wider text-ink/50 mt-0.5">
+              {s.label}
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="text-[10px] font-mono text-ink/50 mb-2 uppercase tracking-wider">
+        Pipeline
+      </div>
+      <div className="flex items-center flex-wrap gap-1.5 mb-4">
+        {pipeline.map((p, i) => (
+          <div key={p} className="flex items-center gap-1.5">
+            <span className="text-[11px] font-mono text-violet-800 bg-violet-50 border border-violet-200 rounded px-2 py-1">
+              {p}
+            </span>
+            {i < pipeline.length - 1 && (
+              <span className="text-ink/40 text-[11px]">→</span>
+            )}
+          </div>
+        ))}
+      </div>
+      <div className="rounded-md border border-ink/[0.08] bg-ink/[0.02] p-3">
+        <div className="flex items-start gap-2">
+          <Sparkles className="w-3.5 h-3.5 text-violet-700 mt-0.5 shrink-0" />
+          <div className="text-[12px] text-ink/75 leading-relaxed">{insight}</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* --------------------------- Step data builders --------------------------- */
 
 function recruiterSteps(): Step[] {
   return [
     {
       id: "intake",
-      tabLabel: "ROLE INTAKE · ARISTOTLE",
-      icon: Search,
+      tabLabel: "ROLE INTAKE",
+      icon: FileText,
       bgColor: "#5B2B8C",
       accentColor: "#C9B6E4",
       pillLabel: "ARISTOTLE · RECRUITING AGENT",
       heading: "Turn a messy hiring need into a real search.",
-      body: "Tell Aristotle who you need to hire. It turns a rough role idea into a sharp brief, must-have criteria, search logic, and a proof-ranked candidate pipeline your team can actually act on — shipped projects, GitHub depth, work history, university and role fit.",
+      body: "Tell Aristotle who you need to hire. It turns a rough role idea into a sharp brief, must-have criteria, search logic, and a candidate pipeline your team can actually act on.",
       primaryCta: { label: "BUILD THE ROLE", href: "#" },
       secondaryCta: { label: "BOOK A DEMO", href: "#" },
       visual: (
-        <SearchResultsCard
-          pillLeft="High fit"
-          pillRight="Proof ranked"
-          filterChips={[
-            "Founding Full-Stack",
-            "Sydney / Remote",
-            "Seed-stage AI",
-            "+2 filters",
+        <RoleBriefCard
+          title="Founding Full-Stack Engineer"
+          subtitle="Sydney / Remote · Seed-stage AI startup"
+          chips={[
+            "Brief generated",
+            "Search ready",
+            "12 candidates found",
+            "5 high-signal profiles",
           ]}
-          resultsLabel="Aristotle shortlist (12) · ranked by proof"
+          aiNote="Aristotle recommends prioritising candidates with shipped products, startup context, and strong GitHub evidence."
+        />
+      ),
+    },
+    {
+      id: "search",
+      tabLabel: "CANDIDATE SEARCH",
+      icon: Search,
+      bgColor: "#2F8D6E",
+      accentColor: "#B8E2D1",
+      pillLabel: "CANDIDATE SEARCH",
+      heading: "Shortlists ranked by evidence, not resume polish.",
+      body: "iNGEN finds candidates using the signals recruiters actually care about: shipped projects, GitHub depth, work history, university, clubs, open-source work, and role fit.",
+      primaryCta: { label: "FIND CANDIDATES", href: "#" },
+      secondaryCta: { label: "BOOK A DEMO", href: "#" },
+      visual: (
+        <SearchResultsCard
+          pillLeft="Proof ranked"
+          pillRight="High fit"
+          filterChips={["GitHub", "Work history", "Projects", "University", "Clubs"]}
+          resultsLabel="Aristotle shortlist · ranked by proof, not keywords"
           rows={[
             { name: "Maya Chen", role: "Founding FS", company: "Orbit", match: 93 },
-            { name: "Alex Rivera", role: "Backend · MVP", company: "Hello AI", match: 92 },
-            { name: "Anika Sharma", role: "Product systems", company: "Sheridine", match: 91 },
-            { name: "Owen Brooks", role: "Data · Launch", company: "Stark", match: 90 },
+            { name: "Alex Rivera", role: "Backend", company: "Hello AI", match: 92 },
+            { name: "Anika Sharma", role: "Product Systems", company: "Sheridine", match: 91 },
+            { name: "Owen Brooks", role: "Data Launch", company: "Stark", match: 90 },
           ]}
         />
       ),
     },
     {
       id: "proof",
-      tabLabel: "PROOF SCAN · SHERLOCK",
+      tabLabel: "PROOF SCAN",
       icon: BarChart3,
       bgColor: "#1F6F73",
       accentColor: "#9DD5D8",
       pillLabel: "SHERLOCK · PROOF AGENT",
       heading: "Know if the candidate is actually legit.",
-      body: "Sherlock investigates the evidence behind every candidate — GitHub, projects, work history, university, clubs, and public signals — and flags weak claims before they reach your inbox. No keyword theatre. Just receipts.",
+      body: "Sherlock investigates the evidence behind every candidate. It checks GitHub, projects, work history, university, clubs, and public signals to show whether their profile holds up. No keyword theatre. Just receipts.",
       primaryCta: { label: "RUN PROOF SCAN", href: "#" },
       secondaryCta: { label: "BOOK A DEMO", href: "#" },
       visual: (
         <InsightsChartCard
-          filterChips={["Alex Rivera · Backend", "92% confidence", "LOW risk"]}
+          filterChips={["Alex Rivera", "92% confidence", "LOW risk"]}
           resultsLabel="Sherlock proof report · 5 sources verified"
           bars={[
             { label: "GitHub depth", value: 92, color: "#6B2F8E" },
@@ -340,9 +452,33 @@ function recruiterSteps(): Step[] {
       secondaryCta: { label: "BOOK A DEMO", href: "#" },
       visual: (
         <EmailComposerCard
-          recipientsLabel="Interview pack ready · Maya Chen · Founding Full-Stack"
+          recipientsLabel="Pack ready · Maya Chen · Founding Full-Stack · LOW risk"
           tokens={["Why this candidate", "Proof summary", "Questions to ask", "Red flags"]}
-          subjectLine="Pack — Maya Chen · 6 proof sources · LOW risk"
+          subjectLine="Interview pack — Maya Chen · 6 proof sources · technical screen"
+        />
+      ),
+    },
+    {
+      id: "dashboard",
+      tabLabel: "HIRING DASHBOARD",
+      icon: LayoutDashboard,
+      bgColor: "#7A3CA8",
+      accentColor: "#D6BCF0",
+      pillLabel: "HIRING DASHBOARD",
+      heading: "Your hiring pipeline, without the spreadsheet chaos.",
+      body: "Track candidates, interviews, budget, team capacity, pipeline movement, and next actions in one recruiter command center. Less hiring chaos. More hiring momentum.",
+      primaryCta: { label: "OPEN DASHBOARD", href: "#" },
+      secondaryCta: { label: "BOOK A DEMO", href: "#" },
+      visual: (
+        <HiringDashboardCard
+          stats={[
+            { label: "Budget left", value: "$16.4K" },
+            { label: "Interviews this week", value: "5" },
+            { label: "Offer-ready", value: "3" },
+            { label: "Hiring runway", value: "6 wks" },
+          ]}
+          pipeline={["Shortlisted", "Selected", "Scheduled", "Offer-ready"]}
+          insight="Finish interview packets before adding more candidates."
         />
       ),
     },
@@ -706,12 +842,12 @@ export default function HowItWorks({
                 aria-selected={isActive}
                 aria-controls={`hiw-panel-${step.id}`}
                 onClick={() => scrollToStep(i)}
-                className={`relative flex items-center gap-2 px-5 w-[260px] border-r border-ink/15 transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-[-4px] focus-visible:outline-ink ${
+                className={`relative flex items-center gap-2 px-4 flex-1 min-w-[180px] max-w-[240px] border-r border-ink/15 transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-[-4px] focus-visible:outline-ink ${
                   isActive ? "text-ink" : "text-ink/40 hover:text-ink/70"
                 }`}
               >
-                <Icon className="w-4 h-4" />
-                <span className="text-[13px] font-mono tracking-[0.12em]">
+                <Icon className="w-3.5 h-3.5 shrink-0" />
+                <span className="text-[11px] font-mono tracking-[0.1em] truncate">
                   {step.tabLabel}
                 </span>
               </button>
