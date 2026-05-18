@@ -213,7 +213,7 @@ function StudentHero() {
           </p>
 
           <div className="mt-9 flex items-center justify-center gap-3">
-            <a href="/signup" className="btn-dark bg-white !text-brand-ink hover:!bg-white/90">
+            <a href="/signup" className="btn-dark !bg-white !text-brand-ink hover:!bg-white/90">
               Start my placement plan
             </a>
             <a href="/book-demo" className="btn-outline btn-outline-light">
