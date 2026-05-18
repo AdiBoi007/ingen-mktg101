@@ -1,8 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAudience } from "./AudienceContext";
+
+const recruiterTaglines = [
+  "Stop guessing from resumes. iNGEN shows recruiters the proof behind every candidate, then turns that evidence into shortlists, interview packs, and faster hiring decisions.",
+  "iNGEN uses two agents — Aristotle builds the hiring workflow around your role. Sherlock checks the real signals behind each candidate : GitHub, work history, university, projects, and club activity.. so every interview starts with evidence, not assumptions.",
+];
 
 const recruiterPlaceholders = [
   "Backend engineer for MVP",
@@ -24,6 +29,14 @@ function RecruiterHero() {
   const router = useRouter();
   const [value, setValue] = useState("");
   const [phIndex, setPhIndex] = useState(0);
+  const [taglineIndex, setTaglineIndex] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setTaglineIndex((i) => (i + 1) % recruiterTaglines.length);
+    }, 4000);
+    return () => clearInterval(id);
+  }, []);
 
   const goAuth = () => {
     const q = value.trim() ? `?q=${encodeURIComponent(value.trim())}` : "";
@@ -47,11 +60,11 @@ function RecruiterHero() {
             Proof-first hiring.
           </h1>
 
-          <p className="mt-6 max-w-2xl mx-auto text-[17px] leading-relaxed text-white/85">
-            iNGEN is the{" "}
-            <span className="text-white">AI recruiter command center</span> for
-            startup hiring teams. Aristotle runs the workflow, Sherlock
-            triangulates the proof.
+          <p
+            key={taglineIndex}
+            className="mt-6 max-w-2xl mx-auto text-[17px] leading-relaxed text-white/85 animate-[fadeUp_600ms_ease-out] min-h-[78px]"
+          >
+            {recruiterTaglines[taglineIndex]}
           </p>
 
           <div className="mt-9 flex items-center justify-center gap-3">
