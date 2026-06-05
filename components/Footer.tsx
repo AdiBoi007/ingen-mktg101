@@ -24,6 +24,10 @@ const socialLinks = [
   { href: "https://www.instagram.com/ingen_labs/", icon: <InstagramIcon />, label: "Instagram" },
 ];
 
+const linkHrefs: Record<string, string> = {
+  Careers: "https://v0-ingen-labs-careers-page.vercel.app/",
+};
+
 const recruiterCols = [
   { title: "Platform", links: ["Dashboard", "Aristotle — workflow AI", "Sherlock — proof AI", "Interviews", "Settings"] },
   { title: "Resources", links: ["Docs", "Pricing", "Hiring playbook", "Proof scoring guide", "Partners", "Help Center"] },
@@ -47,9 +51,21 @@ function RecruiterFooter() {
             <div key={c.title}>
               <h4 className="label-mono text-white/55 mb-4">{c.title}</h4>
               <ul className="space-y-2.5 text-[13px]">
-                {c.links.map((l) => (
-                  <li key={l}><a href="#" className="text-white/85 hover:text-white">{l}</a></li>
-                ))}
+                {c.links.map((l) => {
+                  const href = linkHrefs[l] ?? "#";
+                  const external = href.startsWith("http");
+                  return (
+                    <li key={l}>
+                      <a
+                        href={href}
+                        {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                        className="text-white/85 hover:text-white"
+                      >
+                        {l}
+                      </a>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           ))}
@@ -86,6 +102,8 @@ function RecruiterFooter() {
                 <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label} className="hover:text-white transition-colors">{s.icon}</a>
               ))}
               <span className="opacity-40">·</span>
+              <a href={linkHrefs.Careers} target="_blank" rel="noopener noreferrer" className="hover:text-white">Careers</a>
+              <span className="opacity-40">·</span>
               <a href="#" className="hover:text-white">Privacy</a>
               <span className="opacity-40">·</span>
               <a href="#" className="hover:text-white">Terms</a>
@@ -110,9 +128,21 @@ function StudentFooter() {
             <div key={c.title}>
               <h4 className="label-mono text-white/55 mb-4">{c.title}</h4>
               <ul className="space-y-2.5 text-[13px]">
-                {c.links.map((l) => (
-                  <li key={l}><a href="#" className="text-white/85 hover:text-white">{l}</a></li>
-                ))}
+                {c.links.map((l) => {
+                  const href = linkHrefs[l] ?? "#";
+                  const external = href.startsWith("http");
+                  return (
+                    <li key={l}>
+                      <a
+                        href={href}
+                        {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                        className="text-white/85 hover:text-white"
+                      >
+                        {l}
+                      </a>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           ))}
@@ -148,6 +178,8 @@ function StudentFooter() {
               {socialLinks.map((s) => (
                 <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label} className="hover:text-white transition-colors">{s.icon}</a>
               ))}
+              <span className="opacity-40">·</span>
+              <a href={linkHrefs.Careers} target="_blank" rel="noopener noreferrer" className="hover:text-white">Careers</a>
               <span className="opacity-40">·</span>
               <a href="#" className="hover:text-white">Privacy</a>
               <span className="opacity-40">·</span>
