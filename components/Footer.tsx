@@ -26,6 +26,9 @@ const socialLinks = [
 
 const linkHrefs: Record<string, string> = {
   Careers: "https://v0-ingen-labs-careers-page.vercel.app/",
+  "Trust Center": "/trust",
+  "Privacy Choices": "/privacy",
+  "Data handling": "/privacy",
 };
 
 const recruiterCols = [
@@ -104,13 +107,13 @@ function RecruiterFooter() {
               <span className="opacity-40">·</span>
               <a href={linkHrefs.Careers} target="_blank" rel="noopener noreferrer" className="hover:text-white">Careers</a>
               <span className="opacity-40">·</span>
-              <a href="#" className="hover:text-white">Privacy</a>
+              <a href="/privacy" className="hover:text-white">Privacy</a>
               <span className="opacity-40">·</span>
-              <a href="#" className="hover:text-white">Terms</a>
+              <a href="/terms" className="hover:text-white">Terms</a>
               <span className="opacity-40">·</span>
-              <a href="#" className="hover:text-white">Cookies</a>
+              <a href="/cookies" className="hover:text-white">Cookies</a>
               <span className="opacity-40">·</span>
-              <a href="#" className="hover:text-white">GDPR &amp; CCPA</a>
+              <a href="/trust" className="hover:text-white">Trust Center</a>
             </div>
           </div>
         </div>
@@ -181,13 +184,13 @@ function StudentFooter() {
               <span className="opacity-40">·</span>
               <a href={linkHrefs.Careers} target="_blank" rel="noopener noreferrer" className="hover:text-white">Careers</a>
               <span className="opacity-40">·</span>
-              <a href="#" className="hover:text-white">Privacy</a>
+              <a href="/privacy" className="hover:text-white">Privacy</a>
               <span className="opacity-40">·</span>
-              <a href="#" className="hover:text-white">Terms</a>
+              <a href="/terms" className="hover:text-white">Terms</a>
               <span className="opacity-40">·</span>
-              <a href="#" className="hover:text-white">Cookies</a>
+              <a href="/cookies" className="hover:text-white">Cookies</a>
               <span className="opacity-40">·</span>
-              <a href="#" className="hover:text-white">Trust Center</a>
+              <a href="/trust" className="hover:text-white">Trust Center</a>
             </div>
           </div>
         </div>
