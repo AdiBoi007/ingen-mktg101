@@ -49,13 +49,14 @@ export default function ToolMarquee() {
         <div className="text-center mb-8 md:mb-14 px-6">
           <h2 className="font-display text-[26px] md:text-[46px] leading-[1.08] tracking-tightest text-brand-ink">
             {isStudent
-              ? "Bring your proof from everywhere."
+              ? "Every piece of proof, in one profile."
               : "Connects with the tools you already use"}
           </h2>
           {isStudent && (
             <p className="mt-4 max-w-2xl mx-auto text-[15px] md:text-[17px] leading-relaxed text-brand-ink/65">
-              Connect GitHub, LinkedIn, projects, certificates, portfolios, and
-              job boards so iNGEN can understand your real career signal.
+              Connect GitHub and LinkedIn. Columbus scouts RemoteOK, HN
+              Who&rsquo;s Hiring, GitHub Jobs Archive, Adzuna, and company
+              career pages so every project, repo, and role lands as evidence.
             </p>
           )}
         </div>

@@ -19,10 +19,10 @@ const recruiterPrompts = [
 ];
 
 const studentPlaceholders = [
-  'Try: "I want to get placed as a frontend engineer in 6 months"',
-  'Try: "Help me land a backend role at a product startup"',
-  'Try: "Get me interview-ready for an AI engineer role"',
-  'Try: "Build my placement plan for a data analyst job"',
+  'Try: "Data Analyst roadmap — 360 hours, 9 months"',
+  'Try: "AI Engineer plan — 520 hours, 14 months"',
+  'Try: "Frontend Engineer in 12 months, 8 hrs a week"',
+  'Try: "Switching careers into backend engineering"',
 ];
 
 function RecruiterHero() {
@@ -206,31 +206,31 @@ function StudentHero() {
           </h1>
 
           <p className="mt-6 max-w-2xl mx-auto text-[17px] leading-relaxed text-white/85">
-            iNGEN helps students build the right skills, find matching jobs,
-            turn projects into{" "}
-            <span className="text-white">recruiter-ready proof</span>, and apply
-            with confidence.
+            FORGE turns raw experience into{" "}
+            <span className="text-white">recruiter-ready proof</span>. Aristotle
+            builds your time-bound roadmap, Columbus scouts roles ranked by fit,
+            and your profile becomes evidence — not a resume.
           </p>
 
           <div className="mt-9 flex items-center justify-center gap-3">
             <a href="/signup" className="btn-dark !bg-white !text-brand-ink hover:!bg-white/90">
-              Start my placement plan
+              Build my roadmap
             </a>
             <a href="/book-demo" className="btn-outline btn-outline-light">
-              Find matching jobs
+              Scout matching jobs
             </a>
           </div>
 
           <p className="mt-5 text-[13px] text-white/60">
-            Your AI placement assistant for roadmaps, jobs, proof profiles, and
-            interview prep.
+            Roadmap · Jobs · Proof Profile · Collections — one workspace, two
+            AI agents.
           </p>
         </div>
 
         <div className="mt-16">
           <div className="text-center mb-3">
             <span className="inline-block bg-brand-ink text-white label-mono px-3 py-1.5 rounded-sm">
-              Tell iNGEN what role you want
+              TELL ARISTOTLE THE ROLE YOU&apos;RE TRAINING FOR
             </span>
           </div>
 
@@ -275,8 +275,8 @@ function StudentHero() {
           </div>
 
           <p className="mt-4 text-center text-[13px] text-white/60">
-            Aristotle builds your path. Columbus finds your roles. You focus on
-            getting hired.
+            Aristotle plans the path. Columbus scouts the roles. You ship the
+            proof.
           </p>
         </div>
       </div>

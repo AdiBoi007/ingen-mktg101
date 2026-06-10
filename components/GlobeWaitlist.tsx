@@ -597,11 +597,12 @@ function StudentWaitlistForm() {
     <div className="space-y-6">
       <span className="label-mono text-forge-amber">Early access</span>
       <h2 className="font-display text-[40px] md:text-[52px] leading-[1.02] tracking-tightest text-forge-ink">
-        Join the student waitlist
+        Join the FORGE waitlist
       </h2>
       <p className="text-[16px] leading-relaxed max-w-md text-forge-ink/70">
-        Be first to use iNGEN as your AI placement assistant for skill roadmaps,
-        job matching, proof profiles, and interview prep.
+        Be first inside FORGE — Aristotle for your roadmap and proof profile,
+        Columbus for ranked job dossiers, and Collections for every tailored
+        version of you.
       </p>
 
       <form
@@ -691,11 +692,11 @@ export default function GlobeWaitlist() {
             {isStudent && (
               <div className="mt-2 max-w-md text-center">
                 <h3 className="font-display text-[26px] md:text-[32px] leading-[1.05] tracking-tightest text-forge-ink">
-                  Your placement journey starts here.
+                  From job-hunter to evidence-backed candidate.
                 </h3>
                 <p className="mt-3 text-[15px] leading-relaxed text-forge-ink/70">
-                  Build the right skills. Prove your work. Apply smarter. Get
-                  placed.
+                  Plan the path. Prove the work. Scout the roles. Walk in
+                  prepared.
                 </p>
               </div>
             )}

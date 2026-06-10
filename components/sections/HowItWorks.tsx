@@ -641,22 +641,22 @@ function studentSteps(): Step[] {
       icon: FileText,
       bgColor: "#5B2B8C",
       accentColor: "#C9B6E4",
-      pillLabel: "ARISTOTLE · SKILL ROADMAP",
-      heading: "Build the skills companies actually hire for.",
-      body: "Tell Aristotle your target role, current level, and weekly study time. It creates a step-by-step roadmap so you know exactly what to learn next — a role-based learning path, a weekly skill plan, progress tracking, and job-ready milestones.",
+      pillLabel: "ARISTOTLE · ROADMAP",
+      heading: "A time-bound path to the role you want.",
+      body: "Tell Aristotle your target role, expertise level, and weekly study time. It generates a visual, role-based roadmap — Data Analyst (360h / 9 months), AI Engineer (520h / 14 months), Frontend Engineer (420h / 12 months) — with branch-by-branch topics and per-node completion tracking.",
       primaryCta: { label: "BUILD MY ROADMAP", href: "#" },
       secondaryCta: { label: "WATCH A DEMO", href: "#" },
       visual: (
         <RoleBriefCard
           title="Target role: Frontend Engineer"
-          subtitle="Plan: 12 months · 420 hours"
+          subtitle="Plan: 12 months · 420 hours · 52 topics"
           chips={[
-            "React",
-            "TypeScript",
+            "Internet Fundamentals",
+            "React · Hooks",
+            "CSS Grid · Flexbox",
             "APIs",
-            "Projects",
           ]}
-          aiNote="Status: 0 of 52 skills completed. No more “where do I start?” — iNGEN turns your goal into a clear placement path."
+          aiNote="0% complete · 0 of 52 topics · Updated just now. No more “where do I start?” — Aristotle calibrates the roadmap to your goal and weekly budget."
         />
       ),
     },
@@ -667,19 +667,19 @@ function studentSteps(): Step[] {
       bgColor: "#1F6F73",
       accentColor: "#9DD5D8",
       pillLabel: "COLUMBUS · JOB SCOUT",
-      heading: "Find jobs that actually match you.",
-      body: "Columbus scans roles, ranks them by fit, explains why they match, and helps you focus on the opportunities worth applying to — internships and graduate roles, a match score for every job, salary and skill signals, and apply-path suggestions.",
-      primaryCta: { label: "SCOUT JOBS FOR ME", href: "#" },
+      heading: "Columbus brings the roles to you.",
+      body: "Columbus scrapes RemoteOK, HN Who’s Hiring, GitHub Jobs Archive, Adzuna, and company career pages — then ranks roles by match %, explains the fit, and stages dossiers with salary bands and an apply path. Filter by Remote, Full-time, Internship, Startups, MNC, or 90%+ Match.",
+      primaryCta: { label: "START AN INTAKE", href: "#" },
       secondaryCta: { label: "WATCH A DEMO", href: "#" },
       visual: (
         <SearchResultsCard
-          pillLeft="Ranked by fit"
+          pillLeft="Scout active · 5 staged"
           pillRight="96% match"
-          filterChips={["Internships", "Graduate roles", "Remote-friendly", "+1 filter"]}
-          resultsLabel="Stop doom-scrolling job boards. Columbus brings the right roles to you."
+          filterChips={["Remote", "Internship", "Startups", "90%+ Match"]}
+          resultsLabel="Columbus found 5 roles · ranked by fit, sourced from RemoteOK, HN, GitHub Jobs, Adzuna."
           rows={[
-            { name: "Backend Product Engineer", role: "Python · SQL · APIs", company: "Strong fit", match: 96 },
-            { name: "Frontend Engineer", role: "React · TypeScript", company: "High fit", match: 92 },
+            { name: "Backend Product Engineer", role: "Python · SQL · APIs · $76–94K", company: "Strong fit", match: 96 },
+            { name: "Frontend Engineer", role: "React · TypeScript · $70–88K", company: "High fit", match: 93 },
             { name: "Data Analyst (New Grad)", role: "SQL · Python", company: "Good fit", match: 88 },
             { name: "ML Intern", role: "Projects · Repos", company: "Worth a look", match: 84 },
           ]}
@@ -693,14 +693,14 @@ function studentSteps(): Step[] {
       bgColor: "#7A3CA8",
       accentColor: "#D6BCF0",
       pillLabel: "ARISTOTLE · PROOF PROFILE",
-      heading: "Turn your projects into recruiter signal.",
-      body: "iNGEN converts your GitHub, projects, hackathons, certifications, and experience into a clean proof-based profile recruiters can understand instantly — verified project proof, skill confidence scores, a role-fit summary, and a recruiter-ready export.",
+      heading: "A recruiter-grade dossier, verified by Aristotle.",
+      body: "GitHub, projects, hackathons, certifications, testimonials, and society work get scored, verified, and stacked as evidence — skill confidence chips, proof-scored project cards, a role-fit summary with 5 signals, and a readiness meter per track (Frontend, Backend, AI Product).",
       primaryCta: { label: "BUILD MY PROOF PROFILE", href: "#" },
       secondaryCta: { label: "WATCH A DEMO", href: "#" },
       visual: (
         <InsightsChartCard
-          filterChips={["82% Placement Ready", "7 Projects", "12 Repos", "3 Certifications"]}
-          resultsLabel="Your resume says what you did. Your iNGEN profile proves it."
+          filterChips={["82% Ready", "7 Projects", "12 Repos", "3 Certifications"]}
+          resultsLabel="Verified by Aristotle · 4 project proofs (96 / 91 proof scores) · 5 role-fit signals."
           bars={[
             { label: "React", value: 93, color: "#6B2F8E" },
             { label: "TypeScript", value: 91, color: "#B054E7" },
@@ -716,8 +716,8 @@ function studentSteps(): Step[] {
       bgColor: "#2B3A6B",
       accentColor: "#A8B6E0",
       pillLabel: "ARISTOTLE · INTERVIEW COACH",
-      heading: "Know what to say before the interview.",
-      body: "Aristotle turns your proof profile into talking points, role-fit answers, and project stories so you can explain your work like a strong candidate — project explanations, role-fit answers, strength and gap analysis, and interview talking points.",
+      heading: "Walk in already knowing the answers.",
+      body: "Aristotle turns each project, repo, and signal in your profile into rehearsable talking points — role-fit answers tied to the JD, project stories that show shipped judgment, and a strength-and-gap read so you go into the room prepared, not improvising.",
       primaryCta: { label: "PREPARE MY INTERVIEW", href: "#" },
       secondaryCta: { label: "WATCH A DEMO", href: "#" },
       visual: (
@@ -730,26 +730,26 @@ function studentSteps(): Step[] {
     },
     {
       id: "workspace",
-      tabLabel: "SAVED APPLICATIONS",
+      tabLabel: "COLLECTIONS",
       icon: LayoutDashboard,
       bgColor: "#2F8D6E",
       accentColor: "#B8E2D1",
-      pillLabel: "PLACEMENT WORKSPACE",
-      heading: "Save every job, roadmap, and profile version.",
-      body: "Keep your best job matches, tailored profiles, and skill roadmaps in one place so every application has the right version of you — saved job shortlists, role-specific profiles, roadmap versions, and an application-ready workspace.",
-      primaryCta: { label: "OPEN MY WORKSPACE", href: "#" },
+      pillLabel: "COLLECTIONS · SAVED WORKSPACE",
+      heading: "A tailored version of you for every role.",
+      body: "Save Columbus job dossiers, Aristotle roadmaps, and tailored profile variants (Backend, IBM SDE, Frontend) in one library. High-signal saves stay in reach so each application gets the right version of you — not a generic resume.",
+      primaryCta: { label: "OPEN MY COLLECTIONS", href: "#" },
       secondaryCta: { label: "WATCH A DEMO", href: "#" },
       visual: (
         <HiringDashboardCard
-          title="Saved collection"
+          title="Saved collection · 11 items"
           stats={[
-            { label: "Profiles", value: "4" },
-            { label: "Job shortlists", value: "4" },
+            { label: "Saved Profiles", value: "4" },
+            { label: "Job Shortlist", value: "4" },
             { label: "Roadmaps", value: "3" },
             { label: "High-signal saves", value: "6" },
           ]}
           pipeline={["Saved", "Tailored", "Applied", "Tracked"]}
-          insight="One place for every role you are chasing."
+          insight="IBM SDE version · React proof stack · 96% Match — one workspace, every variant."
         />
       ),
     },
@@ -779,11 +779,11 @@ export default function HowItWorks({
   const isStudent = audience === "student";
   const heading =
     title ?? (isStudent
-      ? "Everything you need to go from student to shortlisted."
+      ? "From scattered experience to recruiter-grade proof."
       : "From role intent to interview-ready talent.");
-  const eyebrowLabel = isStudent ? "STUDENT PLACEMENT OS" : eyebrow;
+  const eyebrowLabel = isStudent ? "FORGE · STUDENT WORKSPACE" : eyebrow;
   const studentSubheadline =
-    "iNGEN gives you a clear career path, matched job opportunities, a proof-based profile, and interview-ready talking points in one workspace.";
+    "Aristotle builds your roadmap, profile, and interview prep. Columbus scouts roles ranked by fit. Collections keep every tailored version of you ready to apply.";
 
   const containerRef = useRef<HTMLDivElement>(null);
   const stickyRef = useRef<HTMLDivElement>(null);

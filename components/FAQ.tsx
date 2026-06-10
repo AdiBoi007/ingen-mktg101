@@ -33,24 +33,28 @@ const recruiterFaqs = [
 
 const studentFaqs = [
   {
-    q: "Who is iNGEN for?",
-    a: "Students, fresh graduates, and early-career candidates who want a clearer path to internships, graduate roles, and technical jobs.",
+    q: "What is FORGE?",
+    a: "FORGE is iNGEN’s student platform — an AI-assisted career workspace anchored by two agents: Aristotle (roadmap, proof profile, interview prep) and Columbus (job scout). It turns scattered experience into recruiter-grade proof.",
   },
   {
-    q: "How does iNGEN help me get hired?",
-    a: "It helps you build role-specific skills, find matching jobs, create a proof-based profile, and prepare stronger interview answers.",
+    q: "How does the roadmap work?",
+    a: "Tell Aristotle your target role, expertise level (No experience → Master), and weekly study time. It generates a time-bound visual roadmap — e.g. Data Analyst (360h / 9 months), AI Engineer (520h / 14 months), Frontend Engineer (420h / 12 months) — with per-topic completion tracking.",
+  },
+  {
+    q: "How is Columbus different from LinkedIn or Indeed?",
+    a: "Columbus scouts RemoteOK, HN Who’s Hiring, GitHub Jobs Archive, Adzuna, and company career pages, then ranks each role by match %, explains the fit, and stages dossiers with salary bands and an apply path — no doom-scrolling.",
   },
   {
     q: "Is this just another resume builder?",
-    a: "No. iNGEN focuses on proof. It turns your projects, GitHub, certificates, and experience into recruiter-ready evidence.",
+    a: "No. Your proof profile is verified by Aristotle — skill confidence chips (e.g. React 93%, TypeScript 91%, Python 88%), proof-scored project cards, a role-fit summary with 5 signals, testimonials, and a readiness meter per track.",
   },
   {
-    q: "Can iNGEN help if I do not know what role to target?",
-    a: "Yes. Aristotle can help you choose a direction, build a roadmap, and show what skills you need for different roles.",
+    q: "Can I keep different profiles for different jobs?",
+    a: "Yes. Collections lets you save tailored profile variants (Backend, IBM SDE, Frontend) alongside job shortlists and roadmap versions, so every application gets the right version of you.",
   },
   {
-    q: "Can I save different profiles for different jobs?",
-    a: "Yes. You can keep multiple profile versions for backend, frontend, AI, data, product, or specific company applications.",
+    q: "What does the readiness score mean?",
+    a: "Your “Overall Recruiter Readiness” (e.g. 82%) and per-track meters (Frontend, Backend, AI Product) give you an honest, quantified view of how close you are to interview-ready — preparation as a measurable loop.",
   },
 ];
 
@@ -187,8 +191,8 @@ export default function FAQ() {
     return (
       <FAQSection
         items={studentFaqs}
-        heading="Student questions, answered"
-        intro="Everything you need to know about using iNGEN to build skills, find roles, and become placement-ready."
+        heading="FORGE questions, answered"
+        intro="Everything you need to know about Aristotle, Columbus, and the four-module student workspace."
         ctaLabel="Start free"
       />
     );

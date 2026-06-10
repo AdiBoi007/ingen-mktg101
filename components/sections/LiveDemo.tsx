@@ -154,12 +154,12 @@ export default function LiveDemo() {
           )}
           <h2 className="font-display text-[40px] lg:text-[56px] leading-[1.02] tracking-[-0.02em] text-ink mb-4">
             {isStudent
-              ? "See your placement assistant in action."
+              ? "Step into the FORGE workspace."
               : "Live preview."}
           </h2>
           <p className="text-[17px] leading-[1.5] text-ink/70 max-w-[52ch] mx-auto">
             {isStudent
-              ? "Explore how iNGEN helps students plan skills, find jobs, build proof profiles, and prepare for interviews."
+              ? "Aristotle on the left, your roadmap, jobs, profile, and collections on the right. The same canvas you’ll use to go from curious to interview-ready."
               : "Try interacting with the interface below."}
           </p>
           {isStudent && (
@@ -260,7 +260,7 @@ export default function LiveDemo() {
           <div className="mt-3 flex items-center justify-between text-[11px] font-mono uppercase tracking-[0.14em] text-ink/45">
             <span>
               {isStudent
-                ? "Live · roadmap, job scout, proof profile, and placement readiness"
+                ? "Live · Roadmap · Columbus job scout · Proof profile · Collections"
                 : "Live · proof, not assumptions"}
             </span>
             <a
