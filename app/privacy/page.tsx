@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 const LAST_UPDATED = "June 11, 2026";
 const EFFECTIVE_DATE = "June 11, 2026";
-const CONTACT_EMAIL = "privacy@ingenworkspace.com";
+const CONTACT_EMAIL = "contact@ingenworkspace.com";
 const ABN = "63 688 809 145";
 const ABN_LINK = "https://abr.business.gov.au/ABN/View?abn=63688809145";
 const ENTITY_NAME = "INGEN LABS PTY LTD";

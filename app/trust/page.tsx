@@ -9,8 +9,8 @@ export const metadata: Metadata = {
 };
 
 const LAST_UPDATED = "June 11, 2026";
-const CONTACT_EMAIL = "trust@ingenworkspace.com";
-const SECURITY_EMAIL = "security@ingenworkspace.com";
+const CONTACT_EMAIL = "contact@ingenworkspace.com";
+const SECURITY_EMAIL = "contact@ingenworkspace.com";
 const ENTITY_NAME = "INGEN LABS PTY LTD";
 
 const OrangeLink = ({
