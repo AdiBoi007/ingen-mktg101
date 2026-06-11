@@ -622,15 +622,6 @@ function StudentWaitlistForm() {
         </button>
       </form>
 
-      <div className="flex items-center gap-4 text-[13px] text-forge-ink/60">
-        <span className="inline-flex items-center gap-1.5">
-          <span
-            className="inline-block w-1.5 h-1.5 rounded-full"
-            style={{ background: "#F5A623" }}
-          />
-          No spam. Just early access and product updates.
-        </span>
-      </div>
     </div>
   );
 }
