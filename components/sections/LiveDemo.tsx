@@ -22,6 +22,13 @@ const PAGES: Page[] = [
   { key: "settings",   label: "Settings",   path: "/settings",        accent: "#C24A4A" },
 ];
 
+const STUDENT_PAGE: Page = {
+  key: "student",
+  label: "Student workspace",
+  path: "/student",
+  accent: "#F5A623",
+};
+
 // The hosted demo app is a full-height (100vh) app shell — it reflows to
 // fill whatever viewport it's given rather than having a fixed content
 // height. We render the iframe at a realistic desktop aspect ratio
@@ -121,8 +128,11 @@ export default function LiveDemo() {
   const [loaded, setLoaded] = useState(false);
 
   const active = useMemo(
-    () => PAGES.find((p) => p.key === activeKey) ?? PAGES[0],
-    [activeKey]
+    () =>
+      isStudent
+        ? STUDENT_PAGE
+        : (PAGES.find((p) => p.key === activeKey) ?? PAGES[0]),
+    [activeKey, isStudent]
   );
 
   const liveUrl = `${BASE}${active.path}`;
@@ -191,7 +201,7 @@ export default function LiveDemo() {
         <div
           role="tablist"
           aria-label="Switch preview page"
-          className="flex flex-nowrap justify-start lg:justify-center gap-2 mb-5 overflow-x-auto pb-1 -mx-6 px-6 lg:mx-0 lg:px-0 no-scrollbar"
+          className={`${isStudent ? "hidden" : "flex"} flex-nowrap justify-start lg:justify-center gap-2 mb-5 overflow-x-auto pb-1 -mx-6 px-6 lg:mx-0 lg:px-0 no-scrollbar`}
         >
           {PAGES.map((p) => {
             const isOn = activeKey === p.key;
