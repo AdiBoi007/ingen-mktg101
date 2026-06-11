@@ -6,7 +6,7 @@ import Logo from "./Logo";
 import { useAudience, Audience } from "./AudienceContext";
 
 const navItems = [
-  { label: "Features", hasMenu: false, href: "/#features" },
+  { label: "Features", hasMenu: false, href: "/features" },
   { label: "Pricing", hasMenu: false, href: "/pricing" },
 ];
 
