@@ -202,7 +202,7 @@ function StudentHero() {
           </span>
 
           <h1 className="font-display mt-7 text-[64px] md:text-[88px] leading-[0.95] tracking-tightest text-white">
-            Get placed with proof.
+            Get placed faster, with proof.
           </h1>
 
           <p className="mt-6 max-w-2xl mx-auto text-[17px] leading-relaxed text-white/85">
