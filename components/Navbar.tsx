@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import Logo from "./Logo";
 import { useAudience, Audience } from "./AudienceContext";
 
@@ -11,10 +12,17 @@ const navItems = [
 
 function AudienceSwitch() {
   const { audience, setAudience } = useAudience();
+  const router = useRouter();
+  const pathname = usePathname();
   const opts: { key: Audience; label: string }[] = [
     { key: "recruiter", label: "For Recruiters" },
     { key: "student", label: "For Students" },
   ];
+
+  const handleSelect = (key: Audience) => {
+    setAudience(key);
+    if (pathname !== "/") router.push("/");
+  };
 
   return (
     <div
@@ -36,7 +44,7 @@ function AudienceSwitch() {
             key={o.key}
             role="tab"
             aria-selected={active}
-            onClick={() => setAudience(o.key)}
+            onClick={() => handleSelect(o.key)}
             className={`relative z-10 label-mono px-3.5 py-1.5 rounded-full transition-colors ${
               active ? "text-white" : "text-brand-ink/70 hover:text-brand-ink"
             }`}
