@@ -139,7 +139,7 @@ function ThemedGlobe({ tone }: { tone: "dark" | "light" }) {
 
   return (
     <GlobeErrorBoundary fallback={<GlobeFallback tone={tone} />}>
-      <div className="relative w-full aspect-square max-w-[420px] md:max-w-[520px] mx-auto">
+      <div className="relative w-full aspect-square max-w-[260px] sm:max-w-[340px] md:max-w-[440px] lg:max-w-[500px] mx-auto">
         <div className="absolute inset-0">
           <World data={sampleArcs} globeConfig={globeConfig} />
         </div>
@@ -582,11 +582,11 @@ function StudentWaitlistForm() {
     return (
       <div className="space-y-3">
         <span className="label-mono text-forge-amber">Early access</span>
-        <h2 className="font-display text-[40px] md:text-[52px] leading-[1.02] tracking-tightest text-forge-ink">
+        <h2 className="font-display text-[30px] sm:text-[36px] md:text-[40px] lg:text-[46px] leading-[1.05] tracking-tightest text-forge-ink">
           You&rsquo;re on the list.
         </h2>
-        <p className="text-[16px] leading-relaxed text-forge-ink/70">
-          We&rsquo;ll email <span className="font-medium">{email}</span> when your
+        <p className="text-[15px] sm:text-[16px] leading-relaxed text-forge-ink/70">
+          We&rsquo;ll email <span className="font-medium break-all">{email}</span> when your
           spot is ready.
         </p>
       </div>
@@ -596,10 +596,10 @@ function StudentWaitlistForm() {
   return (
     <div className="space-y-6">
       <span className="label-mono text-forge-amber">Early access</span>
-      <h2 className="font-display text-[40px] md:text-[52px] leading-[1.02] tracking-tightest text-forge-ink">
+      <h2 className="font-display text-[30px] sm:text-[36px] md:text-[40px] lg:text-[46px] leading-[1.05] tracking-tightest text-forge-ink">
         Join the FORGE waitlist
       </h2>
-      <p className="text-[16px] leading-relaxed max-w-md text-forge-ink/70">
+      <p className="text-[15px] sm:text-[16px] leading-relaxed max-w-md text-forge-ink/70">
         Be first inside FORGE — Aristotle for your roadmap and proof profile,
         Columbus for ranked job dossiers, and Collections for every tailored
         version of you.
@@ -607,7 +607,7 @@ function StudentWaitlistForm() {
 
       <form
         onSubmit={onSubmit}
-        className="flex items-center gap-2 rounded-md p-1.5 max-w-md bg-white border border-forge-line shadow-sm"
+        className="flex flex-col sm:flex-row sm:items-center gap-2 rounded-md p-1.5 max-w-md bg-white border border-forge-line shadow-sm"
       >
         <input
           type="email"
@@ -615,10 +615,10 @@ function StudentWaitlistForm() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="you@university.edu"
-          className="flex-1 bg-transparent outline-none px-3 py-2 text-[15px] text-forge-ink placeholder:text-forge-mute"
+          className="flex-1 min-w-0 bg-transparent outline-none px-3 py-2 text-[15px] text-forge-ink placeholder:text-forge-mute"
         />
-        <button type="submit" className="btn-amber">
-          Join student waitlist
+        <button type="submit" className="btn-amber whitespace-nowrap w-full sm:w-auto">
+          Join waitlist
         </button>
       </form>
 
@@ -676,8 +676,8 @@ export default function GlobeWaitlist() {
         </>
       )}
 
-      <div className="mx-auto max-w-[1320px] px-6 py-24 md:py-28 relative">
-        <div className="grid md:grid-cols-2 gap-12 md:gap-20 items-center">
+      <div className="mx-auto max-w-[1320px] px-5 sm:px-6 py-14 sm:py-20 md:py-24 relative">
+        <div className="grid md:grid-cols-2 gap-8 sm:gap-12 md:gap-16 items-center">
           <motion.div
             className="order-2 md:order-1 relative flex flex-col items-center justify-center"
             initial={{ opacity: 0, scale: 0.92 }}
@@ -685,16 +685,16 @@ export default function GlobeWaitlist() {
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.9, ease: "easeOut" }}
           >
-            <div className="relative h-[440px] md:h-[560px] w-full flex items-center justify-center">
+            <div className="relative w-full flex items-center justify-center h-[280px] sm:h-[360px] md:h-[460px] lg:h-[520px]">
               <ThemedGlobe key={isStudent ? "light" : "dark"} tone={isStudent ? "light" : "dark"} />
             </div>
 
             {isStudent && (
-              <div className="mt-2 max-w-md text-center">
-                <h3 className="font-display text-[26px] md:text-[32px] leading-[1.05] tracking-tightest text-forge-ink">
+              <div className="mt-3 sm:mt-4 max-w-md text-center px-2">
+                <h3 className="font-display text-[22px] sm:text-[26px] md:text-[30px] leading-[1.1] tracking-tightest text-forge-ink">
                   From job-hunter to evidence-backed candidate.
                 </h3>
-                <p className="mt-3 text-[15px] leading-relaxed text-forge-ink/70">
+                <p className="mt-2 sm:mt-3 text-[14px] sm:text-[15px] leading-relaxed text-forge-ink/70">
                   Plan the path. Prove the work. Scout the roles. Walk in
                   prepared.
                 </p>
