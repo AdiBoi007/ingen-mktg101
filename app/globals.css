@@ -11,7 +11,7 @@
 }
 
 :root {
-  --font-display: "Inter", "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Instrument Serif", Georgia, serif;
   --font-body: "Inter", "Helvetica Neue", Arial, sans-serif;
   --font-mono: "JetBrains Mono", "IBM Plex Mono", "Menlo", monospace;
 }
@@ -26,9 +26,37 @@ body {
 
 .font-display {
   font-family: var(--font-display);
-  letter-spacing: -0.03em;
-  font-weight: 500;
+  letter-spacing: -0.035em;
+  font-weight: 400;
 }
+
+/* ---------- iNGEN simulation-first landing page ---------- */
+.engine-site { background: #f7f3ec; color: #080808; font-family: var(--font-body); }
+.engine-site h1, .engine-site h2, .engine-site h3 { font-family: var(--font-display); }
+.engine-nav-link { font-family: var(--font-mono); font-size: 9px; letter-spacing: .15em; text-transform: uppercase; color: rgba(0,0,0,.56); transition: color .2s ease; }
+.engine-nav-link:hover { color: #000; }
+.engine-pill { display: inline-flex; align-items: center; gap: 8px; border-radius: 999px; padding: 13px 18px; font-family: var(--font-mono); font-size: 9px; font-weight: 500; letter-spacing: .13em; text-transform: uppercase; transition: transform .2s ease, background .2s ease, box-shadow .2s ease; }
+.engine-pill:hover { transform: translateY(-2px); }
+.engine-pill-dark { background: #080808; color: white; box-shadow: 0 8px 24px rgba(0,0,0,.12); }
+.engine-pill-dark:hover { background: #f05f46; box-shadow: 0 12px 30px rgba(240,95,70,.25); }
+.engine-pill-light { border: 1px solid rgba(0,0,0,.14); background: rgba(255,255,255,.5); color: #080808; }
+.engine-pill-light:hover { background: white; }
+.engine-eyebrow { display: inline-flex; width: fit-content; align-items: center; gap: 8px; border: 1px solid rgba(0,0,0,.11); border-radius: 999px; background: rgba(255,255,255,.55); padding: 7px 11px; font-family: var(--font-mono); font-size: 8px; letter-spacing: .15em; text-transform: uppercase; color: rgba(0,0,0,.52); box-shadow: inset 0 1px rgba(255,255,255,.8); }
+.engine-hero { background: radial-gradient(circle at 50% 22%, #fffaf2 0, #f7f3ec 46%, #efe8dd 100%); }
+.engine-grid { background-image: linear-gradient(rgba(0,0,0,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,.035) 1px, transparent 1px); background-size: 42px 42px; mask-image: linear-gradient(to bottom, #000 20%, transparent 90%); }
+.engine-grid-white { background-image: linear-gradient(rgba(255,255,255,.12) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.12) 1px, transparent 1px); background-size: 42px 42px; mask-image: radial-gradient(circle at center, #000, transparent 75%); }
+.engine-dark-grid { opacity: .35; background-image: radial-gradient(rgba(255,255,255,.14) .7px, transparent .7px); background-size: 16px 16px; mask-image: radial-gradient(circle at 50% 40%, #000 0%, transparent 75%); }
+.engine-orb { position: absolute; border-radius: 999px; filter: blur(80px); opacity: .24; pointer-events: none; }
+.engine-orb-one { width: 360px; height: 360px; top: 8%; left: -180px; background: #ff765c; }
+.engine-orb-two { width: 300px; height: 300px; top: 30%; right: -160px; background: #ffc56d; }
+.engine-window { border: 1px solid rgba(255,255,255,.13); border-radius: 25px; background: linear-gradient(145deg, #151515, #060606); box-shadow: 0 45px 110px rgba(34,22,15,.24), inset 0 1px rgba(255,255,255,.08); }
+.engine-kicker-dark { font-family: var(--font-mono); font-size: 8px; letter-spacing: .16em; text-transform: uppercase; color: rgba(255,255,255,.34); }
+.engine-marquee { animation: engineMarquee 30s linear infinite; }
+.engine-feature-card { display: grid; gap: 40px; align-items: center; overflow: hidden; border: 1px solid rgba(0,0,0,.09); border-radius: 30px; background: rgba(255,253,249,.72); padding: 28px; }
+.engine-feature-copy { padding: 10px 0; }
+@media (min-width: 1024px) { .engine-feature-card { grid-template-columns: 1.05fr .95fr; padding: 52px; } .engine-feature-card-reverse > :first-child { order: 2; } .engine-feature-card-reverse > :last-child { order: 1; } }
+@keyframes engineMarquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) { .engine-marquee { animation: none; } .engine-site *, .engine-site *::before, .engine-site *::after { scroll-behavior: auto !important; } }
 
 /* iNGEN student headlines — heavy, geometric per docx (700-900 range) */
 .font-forge {
